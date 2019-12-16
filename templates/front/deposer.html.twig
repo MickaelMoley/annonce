@@ -5,283 +5,239 @@
 {% endblock %}
 {% block title %} Site d'annonces auto {% endblock %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bs-stepper/dist/css/bs-stepper.min.css">
+
+{% endblock %}
+
 {% block body %}
 
     <div class="wrapper">
-        <div class="page-header page-header">
-            <div class="page-header-image" data-parallax="true"
-                 style="background-image: url({{ asset('assets/images/paysage-voiture.jpg') }});"></div>
-            <div class="content-center d-none d-md-block">
-                <h2>Consultez notre catalogue de voitures en ligne.</h2>
-                <div class="container-fluid  px-4 py-4 rounded bg-white ">
-                    <form>
-                        <div class="row">
-                            <div class="col">
-                                <label for="keyword" class="text-left text-black-50">Une idée ?</label>
-                                <input type="text" class="form-control" id="keyword" placeholder="ex : Peugeot" />
-                                <small id="keywordHelp" class="form-text text-muted">Vous pouvez entrer un mot clé</small>
-                            </div>
-                            <div class="col">
-                                <label for="brand" class="text-left text-black-50">Une marque particulière ?</label>
-                                <select id="inputStateBrand" class="form-control">
-                                    <option selected>Marque</option>
-                                    <option>BMW</option>
-                                    <option>Porsche</option>
-                                    <option>Peugeot</option>
-                                </select>
-                                <small id="brandHelp" class="form-text text-muted">Vous pouvez choisir une marque de voiture.</small>
-                            </div>
-                            <div class="col">
-                                <label for="model" class="text-left text-black-50">Un modèle particulier ?</label>
-                                <select id="inputStateModel" class="form-control">
-                                    <option selected>Modèle</option>
-                                    <option>S</option>
-                                    <option>102</option>
-                                </select>
-                                <small id="modelHelp" class="form-text text-muted">Vous pouvez choisir votre modèle</small>
-                            </div>
-                        </div>
-                        <div class="collapse mt-3" id="showAdvancedFilter">
-                            <div class="row">
-                                <div class="col">
-                                    <label for="model" class="text-left text-black-50">Une fourchette de prix ?</label>
-                                    <div id="sliderPriceDesktop" class="slider slider-primary noUi-target noUi-ltr noUi-horizontal"></div>
-                                    <h6 id="priceIndicator" class="form-text text-muted mt-2">
-                                        0 € - 1500 €
-                                    </h6>
-                                </div>
-                                <div class="col">
-                                    <label for="model" class="text-left text-black-50">Nombre de kilomètrage</label>
-                                    <div id="sliderKmDesktop" class="slider slider-primary noUi-target noUi-ltr noUi-horizontal"></div>
-                                    <h6 id="kmIndicator" class="form-text text-muted mt-2">
-                                        0 € - 1500 €
-                                    </h6>
-                                </div>
-                                <div class="col">
-                                    <label for="model" class="text-left text-black-50">Une fourchette de prix ?</label>
-                                    <div id="sliderYearDesktop" class="slider slider-primary noUi-target noUi-ltr noUi-horizontal "></div>
-                                    <h6 id="yearIndicator" class="form-text text-muted mt-2">
-                                        0 € - 1500 €
-                                    </h6>
-                                </div>
-                            </div>
-                        </div>
-                        <hr />
-                        <div class="d-flex flex-row text-center align-items-center justify-content-end">
-                            <!-- a href="./annonces.html" class="mr-3" data-toggle="collapse" data-target="#showAdvancedFilter"
-                              aria-expanded="false" aria-controls="showAdvancedFilter">Plus de filtre ?</a> -->
-                            <a href="./annonces.html" class="mr-3">Plus de filtre ?</a>
-                            <button class="btn btn-primary">Lancer une recherche</button>
-                        </div>
-                    </form>
+        <section class="section">
+            <div class="container">
+                <h4 class="text-center">
+                    Vous souhaitez déposer une annonce ?<br>
+                    <small class="text-muted">Vous pouvez utiliser le formulaire
+                        ci-dessous afin de compléter votre démarche.
+                    </small>
+                </h4>
+                <div class="alert alert-warning" role="alert">
+                    <div class="container">
+                        <strong>Attention!</strong> Vous devez représenter une société afin de poursuivre ces étapes.
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">
+                <i class="now-ui-icons ui-1_simple-remove"></i>
+              </span>
+                        </button>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <section id="filter-mobile" class="section d-block d-md-none">
-            <div class="container pt-3 ">
-                <h5>Trouve la voiture qui te correspond</h5>
-               {#  <form>
-                    <div class="row">
-                        <div class="col-12 mt-3">
-                            <label for="keyword" class="text-left text-black-50">Une idée ?</label>
-                            <input type="text" class="form-control" id="keyword" placeholder="ex : Peugeot" />
-                            <small id="keywordHelp" class="form-text text-muted">Vous pouvez entrer un mot clé</small>
-                        </div>
-                        <div class="col-12 mt-3">
-                            <label for="brand" class="text-left text-black-50">Une marque particulière ?</label>
-                            <select id="inputStateBrand" class="form-control">
-                                <option selected>Marque</option>
-                                <option>BMW</option>
-                                <option>Porsche</option>
-                                <option>Peugeot</option>
-                            </select>
-                            <small id="brandHelp" class="form-text text-muted">Vous pouvez choisir une marque de voiture.</small>
-                        </div>
-                        <div class="col-12 mt-3">
-                            <label for="model" class="text-left text-black-50">Un modèle particulier ?</label>
-                            <select id="inputStateModel" class="form-control">
-                                <option selected>Modèle</option>
-                                <option>S</option>
-                                <option>102</option>
-                            </select>
-                            <small id="modelHelp" class="form-text text-muted">Vous pouvez choisir votre modèle</small>
-                        </div>
-                    </div>
-                    <hr />
-                    <div class="d-flex flex-column justify-content-center">
-                        <button class="btn btn-primary">Lancer une recherche</button>
-                        <a href="#">Plus de filtre ?</a>
-                    </div>
-                </form>#}
+                <div id="annonceWizard" class="bs-stepper">
+                    <div class="bs-stepper-header" role="tablist">
+                        <!-- your steps here -->
+
+                        <div class="step" data-target="#statut-part">
+                            <button type="button" class="step-trigger" role="tab" aria-controls="statut-part"
+                                    id="statut-part-trigger">
 
 
+                            </button>
+                        </div>
+
+                        <div class="line"></div>
+
+                        <div class="step" data-target="#information-part">
+                            <button type="button" class="step-trigger" role="tab" aria-controls="information-part"
+                                    id="information-part-trigger">
+
+
+                            </button>
+                        </div>
+
+                        <div class="line"></div>
+
+                        <div class="step" data-target="#finish-part">
+                            <button type="button" class="step-trigger" role="tab" aria-controls="finish-part"
+                                    id="finish-part-trigger">
+
+
+                            </button>
+                        </div>
+
+
+                    </div>
+                    <div class="bs-stepper-content">
+                        <!-- your steps content here -->
+                        <div id="statut-part" class="content" role="tabpanel" aria-labelledby="statut-part-trigger">
+
+                            <h5 class="text-center mt-2">
+                                Votre status
+                            </h5>
+                            <div class="row mt-5">
+                                <div class="col-12 col-md-6 offset-md-3 col-lg-4 offset-lg-4">
+                                    <form class="formAnnonce">
+                                        <div class="form-group text-center">
+                                            <label for="statutInputState">Vous êtes ?</label>
+                                            <select name="statutInputState" id="statutInputState" class="form-control"
+                                                    required>
+                                                <option disabled selected>Sélectionner votre statut</option>
+                                                <option value="societe">Une société</option>
+                                                <option value="particulier">Un particulier</option>
+                                            </select>
+                                            <div id="alert-status" class="text-danger mt-3">
+                                                <strong>Oups!</strong> Ce service est uniquement destiné aux sociétés .
+                                            </div>
+                                        </div>
+                                    </form>
+                </div>
+                                <div id="alert-container " class="col-12">
+
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-end align-items-end">
+
+                                <button id="statutBtn" class="btn btn-primary btn-next-form">Suivant</button>
+                            </div>
+                        </div>
+                        <div id="information-part" class="content" role="tabpanel"
+                             aria-labelledby="information-part-trigger">
+                            <h5 class="text-center mt-2">
+                                Vos coordonnées
+                            </h5>
+                            <div class="row mt-5">
+                                <div class="col-12 col-md-6 offset-md-3 col-lg-6 offset-lg-3">
+                                    <form id="formAnnonce">
+                                        <div class="row">
+                                            <div class="col-12 col-lg-8 offset-lg-2">
+                                                <div class="form-group ">
+                                                    <label for="societe">Votre société</label>
+                                                    <input type="text" name="societe" class="form-control"
+                                                           placeholder="Votre societe*" required>
+                                                </div>
+                                                <div class="form-group ">
+                                                    <label for="mail">Votre adresse mail</label>
+                                                    <input type="email" name="email" class="form-control"
+                                                           placeholder="Votre adresse mail"
+                                                           required>
+                                                </div>
+                                                <div class="form-group ">
+                                                    <label for="tel">Votre numéro de téléphone</label>
+                                                    <input type="tel" name="tel" class="form-control"
+                                                           placeholder="ex: +33 0 00 00 00 00"
+                                                           required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+
+                            </div>
+                            <div class="d-flex justify-content-between ">
+                                <button class="btn btn-primary" onclick="window.stepperForm.previous()">Précédent
+                                </button>
+                                <button class="btn btn-primary btn-next-form">Suivant</button>
+                            </div>
+                        </div>
+                        <div id="finish-part" class="content" role="tabpanel" aria-labelledby="finish-part-trigger">
+                            <h5 class="text-center mt-2" id="finish-message">
+                                Votre demande a bien été pris en compte. ✔️ <br>
+                                <small>Nous allons traiter votre demande dans les plus bref délais.</small>
+                            </h5>
+                            <div class="d-flex justify-content-center ">
+                                <a href="index.html" class="btn btn-link btn-primary btn-next-form">Retourner à la page
+                                    d'accueil</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
-        <div class="section">
-            <div class="container">
-                <h3 class="title text-center">Annonces récents</h3>
-                <div class="row">
-                   {%  for annonce in annonces %}
-                       <div class="col-12 col-lg-6">
-                           <article class="rounded annonce">
-                               <div class="card shadow-sm bg-white rounded border-soft">
-                                   <div class="d-flex ">
-                                       <div class="annonce-image d-flex justify-content-center bg-gray-1 py-1 px-1">
-                                           <img src="./assets/images/peugeot1.jpg" class="img-fluid " alt="..."
-                                                style="object-position: center;object-fit: cover;">
-                                       </div>
-                                       <div class="d-flex flex-column align-content-around justify-content-center bg-white py-2 px-2">
-                                           <div class="position-absolute priceVehicule">
-                                               <span>{{ annonce.price }} €</span>
-                                           </div>
-                                           <a href="./vehicule.html">
-                                               <h5 class="annonce-title text-left module w-100 last-line">{{ annonce.name }}</h5>
-                                           </a>
-
-                                           <span class="annonce-place">
-                      Paris, 75015
-                    </span>
-
-                                           <span class="annonce-meta text-gray mt-1">{{ annonce.year }} ¤ Automatique ¤ {{ annonce.kilometer }} km ¤ Essence</span>
-                                           <a href="#">
-                      <span class="annonce-entity module last-line">Vroomiz</small>
-                                           </a>
-                                       </div>
-                                   </div>
-                               </div>
-
-                           </article>
-                       </div>
-
-                    {% endfor %}
-                    <div class="col-12 col-lg-6">
-                        <article class="rounded annonce">
-                            <div class="card shadow-sm bg-white rounded border-soft">
-                                <div class="d-flex ">
-                                    <div class="annonce-image d-flex justify-content-center bg-gray-1 py-1 px-1">
-                                        <img src="./assets/images/peugeot1.jpg" class="img-fluid " alt="..."
-                                             style="object-position: center;object-fit: cover;">
-                                    </div>
-                                    <div class="d-flex flex-column align-content-around justify-content-center bg-white py-2 px-2">
-                                        <div class="position-absolute priceVehicule">
-                                            <span>1 650 €</span>
-                                        </div>
-                                        <a href="./vehicule.html">
-                                            <h5 class="annonce-title text-left module w-100 last-line">Peugeot 206 1.4 hdi
-                                                génération</h5>
-                                        </a>
-
-                                        <span class="annonce-place">
-                      Paris, 75015
-                    </span>
-
-                                        <span class="annonce-meta text-gray mt-1">2008 ¤ Automatique ¤ 185 262 km ¤ Essence</span>
-                                        <a href="#">
-                      <span class="annonce-entity module last-line">Vroomiz</small>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </article>
-                    </div>
-                    <div class="col-12 col-lg-6">
-                        <article class="rounded annonce">
-                            <div class="card shadow-sm bg-white rounded border-soft">
-                                <div class="d-flex ">
-                                    <div class="annonce-image d-flex justify-content-center bg-gray-1 py-1 px-1">
-                                        <img src="./assets/images/peugeot1.jpg" class="img-fluid " alt="..."
-                                             style="object-position: center;object-fit: cover;">
-                                    </div>
-                                    <div class="d-flex flex-column align-content-around justify-content-center bg-white py-2 px-2">
-                                        <div class="position-absolute priceVehicule">
-                                            <span>1 650 €</span>
-                                        </div>
-                                        <a href="./vehicule.html">
-                                            <h5 class="annonce-title text-left module w-100 last-line">Peugeot 206 1.4 hdi
-                                                génération</h5>
-                                        </a>
-
-                                        <span class="annonce-place">
-                      Paris, 75015
-                    </span>
-
-                                        <span class="annonce-meta text-gray mt-1">2008 ¤ Automatique ¤ 185 262 km ¤ Essence</span>
-                                        <a href="#">
-                      <span class="annonce-entity module last-line">Vroomiz</small>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </article>
-                    </div>
-                    <div class="col-12 col-lg-6">
-                        <article class="rounded annonce">
-                            <div class="card shadow-sm bg-white rounded border-soft">
-                                <div class="d-flex ">
-                                    <div class="annonce-image d-flex justify-content-center bg-gray-1 py-1 px-1">
-                                        <img src="./assets/images/peugeot1.jpg" class="img-fluid " alt="..."
-                                             style="object-position: center;object-fit: cover;">
-                                    </div>
-                                    <div class="d-flex flex-column align-content-around justify-content-center bg-white py-2 px-2">
-                                        <div class="position-absolute priceVehicule">
-                                            <span>1 650 €</span>
-                                        </div>
-                                        <a href="./vehicule.html">
-                                            <h5 class="annonce-title text-left module w-100 last-line">Peugeot 206 1.4 hdi
-                                                génération</h5>
-                                        </a>
-
-                                        <span class="annonce-place">
-                      Paris, 75015
-                    </span>
-
-                                        <span class="annonce-meta text-gray mt-1">2008 ¤ Automatique ¤ 185 262 km ¤ Essence</span>
-                                        <a href="#">
-                      <span class="annonce-entity module last-line">Vroomiz</small>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </article>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <footer class="footer footer-default">
-            <div class=" container ">
-                <div class="row">
-                    <div class="col justify-content-center">
-                        <nav>
-                            <ul>
-                                <li>
-                                    <a href="#">
-                                        Vroomiz
-                                    </a>
-                                </li>
-                            </ul>
-                        </nav>
-                    </div>
-                    <div class="col-12 col-md-8 mt-3 mt-md-0">
-                        <div class="copyright" id="copyright">
-                            &copy;
-                            <script>
-                                document
-                                    .getElementById("copyright")
-                                    .appendChild(
-                                        document.createTextNode(new Date().getFullYear())
-                                    );
-                            </script>
-                            , <a href="https://www.vroomiz.fr/">VROOMIZ</a>
-                            Toutes les marques présentes sont la proriété de leurs auteurs
-                            respectifs.
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </footer>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script>
+
+        $(document).ready(function () {
+
+            window.$currentStepDepot = 0;
+            var stepperFormEl = document.querySelector('#annonceWizard');
+            window.stepperForm = new Stepper(stepperFormEl, {
+                animation: true,
+                linear: true,
+                selectors: {
+                    steps: '.step',
+                    trigger: '.step-trigger',
+                    stepper: '.bs-stepper'
+                }
+            });
+
+            var btnNextList = [].slice.call(document.querySelectorAll('.btn-next-form'));
+            var formList = [].slice.call(stepperFormEl.querySelectorAll('.formAnnonce'));
+
+            btnNextList.forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    switch (window.$currentStepDepot) {
+
+                        // Vérification de la première étape
+                        case 0:
+                            $('#finish-message').hide();
+                            if (window.$statutState) {
+                                window.stepperForm.next()
+                            }
+                            break;
+                        // Vérification de la deuxième étape
+                        case 1:
+                            var valid = $('#formAnnonce').valid();
+
+                            if (!valid) {
+                                window.$validator.focusInvalid();
+                                return false;
+                            }
+                            if (window.confirm('Avant de poursuivre, confirmez-vous ces informations ?')) {
+                                window.stepperForm.next();
+                                jQuery.ajax({
+                                    url: "{{ path('demande') }}",
+                                    method: "post",
+                                    data: {
+                                        name: $("#formAnnonce").find('input[name="societe"]').val(),
+                                        email: $("#formAnnonce").find('input[name="email"]').val(),
+                                        tel: $("#formAnnonce").find('input[name="tel"]').val()
+                                    }
+
+                                }).done(function (data) {
+                                    $('#finish-message').show('200');
+                                });
+
+                            } else {
+                                window.alert('Vous devez valider ces informations avant de continuer.');
+                            }
+
+                            break;
+                        case 2:
+                            console.log('fefefe');
+
+                            break;
+
+                        default:
+                            break;
+                    }
+                })
+            });
+
+            stepperFormEl.addEventListener('show.bs-stepper', function (event) {
+                var nextStep = event.detail.indexStep;
+                var currentStep = nextStep;
+
+                window.$currentStepDepot = currentStep;
+                if (currentStep > 0) {
+                    currentStep--
+                }
+
+            })
+
+        });
+    </script>
+
 {% endblock %}

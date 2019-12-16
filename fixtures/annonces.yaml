@@ -1,0 +1,26 @@
+App\Entity\Annonce:
+  annonce_{1..100}:
+    vehicle_id: <productName()>
+    title: <productName()>
+    description: <productName()>
+    url: www.google.com
+    make: bmw
+    model: serie5
+    image: ['']
+    year: 2010
+    mileage: ['']
+    drivetrain: 4X2
+    vehicle_registration_plate: xxx-xx-xxx
+    body_style: SEDAN
+    fuel_type: Diesel
+    transmission: automatic
+    price: 130000
+    features: ['']
+    latitude: 47.8613255
+    longitude: 2.200709
+    exterior_color: dark_blue
+    state_of_vehicle: USED
+    dealer_id: 28
+    fb_page_id: 105069187649102
+    dealer_communication_channel: LEAD_FORM
+    dealer_privacy_policy_url: https://www.publiz.fr/rgpd

@@ -8,234 +8,185 @@
 {% block body %}
 
     <div class="wrapper">
-        <div class="page-header page-header-small d-none d-lg-block">
-            <div class="page-header-image" data-parallax="true"
-                 style="background-image: url({{ asset('assets/images/paysage-voiture.jpg') }});"></div>
-            <div class="content-center d-none d-md-block">
-                <h2>Consultez notre catalogue de voitures en ligne.</h2>
-            </div>
-        </div>
-
-        <div class="section clearfix border-soft" style="background: #fdfcfc;">
+        <section>
             <div class="container">
-
                 <div class="row">
-
-                    <!-- FILTRE DE RECHERCHE-->
-
-
-                    <div class="col col-md-12 col-lg-3 ">
-                        <div id="filter" class="bg-white pt-3 pb-3 px-3 rounded setTopBorder shadow-sm  border-soft sticky-scroll-box"
-                             data-spy="affix">
-                            <span class="close d-block d-lg-none">&times;</span>
-                            <div class="d-flex align-items-center justify-content-between">
-                                <h5 class="">Filtre de recherche</h5>
+                    <div class="col"></div>
+                </div>
+            </div>
+        </section>
+        <section>
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 col-lg-8">
+                        <div class="bg-white shadow-sm d-lg-none mb-3 p-3 sticky-top" id="meta-mobile-sticky-top">
+                            <div class="row">
+                                <div class="col-4"><img class="img-fluid"
+                                                        src="assets/img/945e78faa559e12f855194ab70c6ed37a5dfa7ee.jpg">
+                                </div>
+                                <div class="col-8">
+                                    <h2 class="meta-mobile-title">{{ annonce.title }}</h2><span
+                                            class="text-info text-primary font-weight-bold">{{ annonce.price | number_format(2,'.',',') }} €</span>
+                                </div>
                             </div>
-                            <div id="filter-content">
-                               {#  <form action="/annonces.html" method="get">
-                                    <hr>
+                        </div>
+                        <div class="carousel slide" data-ride="carousel" id="annonce-collection-image">
+                            <div class="carousel-inner" role="listbox">
+                                <div class="carousel-item active"><img class="w-100 d-block"
+                                                                       src="https://cdn.bootstrapstudio.io/placeholders/1400x800.png"
+                                                                       alt="Slide Image"></div>
+                                <div class="carousel-item"><img class="w-100 d-block"
+                                                                src="https://cdn.bootstrapstudio.io/placeholders/1400x800.png"
+                                                                alt="Slide Image"></div>
+                                <div class="carousel-item"><img class="w-100 d-block"
+                                                                src="https://cdn.bootstrapstudio.io/placeholders/1400x800.png"
+                                                                alt="Slide Image"></div>
+                            </div>
+                            <div><a class="carousel-control-prev" href="#annonce-collection-image" role="button"
+                                    data-slide="prev"><span class="carousel-control-prev-icon"></span><span
+                                            class="sr-only">Previous</span></a><a class="carousel-control-next"
+                                                                                  href="#annonce-collection-image"
+                                                                                  role="button" data-slide="next"><span
+                                            class="carousel-control-next-icon"></span><span class="sr-only">Next</span></a>
+                            </div>
+                            <ol class="carousel-indicators">
+                                <li data-target="#annonce-collection-image" data-slide-to="0" class="active"></li>
+                                <li data-target="#annonce-collection-image" data-slide-to="1"></li>
+                                <li data-target="#annonce-collection-image" data-slide-to="2"></li>
+                            </ol>
+                        </div>
+                        <div class="border rounded shadow-sm mb-3 p-3" id="meta">
+                            <h1 class="annonce-title">{{ annonce.title }}</h1><span
+                                    class="text-info text-primary font-weight-bold">{{ annonce.price | number_format(2,'.',',') }} €</span>
+                        </div>
+                        <div id="caracteristique" class="mb-3">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-start align-items-center">
+                                    <h3 class="card-title">Caractéristiques</h3>
+                                </div>
+                                <div class="card-body">
                                     <div class="row">
-                                        <div class="col-12 mt-3">
-                                            <label for="keyword" class="text-left text-black-50">Une idée ?</label>
-                                            <input type="text" class="form-control" id="keyword" placeholder="ex : Peugeot"  onchange="updateFilter(this, 'keyword');"/>
-                                            <small id="keywordHelp" class="form-text text-muted">Vous pouvez entrer un mot clé</small>
+                                        <div class="col-12 col-lg-6">
+                                            <ul class="list-group list-group-flush">
+                                                <li class="list-group-item d-flex justify-content-between"><span
+                                                            class="text-primary"><i class="fas fa-car-side mr-2"></i>Catégorie</span><span>{{ annonce.bodyStyle }}</span>
+                                                </li>
+                                                <li class="list-group-item d-flex justify-content-between"><span
+                                                            class="text-primary"><i
+                                                                class="fas fa-car mr-2"></i>Marque</span><span
+                                                            class="text-muted">{{ annonce.make }}</span></li>
+                                                <li class="list-group-item d-flex justify-content-between"><span
+                                                            class="text-primary"><i class="fas fa-car-alt mr-2"></i>Modèle</span><span>{{ annonce.model }}</span>
+                                                </li>
+                                                <li class="list-group-item d-flex justify-content-between"><span
+                                                            class="text-primary"><i class="fas fa-hashtag mr-2"></i>Référence</span><span>{{ annonce.vehicleId }}</span>
+                                                </li>
+                                                <li class="list-group-item d-flex justify-content-between"><span
+                                                            class="text-primary"><i
+                                                                class="fas fa-calendar-day mr-2"></i>Mise en circulation&nbsp;</span><span>{{ annonce.year }}</span>
+                                                </li>
+                                            </ul>
                                         </div>
-                                        <div class="col-12 mt-3">
-                                            <label for="inputStateBrand" class="text-left text-black-50">Marque</label>
-                                            <select id="inputStateBrand" class="form-control"  onchange="updateFilter(this, 'marque');">
-                                                <option selected disabled>Sélectionner une marque</option>
-                                                <option selected value="any">Toutes les marques</option>
-                                                <option value="bmw">BMW</option>
-                                                <option value="porsche">Porsche</option>
-                                                <option value="peugeot">Peugeot</option>
-                                            </select>
-                                            <small id="brandHelp" class="form-text text-muted">Vous pouvez choisir une marque de
-                                                voiture.</small>
-                                        </div>
-                                        <div class="col-12 mt-3">
-                                            <label for="inputStateModel" class="text-left text-black-50">Modèle </label>
-                                            <select id="inputStateModel" class="form-control"  onchange="updateFilter(this, 'modele');">
-                                                <option selected disabled>Sélectionner un modèle</option>
-                                                <option selected value="any">Tous les modèles</option>
-                                                <option value="s">S</option>
-                                                <option value="carrera">Carrera</option>
-                                            </select>
-                                            <small id="modelHelp" class="form-text text-muted">Vous pouvez choisir le modèle du
-                                                véhicule</small>
-                                        </div>
-
-                                        <div class="col-12 mt-3">
-                                            <label for="inputStateEngine" class="text-left text-black-50">Type de carburant</label>
-                                            <select id="inputStateCarburant" class="form-control"  onchange="updateFilter(this, 'carburant');">
-                                                <option selected disabled>Sélectionner le type de carburant</option>
-                                                <option selected value="any">Aucune préférence</option>
-                                                <option value="essence">Essence</option>
-                                                <option value="diesel">Diesel</option>
-                                                <option value="electrique">Electrique</option>
-                                            </select>
-                                            <small id="modelHelp" class="form-text text-muted">Vous pouvez choisir votre modèle</small>
-                                        </div>
-                                        <div class="col-12 mt-3">
-                                            <label for="inputStateTransmission" class="text-left text-black-50">Type de transmission</label>
-                                            <select id="inputStateTransmission" class="form-control"  onchange="updateFilter(this, 'transmission');">
-                                                <option selected disabled>Sélectionner le type de carburant</option>
-                                                <option selected value="any">Aucune préférence</option>
-                                                <option value="auto-6">6 boites (automatique)</option>
-                                                <option value="manuel-6">6 boites (manuel)</option>
-                                            </select>
-                                            <small id="modelHelp" class="form-text text-muted">Vous pouvez choisir le type de
-                                                transmission</small>
-                                        </div>
-                                        <div class="col-12 mt-2">
-                                            <label for="sliderPriceDesktop" class="text-left text-black-50">Prix</label>
-                                            <div id="sliderPriceDesktop"
-                                                 class="slider slider-primary noUi-target noUi-ltr noUi-horizontal mt-3"  onchange="updateFilter(this, 'price');">
-                                            </div>
-                                            <div class="d-flex flex-row justify-content-between mt-3">
-                                                <input title="Prix minimum" id="minPriceIndicator"
-                                                       class="form-control mr-5 mr-md-3 priceIndicator">
-                                                <input title="Prix maximum" id="maxPriceIndicator"
-                                                       class="form-control ml-5 ml-md-3 priceIndicator">
-                                            </div>
-                                        </div>
-                                        <div class="col-12 mt-3">
-                                            <label for="sliderKmDesktop" class="text-left text-black-50">Kilomètrage</label>
-                                            <div id="sliderKmDesktop" class="slider slider-primary noUi-target noUi-ltr noUi-horizontal mt-3" onchange="updateFilter(this, 'kilometer');">
-                                            </div>
-                                            <div class="d-flex flex-row justify-content-between mt-3">
-                                                <input title="Nombre de kilomètre minimum" id="minKmIndicator"
-                                                       class="form-control mr-5 mr-md-3 priceIndicator">
-                                                <input title="Nombre de kilomètre maximum" id="maxKmIndicator"
-                                                       class="form-control ml-5 ml-md-3 priceIndicator">
-                                            </div>
-                                        </div>
-                                        <div class="col-12 mt-3">
-                                            <label for="sliderYearDesktop" class="text-left text-black-50">Année</label>
-                                            <div id="sliderYearDesktop"
-                                                 class="slider slider-primary noUi-target noUi-ltr noUi-horizontal mt-3"  onchange="updateFilter(this, 'year');">
-                                            </div>
-                                            <div class="d-flex flex-row justify-content-between mt-3">
-                                                <input title="Nombre de d'année minimum" id="minYearIndicator"
-                                                       class="form-control mr-5 mr-md-3 ">
-                                                <input title="Nombre de d'année maximum" id="maxYearIndicator"
-                                                       class="form-control ml-5 ml-md-3 ">
-                                            </div>
+                                        <div class="col-12 col-lg-6">
+                                            <ul class="list-group list-group-flush">
+                                                <li class="list-group-item d-flex justify-content-between"><span
+                                                            class="text-primary"><i class="fas fa-gas-pump mr-2"></i>Carburant&nbsp;</span><span>{{ annonce.fuelType }}</span>
+                                                </li>
+                                                <li class="list-group-item d-flex justify-content-between"><span
+                                                            class="text-primary"><i class="fas fa-road mr-2"></i>Kilométrage</span><span>{{ annonce.mileage['value'] | number_format(0,'',' ') }} km</span>
+                                                </li>
+                                                <li class="list-group-item d-flex justify-content-between"><span
+                                                            class="text-primary"><i
+                                                                class="fas fa-cog mr-2"></i>Boîte</span><span>{{ annonce.transmission }}</span>
+                                                </li>
+                                                <li class="list-group-item d-flex justify-content-between"><span
+                                                            class="text-primary"><i class="fas fa-palette mr-2"></i>Couleur extérieur</span><span>{{ annonce.exteriorColor }}</span>
+                                                </li>
+                                            </ul>
                                         </div>
                                     </div>
-                                    <hr>
-                                    <div class="d-flex flex-column justify-content-center">
-                                        <button class="btn btn-primary" id="searchFilter">Lancer une recherche </button>
-                                    </div>
-                                </form>#}
-
-                                {{ form_start(form) }}
-                                <div class="form-group">
-                                    {{ form_label(form.q) }}
-                                    {{ form_widget(form.q) }}
-                                    <span>{{ form_help(form.q) }}</span>
-                                    <span>{{ form_errors(form.q) }} </span>
                                 </div>
-                                <div class="form-group">
-                                    <label for="sliderPrice" class="text-left text-black-50">Prix</label>
-                                    <div id="sliderPrice"
-                                         class="slider slider-primary noUi-target noUi-ltr noUi-horizontal mt-3">
-                                    </div>
-                                    <div class="d-flex flex-row justify-content-between mt-3">
-                                        {{ form_widget(form.minPrice, {'attr' : { 'class': 'mr-5 mr-md-2'}}) }}
-                                        {{ form_widget(form.maxPrice, { 'attr' : { 'class': 'ml-5 ml-md-2'}}) }}
-                                    </div>
-                                    <span>{{ form_help(form.minPrice) }}</span>
-                                    <span>{{ form_help(form.maxPrice) }}</span>
-                                    <span>{{ form_errors(form.minPrice) }} </span>
-                                    <span>{{ form_errors(form.maxPrice) }} </span>
-                                </div>
-                                <div class="form-group">
-                                    <label for="sliderKm" class="text-left text-black-50">Kilomètre</label>
-                                    <div id="sliderKm"
-                                         class="slider slider-primary noUi-target noUi-ltr noUi-horizontal mt-3">
-                                    </div>
-                                    <div class="d-flex flex-row justify-content-between mt-3">
-                                        {{ form_widget(form.minKilometer, {'attr' : { 'class': 'mr-5 mr-md-2'}}) }}
-                                        {{ form_widget(form.maxKilometer, { 'attr' : { 'class': 'ml-5 ml-md-2'}}) }}
-                                    </div>
-                                    <span>{{ form_help(form.minKilometer) }}</span>
-                                    <span>{{ form_help(form.maxKilometer) }}</span>
-                                    <span>{{ form_errors(form.minKilometer) }} </span>
-                                    <span>{{ form_errors(form.maxKilometer) }} </span>
-                                </div>
-                                <div class="form-group">
-                                    <label for="sliderYear" class="text-left text-black-50">Année</label>
-                                    <div id="sliderYear"
-                                         class="slider slider-primary noUi-target noUi-ltr noUi-horizontal mt-3">
-                                    </div>
-                                    <div class="d-flex flex-row justify-content-between mt-3">
-                                        {{ form_widget(form.minYear, {'attr' : { 'class': 'mr-5 mr-md-2'}}) }}
-                                        {{ form_widget(form.maxYear, { 'attr' : { 'class': 'ml-5 ml-md-2'}}) }}
-                                    </div>
-                                    <span>{{ form_help(form.minYear) }}</span>
-                                    <span>{{ form_help(form.maxYear) }}</span>
-                                    <span>{{ form_errors(form.minYear) }} </span>
-                                    <span>{{ form_errors(form.maxYear) }} </span>
-                                </div>
-
-                                <div class="d-flex flex-column justify-content-center">
-                                    <button class="btn btn-primary" id="searchFilter" type="submit">Lancer une recherche </button>
-                                </div>
-
-                                {{ form_end(form) }}
                             </div>
-
-                            </hr>
+                        </div>
+                        <div id="divers">
+                            <ul class="nav nav-tabs">
+                                <li class="nav-item"><a class="nav-link" role="tab" data-toggle="tab"
+                                                        href="#description">Description</a></li>
+                                <li class="nav-item"><a class="nav-link" role="tab" data-toggle="tab" href="#options">Options</a>
+                                </li>
+                                <li class="nav-item"><a class="nav-link active" role="tab" data-toggle="tab"
+                                                        href="#note">Note du vendeur</a></li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane p-3" role="tabpanel" id="description">
+                                    <p class="text-primary">Vends clio 4 dci 90 cv energy année 28/12/2014<br>4cv tres
+                                        propre rouge flamme<br>Historique des revisions<br>Distribution faite chez
+                                        Renault a 150000kms<br>GPS clim auto 4 vitres électriques<br>Radar de
+                                        recul..<br></p>
+                                </div>
+                                <div class="tab-pane p-3" role="tabpanel" id="options">
+                                    <div class="row">
+                                        <div class="col">
+                                            <ul class="list-unstyled text-primary p-3">
+                                                <li><i class="fas fa-check mr-2"></i>Item 1</li>
+                                                <li><i class="fas fa-check mr-2"></i>Item 1</li>
+                                                <li><i class="fas fa-check mr-2"></i>Item 1</li>
+                                                <li><i class="fas fa-check mr-2"></i>Item 1</li>
+                                                <li><i class="fas fa-check mr-2"></i>Item 1</li>
+                                            </ul>
+                                        </div>
+                                        <div class="col">
+                                            <ul class="list-unstyled text-primary p-3">
+                                                <li><i class="fas fa-check mr-2"></i>Item 1</li>
+                                                <li><i class="fas fa-check mr-2"></i>Item 1</li>
+                                                <li><i class="fas fa-check mr-2"></i>Item 1</li>
+                                                <li><i class="fas fa-check mr-2"></i>Item 1</li>
+                                                <li><i class="fas fa-check mr-2"></i>Item 1</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane active p-3" role="tabpanel" id="note">
+                                    <p>Content for tab 3.</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
-
-                    <div class="col-12 col-md-12 col-lg-9 mt-3 mt-md-3 mt-lg-0">
-                        <div class="d-flex py-3 align-items-center justify-content-start justify-content-lg-end bg-white border-soft">
-                            <span class="text-black-50">Affiche 0 - 4 sur 4</span>
-                        </div>
-                        <div class="row" id="listAnnonces">
-                            {% for annonce in annonces %}
-                                <div class="col-12">
-                                    <article class="rounded annonce">
-                                        <div class="card shadow-sm bg-white rounded border-soft">
-                                            <div class="d-flex ">
-                                                <div class="annonce-image d-flex justify-content-center bg-gray-1 py-1 px-1">
-                                                    <img src="{{ annonce.image[0] }}" class="img-fluid " alt="Image de voiture {{ annonce.make }} {{ annonce.model }}"
-                                                         style="object-position: center;object-fit: cover;">
-                                                </div>
-                                                <div class="d-flex flex-column align-content-around justify-content-center bg-white py-2 px-2">
-                                                    <div class="position-absolute priceVehicule">
-                                                        <span>{{ annonce.price }} €</span>
-                                                    </div>
-                                                    <a href="{{  }}">
-                                                        <h5 class="annonce-title text-left module w-100 last-line">{{ annonce.title }}</h5>
-                                                    </a>
-
-                                                    <span class="annonce-place">
-                                        {{ annonce.adress.region }}, {{ annonce.adress.postal_code }}
-                                      </span>
-
-                                                    <span class="annonce-meta text-gray mt-1">{{ annonce.year }} ¤ {{ annonce.transmission }} ¤ {{ annonce.mileage['value'] }} km ¤ {{ annonce.fuelType }}</span>
-                                                    <a href="#">
-                                        <span class="annonce-entity module last-line">{{ annonce.dealerId }}</small>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </article>
+                    <div class="col">
+                        <div class="card text-primary bg-secondary border-1">
+                            <div class="card-header border-primary">
+                                <div class="media"><img class="rounded-circle mr-3 img-fluid"
+                                                        src="https://www.vroomiz.fr/bundles/vrzfront/front/img/logo.png"
+                                                        width="50rem">
+                                    <div class="media-body">
+                                        <h5>Vroomiz</h5><a href="#"><i class="fas fa-map-marker-alt mr-2"></i>Fay aux
+                                            Loges</a></div>
                                 </div>
-                            {% endfor %}
-                        </div>
-                        <div class="row">
-                            <div class="col">
-                                {{ knp_pagination_render(annonces) }}
+                            </div>
+                            <div class="card-body">
+                                <form>
+                                    <div class="form-group"><label>Email</label><input class="form-control"
+                                                                                       type="email"></div>
+                                    <div class="form-group"><label>Téléphone</label><input class="form-control"
+                                                                                           type="tel"></div>
+                                    <div class="form-group"><label>Email</label><textarea class="form-control"
+                                                                                          placeholder="Je suis intéressé par ce véhicule. Pouvez-vous me contacter afin de convenir d'un rendez-vous ?"
+                                                                                          rows="6">Je suis intéressé par ce véhicule. Pouvez-vous me contacter afin de convenir d'un rendez-vous ?</textarea>
+                                        <small
+                                                class="form-text text-muted">Uniquement par particulier
+                                        </small>
+                                    </div>
+                                    <div class="form-group">
+                                        <button class="btn btn-primary btn-block" type="button"><i
+                                                    class="fas fa-envelope mr-2"></i>Envoyer un message
+                                        </button>
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
     </div>
-
 {% endblock %}

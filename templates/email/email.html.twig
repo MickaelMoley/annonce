@@ -124,7 +124,9 @@
                             <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="vertical-align:top;" width="100%">
                                 <tr>
                                     <td align="center" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-                                        <div style="font-family:Montserrat, Arial, Helvetica, sans-serif;font-size:1rem;line-height:1;text-align:center;color:#4B4B4B;">{{ email.message }}</div>
+                                        <div style="font-family:Montserrat, Arial, Helvetica, sans-serif;font-size:1rem;line-height:1;text-align:center;color:#4B4B4B;">
+                                            Demande de dépôt d'annonce
+                                        </div>
                                     </td>
                                 </tr>
                             </table>
@@ -175,17 +177,20 @@
                                 </tr>
                                 <tr>
                                     <td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-                                        <div style="font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:13px;line-height:1;text-align:left;color:#000000;">Societe : {{ email.societe }}</div>
+                                        <div style="font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:13px;line-height:1;text-align:left;color:#000000;">
+                                            Societe : {{ name }}</div>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-                                        <div style="font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:13px;line-height:1;text-align:left;color:#000000;">Email : {{ email.mail }}</div>
+                                        <div style="font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:13px;line-height:1;text-align:left;color:#000000;">
+                                            Email : {{ email }}</div>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-                                        <div style="font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:13px;line-height:1;text-align:left;color:#000000;">Téléphone : {{ email.tel }}</div>
+                                        <div style="font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:13px;line-height:1;text-align:left;color:#000000;">
+                                            Téléphone : {{ tel }}</div>
                                     </td>
                                 </tr>
                             </table>
@@ -231,7 +236,10 @@
                             <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="vertical-align:top;" width="100%">
                                 <tr>
                                     <td align="center" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-                                        <div style="font-family:Montserrat, Arial, Helvetica, sans-serif;font-size:16px;line-height:1;text-align:center;color:#4B4B4B;">Clique ici pour répondre à cette gentille personne: <a href="mailto:{{ email.mail }}" color="#db910e"><br /></br>{{ email.mail }}</a></div>
+                                        <div style="font-family:Montserrat, Arial, Helvetica, sans-serif;font-size:16px;line-height:1;text-align:center;color:#4B4B4B;">
+                                            Clique ici pour répondre à cette gentille personne: <a
+                                                    href="mailto:{{ email }}" color="#db910e"><br/></br>{{ email }}</a>
+                                        </div>
                                     </td>
                                 </tr>
                             </table>
