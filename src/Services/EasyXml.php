@@ -11,7 +11,7 @@ use Doctrine\ORM\EntityManagerInterface;
 class EasyXml
 {
 
-    private $JSON_file;
+    public $JSON_file;
     private $em;
 
     public function __construct(AnnonceRepository $annonceRepository, EntityManagerInterface $entityManager)
@@ -23,7 +23,6 @@ class EasyXml
     public function execute($link)
     {
         $this->readXMLFrom($link);
-
         return $this->manager($this->repo);
     }
 
@@ -85,6 +84,8 @@ class EasyXml
         $annonce->setExteriorColor($updateAnnonce->exterior_color);
         $annonce->setStateOfVehicle($updateAnnonce->state_of_vehicle);
         $annonce->setDealerId(str_replace('vobiz_', "", $updateAnnonce->dealer_id));
+        $annonce->setDealerName($updateAnnonce->dealer_name);
+        $annonce->setDealerPhone($updateAnnonce->dealer_phone);
         $annonce->setFbPageId($updateAnnonce->fb_page_id);
         $annonce->setDealerCommunicationChannel($updateAnnonce->dealer_communication_channel);
         $annonce->setDealerPrivacyPolicyUrl($updateAnnonce->dealer_privacy_policy_url);
@@ -127,6 +128,8 @@ class EasyXml
         $annonce->setExteriorColor($data->exterior_color);
         $annonce->setStateOfVehicle($data->state_of_vehicle);
         $annonce->setDealerId(str_replace('vobiz_', "", $data->dealer_id));
+        $annonce->setDealerName($data->dealer_name);
+        $annonce->setDealerPhone($data->dealer_phone);
         $annonce->setFbPageId($data->fb_page_id);
         $annonce->setDealerCommunicationChannel($data->dealer_communication_channel);
         $annonce->setDealerPrivacyPolicyUrl($data->dealer_privacy_policy_url);

@@ -18,12 +18,22 @@ class SearchData
     /*
      * @var int
      */
-    public $limitPerPage = 5;
+    public $limitPerPage = 10;
 
     /*
      * @var string
      */
     public $q = '';
+
+    /**
+     * @var string
+     */
+    public $make;
+
+    /**
+     * @var string
+     */
+    public $model;
 
     /**
      * @var null|integer
@@ -53,5 +63,7 @@ class SearchData
      * @var null|integer
      */
     public $maxKilometer;
+
+
 
 }

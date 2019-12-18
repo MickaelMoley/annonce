@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 {% block head %}
-     {{ parent() }}
+    {{ parent() }}
 
 {% endblock %}
 {% block title %} Site d'annonces auto {% endblock %}
@@ -16,11 +16,12 @@
         <section class="section">
             <div class="container">
                 <h4 class="text-center">
-                    Vous souhaitez déposer une annonce ?<br>
-                    <small class="text-muted">Vous pouvez utiliser le formulaire
-                        ci-dessous afin de compléter votre démarche.
-                    </small>
+                    Vous souhaitez déposer une annonce ?
+
                 </h4>
+                <p class="text-center lead">Vous pouvez utiliser le formulaire
+                    ci-dessous afin de compléter votre démarche.
+                </p>
                 <div class="alert alert-warning" role="alert">
                     <div class="container">
                         <strong>Attention!</strong> Vous devez représenter une société afin de poursuivre ces étapes.
@@ -80,15 +81,15 @@
                                             <select name="statutInputState" id="statutInputState" class="form-control"
                                                     required>
                                                 <option disabled selected>Sélectionner votre statut</option>
-                                                <option value="societe">Une société</option>
-                                                <option value="particulier">Un particulier</option>
+                                                <option value="1">Une société</option>
+                                                <option value="0">Un particulier</option>
                                             </select>
                                             <div id="alert-status" class="text-danger mt-3">
                                                 <strong>Oups!</strong> Ce service est uniquement destiné aux sociétés .
                                             </div>
                                         </div>
                                     </form>
-                </div>
+                                </div>
                                 <div id="alert-container " class="col-12">
 
                                 </div>
@@ -143,7 +144,7 @@
                                 <small>Nous allons traiter votre demande dans les plus bref délais.</small>
                             </h5>
                             <div class="d-flex justify-content-center ">
-                                <a href="index.html" class="btn btn-link btn-primary btn-next-form">Retourner à la page
+                                <a href="index.html" class="btn btn-link text-primary btn-next-form">Retourner à la page
                                     d'accueil</a>
                             </div>
                         </div>
@@ -156,7 +157,8 @@
 
 {% block javascripts %}
     {{ parent() }}
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bs-stepper/dist/js/bs-stepper.min.js"></script>
     <script>
 
         $(document).ready(function () {
@@ -178,6 +180,7 @@
 
             btnNextList.forEach(function (btn) {
                 btn.addEventListener('click', function () {
+                    console.log('lol');
                     switch (window.$currentStepDepot) {
 
                         // Vérification de la première étape
@@ -207,7 +210,7 @@
                                     }
 
                                 }).done(function (data) {
-                                    $('#finish-message').show('200');
+                                    $('#finish-message').slideDown('200');
                                 });
 
                             } else {
@@ -236,6 +239,7 @@
                 }
 
             })
+
 
         });
     </script>

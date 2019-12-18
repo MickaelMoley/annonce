@@ -1,0 +1,286 @@
+{% extends 'base.html.twig' %}
+{% block head %}
+    {{ parent() }}
+
+{% endblock %}
+{% block title %} Site d'annonces auto {% endblock %}
+
+{% block stylesheets %}
+    <style>
+        .swiper-container {
+            width: 100%;
+            height: 450px;
+            background: #000;
+        }
+
+        .swiper-slide {
+            font-size: 18px;
+            color: #fff;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+            padding: 40px 60px;
+        }
+
+        .parallax-bg {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 130%;
+            height: 100%;
+            -webkit-background-size: cover;
+            background-size: cover;
+            background-position: center;
+            background-color: red;
+        }
+
+        .parallax-bg::after {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 130%;
+            height: 100%;
+            -webkit-background-size: cover;
+            background-size: cover;
+            background-position: center;
+            background-color: rgba(0, 0, 0, 0.75);
+            content: ' ';
+        }
+
+        .swiper-slide .title {
+            font-size: 41px;
+            font-weight: 300;
+        }
+
+        .swiper-slide .subtitle {
+            font-size: 21px;
+        }
+
+        .swiper-slide .text {
+            font-size: 14px;
+            max-width: 400px;
+            line-height: 1.3;
+        }
+    </style>
+{% endblock %}
+{% block body %}
+    <div class="swiper-container">
+        <div class="parallax-bg" style="background-image:url({{ asset('assets/img/bg-test2.jpg') }})"
+             data-swiper-parallax="-23%"></div>
+        <div class="swiper-wrapper d-flex align-content-center">
+            <div class="swiper-slide d-flex flex-column align-items-center justify-content-center">
+                <div class="title" data-swiper-parallax="-300">Annonce</div>
+                <div class="subtitle" data-swiper-parallax="-200">Subtitle</div>
+                <div class="text" data-swiper-parallax="-100">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam dictum mattis velit, sit amet
+                        faucibus felis iaculis nec. Nulla laoreet justo vitae porttitor porttitor.</p>
+                </div>
+            </div>
+            <div class="swiper-slide d-flex flex-column align-items-center justify-content-center">
+                <div class="title" data-swiper-parallax="-300" data-swiper-parallax-opacity="0">Slide 2</div>
+                <div class="subtitle" data-swiper-parallax="-200">Subtitle</div>
+                <div class="text" data-swiper-parallax="-100">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam dictum mattis velit, sit amet
+                        faucibus felis iaculis nec. Nulla laoreet justo vitae porttitor porttitor. Suspendisse in sem
+                        justo. Integer laoreet magna nec elit suscipit, ac laoreet nibh euismod. Aliquam hendrerit lorem
+                        at elit facilisis rutrum. Ut at ullamcorper velit. Nulla ligula nisi, imperdiet ut lacinia nec,
+                        tincidunt ut libero. Aenean feugiat non eros quis feugiat.</p>
+                </div>
+            </div>
+            <div class="swiper-slide d-flex flex-column align-items-center justify-content-center">
+                <div class="title" data-swiper-parallax="-300">Slide 3</div>
+                <div class="subtitle" data-swiper-parallax="-200">Subtitle</div>
+                <div class="text" data-swiper-parallax="-100">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam dictum mattis velit, sit amet
+                        faucibus felis iaculis nec. Nulla laoreet justo vitae porttitor porttitor. Suspendisse in sem
+                        justo. Integer laoreet magna nec elit suscipit, ac laoreet nibh euismod. Aliquam hendrerit lorem
+                        at elit facilisis rutrum. Ut at ullamcorper velit. Nulla ligula nisi, imperdiet ut lacinia nec,
+                        tincidunt ut libero. Aenean feugiat non eros quis feugiat.</p>
+                </div>
+            </div>
+        </div>
+        <!-- Add Pagination -->
+        <div class="swiper-pagination swiper-pagination-white"></div>
+        <!-- Add Navigation -->
+        <div class="swiper-button-prev swiper-button-white"></div>
+        <div class="swiper-button-next swiper-button-white"></div>
+    </div>
+    <div id="search" style="z-index: 9999;margin-top: -3rem;position: relative;">
+        <div class="container">
+            <div class="shadow-sm bg-white p-3">
+                <form action="javascript:;" class="form1">
+                    <div class="row">
+                        <div class="col-12 col-lg-auto mb-3">
+                            <div class="form-group">
+                                <select class="form-control" style="width: 100%" tabindex="-1" aria-hidden="true">
+                                    <option value="">Marque</option>
+                                    <option value="2">Alfa Romeo</option>
+                                    <option value="3">Aston Martin</option>
+                                    <option value="4">Audi</option>
+                                    <option value="5">Bentley</option>
+                                    <option value="6">BMW</option>
+                                    <option value="7">Bugatti</option>
+                                </select>
+                                <a href="#" class="more text-muted">Marque introuvable ?</a>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-auto mb-3">
+                            <div class="form-group">
+                                <select class="form-control" style="width: 100%" tabindex="-1" aria-hidden="true">
+                                    <option value="">Modèle</option>
+                                    <option value="2">Model 1</option>
+                                    <option value="3">Model 2</option>
+                                    <option value="4">Model 3</option>
+                                    <option value="5">Model 4</option>
+                                    <option value="6">Model 5</option>
+                                    <option value="7">Model 6</option>
+                                </select>
+                                <a href="#" class="more text-muted">Modèle introuvable ?</a>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-auto mb-3">
+                            <div class=form-group">
+                                <select class="form-control" style="width: 100%" tabindex="-1" aria-hidden="true">
+                                    <option value="1">Etat du véhicule</option>
+                                    <option value="2">Status 1</option>
+                                    <option value="3">Status 2</option>
+                                    <option value="4">Status 3</option>
+                                    <option value="5">Status 4</option>
+                                    <option value="6">Status 5</option>
+                                    <option value="7">Status 6</option>
+                                </select>
+                                <a href="#" class="more text-muted">ex : Neuf, usée</a>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-auto mb-3">
+                            <div class="select1_wrapper">
+                                <select class="form-control" style="width: 100%"
+                                        tabindex="-1" aria-hidden="true">
+                                    <option value="">Kilomètrage minimum</option>
+                                    <option value="2">2018</option>
+                                    <option value="3">2017</option>
+                                    <option value="4">2016</option>
+                                    <option value="5">2015</option>
+                                    <option value="6">2014</option>
+                                    <option value="7">2013</option>
+                                </select>
+                                <a href="#" class="more text-muted">Kilomètrage minimum</a>
+                            </div>
+                        </div>
+                        <div class="col-12 col-lg-auto mb-3">
+                            <div class="select1_wrapper">
+                                <select class="form-control" style="width: 100%" tabindex="-1" aria-hidden="true">
+                                    <option value="">Kilomètrage maximum</option>
+                                    <option value="2">2018</option>
+                                    <option value="3">2017</option>
+                                    <option value="4">2016</option>
+                                    <option value="5">2015</option>
+                                    <option value="6">2014</option>
+                                    <option value="7">2013</option>
+                                </select>
+                                <a href="#" class="more text-muted">Kilomètrage maximum</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row justify-content-end">
+                        <div class="col-12 col-lg-6 text-right">
+                            <a href="{{ path('annonces') }}" class="mr-2 ">Plus de filtre ?</a>
+                            <a href="{{ path('annonces') }}" type="submit" class="btn btn-primary"><span>Chercher la voiture</span>
+                            </a>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <section class="section">
+        <div class="container">
+            <div class="row ">
+                <div class="col-12">
+                    <h2 class="section-title text-center">Nos offres</h2>
+                    <p class="text-center lead">Nous vous proposons tous un catalogue d'annonces avec les véhicules de
+                        vos choix</p>
+
+                    <div class="row ">
+                        <div class="col d-flex justify-content-start">
+                            <a href="{{ path('annonces') }}" class="btn btn-round btn-primary mx-auto">Trouver un
+                                véhicule</a>
+                        </div>
+                    </div>
+
+                    <div class="row mt-5">
+
+
+                        {% if annonces|length > 0 %}
+                            {% for annonce in annonces %}
+                                <div class="col-12 col-md-12 col-lg-6">
+                                    <article class="border rounded d-flex mb-3 shadow-sm--hover">
+                                        <div class="bg-dark d-flex justify-content-center py-1 px-1"><img
+                                                    class="list-annonce-image"
+                                                    src="{{ annonce.image[0].url[0] }}"
+                                                    style="object-fit: cover;"
+                                                    alt="Image de {{ annonce.make }} {{ annonce.model }}">
+                                        </div>
+                                        <div class="d-flex flex-column align-content-around bg-white py-2 px-2 w-100">
+                                            <a class="list-annonce-title"
+                                               href="{{ path('annonce', {'slug': annonce.slug }) }}"
+                                               title="Voir cette annonce : {{ annonce.make }} - {{ annonce.model }}"
+                                            >{{ annonce.title }}</a><span
+                                                    class="text-info list-annonce-price mb-auto font-weight-bold">{{ annonce.price | number_format(0,'.','.') }} €</span>
+                                            <div class="mb-auto d-flex justify-content-between align-items-center"><a
+                                                        class="list-annonce-place" href="#"><i
+                                                            class="fas fa-map-marker-alt mr-2"></i>{{ annonce.adress.city }}
+                                                </a><a
+                                                        class="list-annonce-entity" href="#">{{ annonce.dealerId }}</a>
+                                            </div>
+                                            <p class="list-annonce-meta mb-auto d-flex justify-content-between"><span>
+                                                <i class="fas fa-road mr-2"></i>{{ annonce.mileage['value'] | number_format(0,'.',' ') }} km</span><span><i
+                                                            class="fas fa-cogs mr-2"></i>{{ annonce.transmission|capitalize }}</span><span
+                                                        class="d-none d-sm-block"><i
+                                                            class="fas fa-gas-pump mr-2"></i>{{ annonce.fuelType|capitalize }}</span><span
+                                                        class="d-none d-sm-block d-lg-none"><i
+                                                            class="fas fa-calendar-day mr-2"></i>{{ annonce.year }}</span>
+                                            </p>
+                                        </div>
+                                    </article>
+                                </div>
+
+                            {% endfor %}
+
+                        {% else %}
+                            <div class="p-5 bg-gray d-flex justify-content-center align-items-center">
+                                <p><i class="fas fa-search mr-2"></i>Aucunes annonces ne correspond à vos critères.</p>
+                            </div>
+
+
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-8 offset-lg-2 col-lg-5 d-none d-lg-block">
+                    <img src="{{ asset('assets/img/undraw_carsell.svg') }}" alt="" class="img-fluid">
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+{% endblock %}
+{% block javascripts %}
+
+    {{ parent() }}
+    <script>
+        var swiper = new Swiper('.swiper-container', {
+            speed: 600,
+            parallax: true,
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+        });
+    </script>
+{% endblock %}

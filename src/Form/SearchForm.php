@@ -5,7 +5,12 @@ namespace App\Form;
 
 
 use App\Data\SearchData;
+use App\Entity\Annonce;
+use App\Repository\AnnonceRepository;
+use function PHPSTORM_META\map;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -24,6 +29,27 @@ class SearchForm extends AbstractType
                     'placeholder' => 'ex : Peugeot'
                 ]
             ])
+            ->add('make', EntityType::class, [
+                'label' => false,
+                'required' => false,
+                'class' => Annonce::class,
+                'choice_label' => 'make',
+                'choice_value' => function(Annonce $annonce = null){
+                    return $annonce ? strtolower($annonce->returnMake()) : '';
+                }
+
+            ])
+            ->add('model', EntityType::class, [
+                'label' => false,
+                'required' => false,
+                'class' => Annonce::class,
+                'choice_label' => 'model',
+                'choice_value' => function(Annonce $annonce = null){
+                    return $annonce ? strtolower($annonce->returnModel()) : '';
+                }
+
+            ])
+
             ->add('minPrice', NumberType::class, [
                 'label' => false,
                 'required' => false,
