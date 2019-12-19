@@ -14,6 +14,8 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SearchForm extends AbstractType
@@ -29,25 +31,35 @@ class SearchForm extends AbstractType
                     'placeholder' => 'ex : Peugeot'
                 ]
             ])
-            ->add('make', EntityType::class, [
-                'label' => false,
+            ->add('make', ChoiceType::class, [
                 'required' => false,
-                'class' => Annonce::class,
-                'choice_label' => 'make',
-                'choice_value' => function(Annonce $annonce = null){
-                    return $annonce ? strtolower($annonce->returnMake()) : '';
-                }
+                'choices' => $options['makes'],
+                'choice_label' => function ($choice, $key, $value){
+                    return ucfirst($value);
 
+                },
+                'choice_value' => function ($value){
+
+
+                    return strtolower($value);
+
+                },
+                'group_by' => null
             ])
-            ->add('model', EntityType::class, [
-                'label' => false,
-                'required' => false,
-                'class' => Annonce::class,
-                'choice_label' => 'model',
-                'choice_value' => function(Annonce $annonce = null){
-                    return $annonce ? strtolower($annonce->returnModel()) : '';
-                }
 
+            ->add('model', ChoiceType::class, [
+                'required' => false,
+                'choices' => $options['models'],
+                'choice_label' => function ($choice, $key, $value){
+                    return ucfirst($value);
+
+                },
+                'choice_value' => function ($value){
+
+                    return strtolower($value);
+
+                },
+                'group_by' => null
             ])
 
             ->add('minPrice', NumberType::class, [
@@ -100,6 +112,8 @@ class SearchForm extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => SearchData::class,
+            'makes' => null,
+            'models' => null,
             'method' => 'GET',
             'csrf_protection' => false
         ]);

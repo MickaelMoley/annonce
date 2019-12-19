@@ -111,8 +111,8 @@
                             </div>
                         </div>
                         <div class="border rounded shadow-sm mb-3 p-3" id="meta">
-                            <h1 class="annonce-title">{{ annonce.title }}</h1><span
-                                    class="text-info text-primary font-weight-bold">{{ annonce.price | number_format(2,'.',',') }} €</span>
+                            <h1 class="annonce-title">{{ annonce.title }}</h1>
+                            <span class="text-info text-primary font-weight-bold">{{ annonce.price | number_format(2,'.',',') }} €</span>
                         </div>
                         <div id="caracteristique" class="mb-3">
                             <div class="card">
@@ -123,8 +123,8 @@
                                     <div class="row">
                                         <div class="col-12 col-lg-6">
                                             <ul class="list-group list-group-flush">
-                                                <li class="list-group-item d-flex justify-content-between"><span
-                                                            class="text-primary"><i class="fas fa-car-side mr-2"></i>Catégorie</span><span>{{ annonce.bodyStyle }}</span>
+                                                <li class="list-group-item d-flex justify-content-between">
+                                                    <span class="text-primary"><i class="fas fa-car-side mr-2"></i>Catégorie</span><span>{{ annonce.bodyStyle }}</span>
                                                 </li>
                                                 <li class="list-group-item d-flex justify-content-between"><span
                                                             class="text-primary"><i
@@ -137,9 +137,9 @@
                                                 <li class="list-group-item d-flex justify-content-between"><span
                                                             class="text-primary"><i class="fas fa-hashtag mr-2"></i>Référence</span><span>{{ annonce.vehicleId }}</span>
                                                 </li>
-                                                <li class="list-group-item d-flex justify-content-between"><span
-                                                            class="text-primary"><i
-                                                                class="fas fa-calendar-day mr-2"></i>Mise en circulation&nbsp;</span><span>{{ annonce.year }}</span>
+                                                <li class="list-group-item d-flex justify-content-between">
+                                                    <span class="text-primary">
+                                                        <i class="fas fa-calendar-day mr-2"></i>Mise en circulation&nbsp;</span><span>{{ annonce.year }}</span>
                                                 </li>
                                             </ul>
                                         </div>
@@ -166,11 +166,11 @@
                         </div>
                         <div id="divers">
                             <ul class="nav nav-tabs">
-                                <li class="nav-item"><a class="nav-link" role="tab" data-toggle="tab"
+                                <li class="nav-item"><a class="nav-link active" role="tab" data-toggle="tab"
                                                         href="#description">Description</a></li>
                                 <li class="nav-item"><a class="nav-link" role="tab" data-toggle="tab" href="#options">Options</a>
                                 </li>
-                                <li class="nav-item"><a class="nav-link active" role="tab" data-toggle="tab"
+                                <li class="nav-item"><a class="nav-link" role="tab" data-toggle="tab"
                                                         href="#note">Note du vendeur</a></li>
                             </ul>
                             <div class="tab-content">
@@ -199,22 +199,24 @@
 
                                     </div>
                                 </div>
-                                <div class="tab-pane  p-3" role="tabpanel" id="note">
+                                <div class="tab-pane p-3" role="tabpanel" id="note">
                                     <p class="text-primary">Le vendeur n'a pas laissé de note. Utiliser le formulaire de
                                         contact pour en savoir plus.</p>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-12 col-lg-auto">
+                    <div class="col-12 col-lg-4">
                         <div class="card text-primary bg-secondary border-1">
                             <div class="card-header border-primary">
                                 <div class="media"><img class="rounded-circle mr-3 img-fluid"
                                                         src="https://www.vroomiz.fr/bundles/vrzfront/front/img/logo.png"
                                                         width="50rem"/>
                                     <div class="media-body">
-                                        <h5>{{ annonce.dealerName }}</h5><a href="#"><i
-                                                    class="fas fa-map-marker-alt mr-2"></i>Fay aux Loges</a></div>
+                                        <h5>{{ annonce.dealerName }}</h5>
+                                        <a href="#">
+                                            <i class="fas fa-map-marker-alt mr-2"></i>Fay aux Loges
+                                        </a></div>
                                 </div>
                                 <br>
                                 <div class="d-flex align-items-center">
@@ -253,6 +255,7 @@
                         </div>
                     </div>
                 </div>
+            </div>
         </section>
     </div>
 {% endblock %}

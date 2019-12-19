@@ -494,17 +494,7 @@ class Annonce
 
     public function __toString()
     {
-        return ' ';
-    }
-
-    public function returnMake()
-    {
-
-        return $this->getMake();
-    }
-    public function returnModel()
-    {
-        return $this->getModel();
+        return $this->make.' '.$this->model;
     }
 
 

@@ -19,23 +19,19 @@ use Symfony\Component\Routing\Annotation\Route;
 class FrontController extends AbstractController
 {
 
-    public function __construct(AnnonceRepository $annonceRepository)
-    {
-        $this->annonceRepository = $annonceRepository;
-    }
-
-
-
     /**
      * @Route("/", name="home")
+     * @param Request $request
+     * @param AnnonceRepository $annonceRepository
+     * @return Response
      */
-    public function index(Request $request)
+    public function index(Request $request, AnnonceRepository $annonceRepository): Response
     {
 
 
         $data = new SearchData();
         $data->current_page = $request->get('page', 1);
-        $annonces = $this->annonceRepository->findSearch($data);
+        $annonces = $annonceRepository->findSearch($data);
 
         return $this->render('front/index.html.twig', [
             'annonces' => $annonces
@@ -44,33 +40,54 @@ class FrontController extends AbstractController
 
     /**
      * @Route("/annonces", name="annonces")
+     * @param Request $request
+     * @param AnnonceRepository $annonceRepository
+     * @return Response
      */
 
-    public function annonces(Request $request)
+    public function annonces(Request $request, AnnonceRepository $annonceRepository)
     {
 
         $data = new SearchData();
         $data->current_page = $request->get('page', 1);
-        $form = $this->createForm(SearchForm::class, $data);
+
+        /**
+         * Construire le filtre par rapport à la base de donnée
+         */
+        [$minPrice, $maxPrice] = $annonceRepository->findMinMaxPrice($data);
+        [$minYear, $maxYear] = $annonceRepository->findMinMaxYear($data);
+        $makes = $annonceRepository->findMake();
+        $models = $annonceRepository->findModel();
+
+        $form = $this->createForm(SearchForm::class, $data, ['makes' => $makes, 'models' => $models]);
 
         $form->handleRequest($request);
 
-        $annonces = $this->annonceRepository->findSearch($data);
+
+        $annonces = $annonceRepository->findSearch($data);
 
 
         return $this->render('front/recherche.twig', [
             'annonces' => $annonces,
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'minPrice' => $minPrice,
+            'maxPrice' => $maxPrice,
+            'minYear' => $minYear,
+            'maxYear' => $maxYear,
+            'makes' => $makes,
+            'models' => $models
         ]);
     }
 
     /**
      * @Route("/annonces/{slug}", name="annonce")
+     * @param Annonce $annonce
+     * @return Response
      */
     public function showAnnonce(Annonce $annonce): Response
     {
 
-        return $this->render('front/annonce.twig', [
+        return $this->render('front/annonce.html.twig', [
             'annonce' => $annonce
         ]);
     }
@@ -127,6 +144,7 @@ class FrontController extends AbstractController
     }
 
     /**
+     * Récupère la liste des annonces depuis un lien : default -> Vers Vroomiz
      * @Route("/fetch", name="fetch")
      */
     public function fetchXML(EasyXml $myXml)
