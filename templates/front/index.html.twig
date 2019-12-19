@@ -68,33 +68,24 @@
              data-swiper-parallax="-23%"></div>
         <div class="swiper-wrapper d-flex align-content-center">
             <div class="swiper-slide d-flex flex-column align-items-center justify-content-center">
-                <div class="title" data-swiper-parallax="-300">Annonce</div>
-                <div class="subtitle" data-swiper-parallax="-200">Subtitle</div>
-                <div class="text" data-swiper-parallax="-100">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam dictum mattis velit, sit amet
-                        faucibus felis iaculis nec. Nulla laoreet justo vitae porttitor porttitor.</p>
+                <h3 class=" text-white mb-3 text-center" data-swiper-parallax="-300">Le must des véhicules d'occasions</h3>
+                <h4 class="text-white mb-3 text-center text-capitalize" data-swiper-parallax="-200" >Catalogue de véhicules en ligne</h4>
+                <div class="d-flex justify-content-between" data-swiper-parallax="-100">
+                    <a href="#search" class="btn btn-info">Continuer</a>
                 </div>
             </div>
             <div class="swiper-slide d-flex flex-column align-items-center justify-content-center">
-                <div class="title" data-swiper-parallax="-300" data-swiper-parallax-opacity="0">Slide 2</div>
-                <div class="subtitle" data-swiper-parallax="-200">Subtitle</div>
-                <div class="text" data-swiper-parallax="-100">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam dictum mattis velit, sit amet
-                        faucibus felis iaculis nec. Nulla laoreet justo vitae porttitor porttitor. Suspendisse in sem
-                        justo. Integer laoreet magna nec elit suscipit, ac laoreet nibh euismod. Aliquam hendrerit lorem
-                        at elit facilisis rutrum. Ut at ullamcorper velit. Nulla ligula nisi, imperdiet ut lacinia nec,
-                        tincidunt ut libero. Aenean feugiat non eros quis feugiat.</p>
+                <h3 class=" text-white mb-3" data-swiper-parallax="-300">{{ annonces[0].make }} {{ annonces[0].model }}</h3>
+                <h4 class="text-white mb-3 text-center text-capitalize" data-swiper-parallax="-200" >par {{ annonces[0].dealerName|capitalize }}</h4>
+                <div class="d-flex justify-content-between" data-swiper-parallax="-100">
+                    <a href="{{ path('annonce', {'slug' : annonces[0].slug}) }}" class="btn btn-info">Voir maintenant</a>
                 </div>
             </div>
             <div class="swiper-slide d-flex flex-column align-items-center justify-content-center">
-                <div class="title" data-swiper-parallax="-300">Slide 3</div>
-                <div class="subtitle" data-swiper-parallax="-200">Subtitle</div>
-                <div class="text" data-swiper-parallax="-100">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam dictum mattis velit, sit amet
-                        faucibus felis iaculis nec. Nulla laoreet justo vitae porttitor porttitor. Suspendisse in sem
-                        justo. Integer laoreet magna nec elit suscipit, ac laoreet nibh euismod. Aliquam hendrerit lorem
-                        at elit facilisis rutrum. Ut at ullamcorper velit. Nulla ligula nisi, imperdiet ut lacinia nec,
-                        tincidunt ut libero. Aenean feugiat non eros quis feugiat.</p>
+                <h3 class=" text-white mb-3" data-swiper-parallax="-300">Vous avez un véhicule ?</h3>
+                <h4 class="text-white mb-3 text-center text-capitalize" data-swiper-parallax="-200" >Vous pouvez déposer une annonce sur notre catalogue</h4>
+                <div class="d-flex justify-content-between" data-swiper-parallax="-100">
+                    <a href="{{ path('annonce', {'slug' : annonces[0].slug}) }}" class="btn btn-info">En savoir plus</a>
                 </div>
             </div>
         </div>
@@ -107,85 +98,67 @@
     <div id="search" style="z-index: 9999;margin-top: -3rem;position: relative;">
         <div class="container">
             <div class="shadow-sm bg-white p-3">
-                <form action="javascript:;" class="form1">
+                <form action="{{ path('annonces') }}">
                     <div class="row">
                         <div class="col-12 col-lg-auto mb-3">
-                            <div class="form-group">
-                                <select class="form-control" style="width: 100%" tabindex="-1" aria-hidden="true">
-                                    <option value="">Marque</option>
-                                    <option value="2">Alfa Romeo</option>
-                                    <option value="3">Aston Martin</option>
-                                    <option value="4">Audi</option>
-                                    <option value="5">Bentley</option>
-                                    <option value="6">BMW</option>
-                                    <option value="7">Bugatti</option>
-                                </select>
-                                <a href="#" class="more text-muted">Marque introuvable ?</a>
-                            </div>
+                            <select class="form-control" style="width: 100%" tabindex="-1" aria-hidden="true" name="make">
+                                <option value="">Marque</option>
+                                <option value="alfa romeo">Alfa Romeo</option>
+                                <option value="bmw">BMW</option>
+                            </select>
+                            <a href="#" class="more text-muted">Marque introuvable ?</a>
                         </div>
                         <div class="col-12 col-lg-auto mb-3">
-                            <div class="form-group">
-                                <select class="form-control" style="width: 100%" tabindex="-1" aria-hidden="true">
-                                    <option value="">Modèle</option>
-                                    <option value="2">Model 1</option>
-                                    <option value="3">Model 2</option>
-                                    <option value="4">Model 3</option>
-                                    <option value="5">Model 4</option>
-                                    <option value="6">Model 5</option>
-                                    <option value="7">Model 6</option>
-                                </select>
-                                <a href="#" class="more text-muted">Modèle introuvable ?</a>
-                            </div>
+                            <select class="form-control" style="width: 100%" tabindex="-1" aria-hidden="true" name="model">
+                                <option value="">Modèle</option>
+                                <option value="2">Model 1</option>
+                                <option value="3">Model 2</option>
+                            </select>
+                            <a href="#" class="more text-muted">Modèle introuvable ?</a>
                         </div>
                         <div class="col-12 col-lg-auto mb-3">
-                            <div class=form-group">
-                                <select class="form-control" style="width: 100%" tabindex="-1" aria-hidden="true">
-                                    <option value="1">Etat du véhicule</option>
-                                    <option value="2">Status 1</option>
-                                    <option value="3">Status 2</option>
-                                    <option value="4">Status 3</option>
-                                    <option value="5">Status 4</option>
-                                    <option value="6">Status 5</option>
-                                    <option value="7">Status 6</option>
-                                </select>
-                                <a href="#" class="more text-muted">ex : Neuf, usée</a>
-                            </div>
+                            <select class="form-control" style="width: 100%" tabindex="-1" aria-hidden="true">
+                                <option value="1">Etat du véhicule</option>
+                                <option value="2">Status 1</option>
+                                <option value="3">Status 2</option>
+                                <option value="4">Status 3</option>
+                                <option value="5">Status 4</option>
+                                <option value="6">Status 5</option>
+                                <option value="7">Status 6</option>
+                            </select>
+                            <a href="#" class="more text-muted">ex : Neuf, usée</a>
                         </div>
                         <div class="col-12 col-lg-auto mb-3">
-                            <div class="select1_wrapper">
-                                <select class="form-control" style="width: 100%"
-                                        tabindex="-1" aria-hidden="true">
-                                    <option value="">Kilomètrage minimum</option>
-                                    <option value="2">2018</option>
-                                    <option value="3">2017</option>
-                                    <option value="4">2016</option>
-                                    <option value="5">2015</option>
-                                    <option value="6">2014</option>
-                                    <option value="7">2013</option>
-                                </select>
-                                <a href="#" class="more text-muted">Kilomètrage minimum</a>
-                            </div>
+                            <select class="form-control" style="width: 100%"
+                                    tabindex="-1" aria-hidden="true">
+                                <option value="">Kilomètrage minimum</option>
+                                <option value="2">2018</option>
+                                <option value="3">2017</option>
+                                <option value="4">2016</option>
+                                <option value="5">2015</option>
+                                <option value="6">2014</option>
+                                <option value="7">2013</option>
+                            </select>
+                            <a href="#" class="more text-muted">Kilomètrage minimum</a>
                         </div>
                         <div class="col-12 col-lg-auto mb-3">
-                            <div class="select1_wrapper">
-                                <select class="form-control" style="width: 100%" tabindex="-1" aria-hidden="true">
-                                    <option value="">Kilomètrage maximum</option>
-                                    <option value="2">2018</option>
-                                    <option value="3">2017</option>
-                                    <option value="4">2016</option>
-                                    <option value="5">2015</option>
-                                    <option value="6">2014</option>
-                                    <option value="7">2013</option>
-                                </select>
-                                <a href="#" class="more text-muted">Kilomètrage maximum</a>
-                            </div>
+                            <select class="form-control" style="width: 100%" tabindex="-1" aria-hidden="true">
+                                <option value="">Kilomètrage maximum</option>
+                                <option value="2">2018</option>
+                                <option value="3">2017</option>
+                                <option value="4">2016</option>
+                                <option value="5">2015</option>
+                                <option value="6">2014</option>
+                                <option value="7">2013</option>
+                            </select>
+                            <a href="#" class="more text-muted">Kilomètrage maximum</a>
                         </div>
                     </div>
                     <div class="row justify-content-end">
                         <div class="col-12 col-lg-6 text-right">
                             <a href="{{ path('annonces') }}" class="mr-2 ">Plus de filtre ?</a>
-                            <a href="{{ path('annonces') }}" type="submit" class="btn btn-primary"><span>Chercher la voiture</span>
-                            </a>
+                            <button type="submit" class="btn btn-primary">Chercher la voiture
+                            </button>
 
                         </div>
                     </div>

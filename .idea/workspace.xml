@@ -2,21 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d8bf513c-2b47-4773-a99d-2e66619a213b" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/annonce.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/annonce.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/52f22694-b2a7-41b7-8d23-aa56c4db3052.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/php.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/services.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/services.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/FrontController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/FrontController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/Annonce.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Annonce.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Form/SearchForm.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Form/SearchForm.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Repository/AnnonceRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/AnnonceRepository.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/symfony.lock" beforeDir="false" afterPath="$PROJECT_DIR$/symfony.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/_navbar.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/_navbar.html.twig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/front/annonce.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/front/annonce.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/front/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/front/index.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/front/recherche.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/front/recherche.twig" afterDir="false" />
     </list>
@@ -67,8 +52,11 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/templates/front/recherche.twig">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="215">
-              <caret line="47" column="34" selection-start-line="47" selection-start-column="34" selection-end-line="47" selection-end-column="34" />
+            <state relative-caret-position="-1785">
+              <caret line="17" column="78" selection-start-line="17" selection-start-column="78" selection-end-line="17" selection-end-column="78" />
+              <folding>
+                <element signature="e#606#610#0#Twig" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -94,20 +82,27 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/templates/front/index.html.twig">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="391">
-              <caret line="211" column="42" selection-start-line="211" selection-start-column="42" selection-end-line="211" selection-end-column="42" />
+            <state relative-caret-position="467">
+              <caret line="87" column="116" selection-start-line="87" selection-start-column="116" selection-end-line="87" selection-end-column="116" />
+              <folding>
+                <element signature="e#2902#2909#0#Twig" expanded="true" />
+                <element signature="e#3468#3475#0#Twig" expanded="true" />
+                <element signature="e#4739#4747#0#Twig" expanded="true" />
+                <element signature="e#5843#5862#0#HTML" expanded="true" />
+                <element signature="e#7707#7726#0#HTML" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="378">
-              <caret line="18" selection-start-line="18" selection-end-line="18" />
+            <state relative-caret-position="336">
+              <caret line="16" column="13" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
             </state>
           </provider>
         </entry>
@@ -284,9 +279,9 @@
         <option value="$PROJECT_DIR$/src/Controller/FrontController.php" />
         <option value="$PROJECT_DIR$/templates/front/annonce.html.twig" />
         <option value="$PROJECT_DIR$/src/Data/SearchData.php" />
+        <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/templates/front/recherche.twig" />
         <option value="$PROJECT_DIR$/templates/front/index.html.twig" />
-        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -500,7 +495,7 @@
       <workItem from="1576490296296" duration="7250000" />
       <workItem from="1576569769455" duration="22135000" />
       <workItem from="1576656018917" duration="22032000" />
-      <workItem from="1576743525560" duration="24341000" />
+      <workItem from="1576743525560" duration="26626000" />
     </task>
     <task id="LOCAL-00001" summary="Premier commit">
       <created>1576512338599</created>
@@ -513,17 +508,17 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="137388000" />
+    <option name="totallyTimeSpent" value="139673000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="67" y="25" width="1853" height="1055" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
-      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.2750415" />
+      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.2750415" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Database Console" order="0" weight="0.32928178" />
-      <window_info anchor="bottom" id="Terminal" order="1" visible="true" weight="0.33667782" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="1" visible="true" weight="0.33667782" />
       <window_info anchor="bottom" id="Database Changes" order="2" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="3" side_tool="true" />
       <window_info anchor="bottom" id="Version Control" order="4" weight="0.32894737" />
@@ -878,24 +873,34 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="336">
+          <caret line="16" column="13" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/templates/front/recherche.twig">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="215">
-          <caret line="47" column="34" selection-start-line="47" selection-start-column="34" selection-end-line="47" selection-end-column="34" />
+        <state relative-caret-position="-1785">
+          <caret line="17" column="78" selection-start-line="17" selection-start-column="78" selection-end-line="17" selection-end-column="78" />
+          <folding>
+            <element signature="e#606#610#0#Twig" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/templates/front/index.html.twig">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="211" column="42" selection-start-line="211" selection-start-column="42" selection-end-line="211" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="378">
-          <caret line="18" selection-start-line="18" selection-end-line="18" />
+        <state relative-caret-position="467">
+          <caret line="87" column="116" selection-start-line="87" selection-start-column="116" selection-end-line="87" selection-end-column="116" />
+          <folding>
+            <element signature="e#2902#2909#0#Twig" expanded="true" />
+            <element signature="e#3468#3475#0#Twig" expanded="true" />
+            <element signature="e#4739#4747#0#Twig" expanded="true" />
+            <element signature="e#5843#5862#0#HTML" expanded="true" />
+            <element signature="e#7707#7726#0#HTML" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
