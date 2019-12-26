@@ -1,4 +1,22 @@
 {% block body %}
-    <h1>La base de donnée a été mise à jour.</h1>
 
+    {% if fetcher.debug == true %}
+        <h1>Mode Debug</h1>
+        <hr>
+
+        Nombre d'annonces mise à jour : {{ fetcher.updatedAnnonce }}<br>
+        Nombre d'annonces ajouté : {{ fetcher.updatedAnnonce }}
+
+        <a href="{{ path('annonces') }}">Voir les annonces</a>
+
+            {% for annonce in fetcher.JSON_file.listing %}
+                {{ dump(annonce.vehicle_registration_plate) }}
+            {% endfor %}
+
+        {% else %}
+
+            <h1>La base de donnée a été mise à jour.</h1>
+            <hr>
+            <a href="{{ path('annonces') }}">Voir les annonces</a>
+     {% endif %}
 {% endblock %}

@@ -5,7 +5,9 @@ namespace App\Services;
 
 
 use App\Entity\Annonce;
+use App\Entity\Dealer;
 use App\Repository\AnnonceRepository;
+use App\Repository\DealerRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 class EasyXml
@@ -13,16 +15,26 @@ class EasyXml
 
     public $JSON_file;
     private $em;
+    public $updatedAnnonce = 0;
+    public $newedAnnonce = 0;
+    public $debug;
 
     public function __construct(AnnonceRepository $annonceRepository, EntityManagerInterface $entityManager)
     {
         $this->repo = $annonceRepository;
         $this->em = $entityManager;
+
     }
 
-    public function execute($link)
+    public function execute($link, $debug)
     {
+        $this->debug = $debug;
         $this->readXMLFrom($link);
+
+        if($this->debug)
+        {
+            return 'Debug est activé';
+        }
         return $this->manager($this->repo);
     }
 
@@ -37,6 +49,7 @@ class EasyXml
     private function manager(AnnonceRepository $annonceRepository)
     {
         $lists = $this->JSON_file->listing;
+
 
         for ($i = 0; $i < count($lists); $i++) {
 
@@ -54,6 +67,7 @@ class EasyXml
     private function updateAnnonce($annonce, $updateAnnonce)
     {
 
+
         $annonce->setTitle($updateAnnonce->title);
         $annonce->setSlug(''); //Gérer automatiquement
         $annonce->setDescription($updateAnnonce->description);
@@ -64,12 +78,21 @@ class EasyXml
         $annonce->setYear($updateAnnonce->year);
         $annonce->setMileage(['value' => $updateAnnonce->mileage->value, 'unit' => $updateAnnonce->mileage->unit]);
         $annonce->setDrivetrain($updateAnnonce->drivetrain);
-        $annonce->setVehicleRegistrationPlate($updateAnnonce->vehicle_registration_plate);
+
+        if(is_string($updateAnnonce->vehicle_registration_plate))
+        {
+            $annonce->setVehicleRegistrationPlate($updateAnnonce->vehicle_registration_plate);
+        }
+
         $annonce->setBodyStyle($updateAnnonce->body_style);
         $annonce->setFuelType($updateAnnonce->fuel_type);
         $annonce->setTransmission($updateAnnonce->transmission);
         $annonce->setPrice(str_replace(' EUR', "", $updateAnnonce->price));
-        $annonce->setFeatures($updateAnnonce->features->feature);
+
+        if(isset($updateAnnonce->features->feature)){
+            $annonce->setFeatures($updateAnnonce->features->feature);
+        }
+
 
         $annonce->setAdress([
             'addr1' => $updateAnnonce->address->component[0],
@@ -91,10 +114,15 @@ class EasyXml
         $annonce->setDealerPrivacyPolicyUrl($updateAnnonce->dealer_privacy_policy_url);
 
         $this->em->flush();
+
+        $this->updatedAnnonce += 1;
     }
 
-    private function newAnnonce($data)
+    private function newAnnonce($data, DealerRepository $dealerRepository)
     {
+        $dealer = $dealerRepository->findOneBy(['dealer_id' => $data->getDealerId]);
+
+
 
         $annonce = new Annonce();
         $annonce->setVehicleId($data->vehicle_id);
@@ -108,12 +136,23 @@ class EasyXml
         $annonce->setYear($data->year);
         $annonce->setMileage(['value' => $data->mileage->value, 'unit' => $data->mileage->unit]);
         $annonce->setDrivetrain($data->drivetrain);
-        $annonce->setVehicleRegistrationPlate($data->vehicle_registration_plate);
+
+        if(!is_string($data->vehicle_registration_plate)){
+            $annonce->setVehicleRegistrationPlate('none');
+        }
+        else{
+            $annonce->setVehicleRegistrationPlate($data->vehicle_registration_plate);
+        }
+
         $annonce->setBodyStyle($data->body_style);
         $annonce->setFuelType($data->fuel_type);
         $annonce->setTransmission($data->transmission);
         $annonce->setPrice(str_replace(' EUR', "", $data->price));
-        $annonce->setFeatures($data->features->feature);
+
+
+        if(isset($data->features->feature)){
+            $annonce->setFeatures($data->features->feature);
+        }
 
         $annonce->setAdress([
             'addr1' => $data->address->component[0],
@@ -127,14 +166,31 @@ class EasyXml
         $annonce->setLongitude($data->longitude);
         $annonce->setExteriorColor($data->exterior_color);
         $annonce->setStateOfVehicle($data->state_of_vehicle);
-        $annonce->setDealerId(str_replace('vobiz_', "", $data->dealer_id));
+
+
+
+
+//        $annonce->setDealer(str_replace('vobiz_', "", $data->dealer_id));
         $annonce->setDealerName($data->dealer_name);
         $annonce->setDealerPhone($data->dealer_phone);
         $annonce->setFbPageId($data->fb_page_id);
         $annonce->setDealerCommunicationChannel($data->dealer_communication_channel);
         $annonce->setDealerPrivacyPolicyUrl($data->dealer_privacy_policy_url);
 
+
+        if(!$dealer)
+        {
+            $dealer = new Dealer();
+            $dealer->setDealerId($data->getDealerId);
+            $dealer->setName($data->dealer_name);
+            $dealer->setPhone($data->dealer_phone);
+            $dealer->addAnnonce($annonce);
+
+        }
+
         $this->em->persist($annonce);
         $this->em->flush();
+
+        $this->newedAnnonce = $this->newedAnnonce + 1;
     }
 }

@@ -175,12 +175,14 @@
                                         <div style="font-family:Montserrat, Arial, Helvetica, sans-serif;font-size:1.2rem;line-height:1;text-align:left;color:#4B4B4B;">Informations de contact</div>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
-                                        <div style="font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:13px;line-height:1;text-align:left;color:#000000;">
-                                            Societe : {{ name }}</div>
-                                    </td>
-                                </tr>
+                                {% if name is defined%}
+                                    <tr>
+                                        <td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
+                                            <div style="font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:13px;line-height:1;text-align:left;color:#000000;">
+                                                Societe : {{ name }}</div>
+                                        </td>
+                                    </tr>
+                                {% endif %}
                                 <tr>
                                     <td align="left" style="font-size:0px;padding:10px 25px;word-break:break-word;">
                                         <div style="font-family:Ubuntu, Helvetica, Arial, sans-serif;font-size:13px;line-height:1;text-align:left;color:#000000;">

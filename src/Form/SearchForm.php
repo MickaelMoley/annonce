@@ -34,11 +34,11 @@ class SearchForm extends AbstractType
             ->add('make', ChoiceType::class, [
                 'required' => false,
                 'choices' => $options['makes'],
-                'choice_label' => function ($choice, $key, $value){
+                'choice_label' => function ($choice, $key, $value) {
                     return ucfirst($value);
 
                 },
-                'choice_value' => function ($value){
+                'choice_value' => function ($value) {
 
 
                     return strtolower($value);
@@ -46,22 +46,50 @@ class SearchForm extends AbstractType
                 },
                 'group_by' => null
             ])
-
             ->add('model', ChoiceType::class, [
                 'required' => false,
                 'choices' => $options['models'],
-                'choice_label' => function ($choice, $key, $value){
+                'choice_label' => function ($choice, $key, $value) {
                     return ucfirst($value);
 
                 },
-                'choice_value' => function ($value){
+                'choice_value' => function ($value) {
 
                     return strtolower($value);
 
                 },
                 'group_by' => null
             ])
+            ->add('fuelType', ChoiceType::class, [
+                'required' => false,
+                'choices' => [
+                    'Gasoline' => 'gasoline',
+                    'Diesel' => 'diesel',
+                    'Essence' => 'essence'
+                ]
+            ])
+            ->add('bodyStyle', ChoiceType::class, [
+                'required' => false,
+                'choices' => $options['bodyStyle'],
+                'choice_label' => function ($choice, $key, $value) {
+                    return ucfirst($value);
 
+                },
+                'choice_value' => function ($value) {
+
+                    return strtolower($value);
+
+                },
+                'group_by' => null
+            ])
+            ->add('transmission', ChoiceType::class, [
+                'required' => false,
+                'choices' => [
+                    ' ' => '',
+                    'Manuel' => 'manuel',
+                    'Automatique' => 'automatic'
+                ]
+            ])
             ->add('minPrice', NumberType::class, [
                 'label' => false,
                 'required' => false,
@@ -114,6 +142,7 @@ class SearchForm extends AbstractType
             'data_class' => SearchData::class,
             'makes' => null,
             'models' => null,
+            'bodyStyle' => null,
             'method' => 'GET',
             'csrf_protection' => false
         ]);

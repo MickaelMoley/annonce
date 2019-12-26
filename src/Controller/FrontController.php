@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Data\SearchData;
 use App\Entity\Annonce;
+use App\Entity\Contact;
+use App\Form\ContactType;
 use App\Form\SearchForm;
 use App\Repository\AnnonceRepository;
 use App\Services\EasyXml;
@@ -27,14 +29,18 @@ class FrontController extends AbstractController
      */
     public function index(Request $request, AnnonceRepository $annonceRepository): Response
     {
-
+        $makes = $annonceRepository->findMake();
+        $models = $annonceRepository->findModel();
 
         $data = new SearchData();
-        $data->current_page = $request->get('page', 1);
+        $data->current_page = $request->get('page', 1); /* Pour la gestion de la pagination*/
+        $data->limitPerPage = 4; /* Nombre d'annonces à afficher sur la page d'accueil*/
         $annonces = $annonceRepository->findSearch($data);
 
-        return $this->render('front/index.html.twig', [
-            'annonces' => $annonces
+        return $this->render("front/index.html.twig", [
+            'annonces' => $annonces,
+            'makes' => $makes,
+            'models' => $models
         ]);
     }
 
@@ -58,8 +64,9 @@ class FrontController extends AbstractController
         [$minYear, $maxYear] = $annonceRepository->findMinMaxYear($data);
         $makes = $annonceRepository->findMake();
         $models = $annonceRepository->findModel();
+        $bodyStyle = $annonceRepository->findBodyStyle();
 
-        $form = $this->createForm(SearchForm::class, $data, ['makes' => $makes, 'models' => $models]);
+        $form = $this->createForm(SearchForm::class, $data, ['makes' => $makes, 'models' => $models, 'bodyStyle' => $bodyStyle]);
 
         $form->handleRequest($request);
 
@@ -80,77 +87,92 @@ class FrontController extends AbstractController
     }
 
     /**
+     * Affiche une annonce et envoie un message en cas de submission du formulaire
      * @Route("/annonces/{slug}", name="annonce")
      * @param Annonce $annonce
      * @return Response
      */
-    public function showAnnonce(Annonce $annonce): Response
+    public function showAnnonce(Annonce $annonce, \Swift_Mailer $mailer, Request $request): Response
     {
+        $contact = new Contact();
+        $contact->setVehicleId($annonce->getVehicleId());
+        $form = $this->createForm(ContactType::class, $contact);
+        $form->handleRequest($request);
+        if($form->isSubmitted() && $form->isValid()){
 
-        return $this->render('front/annonce.html.twig', [
-            'annonce' => $annonce
-        ]);
-    }
+            $contact = $form->getData();
 
-    /**
-     * @Route("/deposer-une-annonce", name="deposer", methods={"POST", "GET"})
-     * @return Response
-     */
-    public function deposer(): Response
-    {
-
-        return $this->render("front/deposer.html.twig");
-    }
-
-    /**
-     * @Route("/receipt", name="demande", methods={"POST"})
-     * @param Request $request
-     * @param Swift_Mailer $mailer
-     * @return JsonResponse
-     */
-    public function contact(Request $request, Swift_Mailer $mailer)
-    {
-
-        if($request->isXmlHttpRequest()){
-
-            $name   =   $request->get('name');
-            $email  =   $request->get('email');
-            $tel    =   $request->get('tel');
-
-            $message    =   (new Swift_Message('Nouvelle demande : Déposer une annonce'))
+            $message    =   (new Swift_Message("Demande de contact n° réf véhicule : ".$annonce->getVehicleId()))
                 ->setFrom('contact@site.fr')
                 ->setTo('jeremy@vroomiz.fr')
                 ->setBody(
                     $this->renderView('email/email.html.twig', [
-                        'name'  => $name,
-                        'email' => $email,
-                        'tel'  => $tel
+                        'email'     => $contact->email,
+                        'tel'       => $contact->phone,
+                        'ref'       => $contact->vehicleId,
+                        'message'   => $contact->message
                     ]),
                     'text/html'
                 );
             $mailer->send($message);
 
             $this->addFlash('success', 'La demande de contact a bien été envoyée !');
-
-            return new JsonResponse([
-                'receipt' => true,
-                'info' => [
-                    'name'  => $name,
-                    'email' => $email,
-                    'tel'   => $tel]
-            ])
-            ;
         }
+
+        return $this->render('front/annonce.html.twig', [
+            'annonce' => $annonce,
+            'contact' => $form->createView()
+        ]);
     }
 
     /**
-     * Récupère la liste des annonces depuis un lien : default -> Vers Vroomiz
+     * @Route("/deposer-une-annonce", name="deposer", methods={"POST", "GET"})
+     * @param Request $request
+     * @param Swift_Mailer $mailer
+     * @return Response
+     */
+    public function deposerAnnonce(Request $request, \Swift_Mailer $mailer): Response
+    {
+        if($request->isXmlHttpRequest()){
+
+            $name       =   $request->get('name');
+            $email      =   $request->get('email');
+            $tel        =   $request->get('tel');
+
+            $ref        =   $request->get('ref') || null;
+            $message    =   $request->get('message') || null;
+
+            $message    =   (new Swift_Message($ref = null ? "Déposer une annonce" : "Demande de contact"))
+                ->setFrom('contact@site.fr')
+                ->setTo('jeremy@vroomiz.fr')
+                ->setBody(
+                    $this->renderView('email/email.html.twig', [
+                        'name'      => $name,
+                        'email'     => $email,
+                        'tel'       => $tel,
+                        'ref'       => $ref,
+                        'message'   => $message
+                    ]),
+                    'text/html'
+                );
+            $mailer->send($message);
+        }
+
+        return $this->render("front/deposer.html.twig");
+    }
+
+    /**
+     * Récupère la liste des annonces depuis un lien : default -> URL "https://www.vroomiz.fr/export/facebook/facebook.xml"
      * @Route("/fetch", name="fetch")
+     * @param EasyXml $myXml
+     * @return Response
      */
     public function fetchXML(EasyXml $myXml)
     {
-        $myXml->execute('https://www.vroomiz.fr/export/facebook/facebook.xml');
+        $myXml->execute('uploads/facebook.xml', false);
 
-        return $this->render('front/fetch.html.twig');
+        return $this->render('front/fetch.html.twig', [
+            'fetcher' => $myXml
+        ]);
     }
 }

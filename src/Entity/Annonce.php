@@ -463,7 +463,7 @@ class Annonce
 
     public function setSlug(string $slug): self
     {
-        $this->slug = strtolower(str_replace(" ", "-", $this->vehicle_id . " " . $this->title));
+        $this->slug = strtolower(str_replace("/","-",str_replace(" ", "-", $this->vehicle_id . " " . $this->title)));
 
         return $this;
     }

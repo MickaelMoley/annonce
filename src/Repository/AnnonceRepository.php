@@ -39,7 +39,15 @@ class AnnonceRepository extends ServiceEntityRepository
         if(!empty($searchData->q))
         {
             $query = $query
-                ->andWhere('p.title LIKE :q')
+                ->andWhere('p.title LIKE :q
+                 OR p.description LIKE :q 
+                 OR p.features LIKE :q 
+                 OR p.make LIKE :q 
+                 OR p.model LIKE :q 
+                 OR p.vehicle_id LIKE :q 
+                 OR p.year LIKE :q 
+                 OR p.adress LIKE :q 
+                 OR p.fuel_type LIKE :q')
                 ->setParameter('q', "%$searchData->q%");
         }
 
@@ -55,6 +63,27 @@ class AnnonceRepository extends ServiceEntityRepository
                 ->andWhere('p.model LIKE :model')
                 ->setParameter('model', "%$searchData->model%");
         }
+
+        if(!empty($searchData->bodyStyle))
+        {
+            $query = $query
+                ->andWhere('p.body_style LIKE :bodyStyle')
+                ->setParameter('bodyStyle', "%$searchData->bodyStyle%");
+        }
+
+        if(!empty($searchData->fuelType))
+        {
+            $query = $query
+                ->andWhere('p.fuel_type LIKE :fuelType')
+                ->setParameter('fuelType', "%$searchData->fuelType%");
+        }
+        if(!empty($searchData->transmission))
+        {
+            $query = $query
+                ->andWhere('p.transmission LIKE :transmission')
+                ->setParameter('transmission', "%$searchData->transmission%");
+        }
+
 
         if(!empty($searchData->minPrice) && $ignoreFilter === false)
         {
@@ -175,6 +204,31 @@ class AnnonceRepository extends ServiceEntityRepository
             foreach ($item as $model)
             {
                 array_push($re, $model);
+            }
+        }
+
+        return $re;
+    }
+
+    /**
+     * Récupère la liste unique des catégories de voitures
+     * @return integer[]
+     */
+    public function findBodyStyle(): array
+    {
+        $resultat = $this->createQueryBuilder('bs')
+            ->select('bs.body_style')
+            ->orderBy('bs.body_style', 'ASC')
+            ->distinct(true)
+            ->getQuery()
+            ->getArrayResult()
+        ;
+        $re = [];
+        foreach ($resultat as $item)
+        {
+            foreach ($item as $bodyStyle)
+            {
+                array_push($re, $bodyStyle);
             }
         }
 

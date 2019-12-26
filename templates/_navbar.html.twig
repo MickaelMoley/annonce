@@ -1,16 +1,20 @@
-<nav class="navbar navbar-light bg-white navbar-expand-md">
-    <div class="container"><a class="navbar-brand" href="#"><strong>Logo du site</strong></a>
-        <button data-toggle="collapse" class="navbar-toggler" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span
-                    class="navbar-toggler-icon"></span></button>
-        <div
-                class="collapse navbar-collapse" id="navcol-1">
-            <ul class="nav navbar-nav mx-auto">
-                <li class="nav-item" role="presentation"><a class="nav-link active"
-                                                            href="{{ path('home') }}">Accueil</a></li>
-                <li class="nav-item" role="presentation"><a class="nav-link" href="{{ path('annonces') }}">Recherche</a>
-                </li>
+<nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+    <div class="container-fluid px-md-4	">
+        <a class="navbar-brand" href="{{ path('home') }}">PubAuto</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav"
+                aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="oi oi-menu"></span> Menu
+        </button>
+
+        <div class="collapse navbar-collapse" id="ftco-nav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active"><a href="{{ path('home') }}" class="nav-link">Accueil</a></li>
+                <li class="nav-item"><a href="{{ path('annonces') }}" class="nav-link">Parcourir les annonces</a></li>
+                <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+                <li class="nav-item cta cta-colored"><a href="{{ path('deposer') }}" class="nav-link">Déposer une
+                        annonce</a></li>
+
             </ul>
-            <a href="{{ path('deposer') }}" class="btn btn-primary btn-blue" type="button">Deposer une annonce</a>
         </div>
     </div>
 </nav>

@@ -90,13 +90,10 @@
                                         </div>
                                     </form>
                                 </div>
-                                <div id="alert-container " class="col-12">
-
-                                </div>
                             </div>
                             <div class="d-flex justify-content-end align-items-end">
 
-                                <button id="statutBtn" class="btn btn-primary btn-next-form">Suivant</button>
+                                <button id="statutBtn" class="btn btn-main btn-next-form">Suivant</button>
                             </div>
                         </div>
                         <div id="information-part" class="content" role="tabpanel"
@@ -133,18 +130,19 @@
 
                             </div>
                             <div class="d-flex justify-content-between ">
-                                <button class="btn btn-primary" onclick="window.stepperForm.previous()">Précédent
+                                <button class="btn btn-outline-main" onclick="window.stepperForm.previous()">Précédent
                                 </button>
-                                <button class="btn btn-primary btn-next-form">Suivant</button>
+                                <button class="btn btn-main btn-next-form">Suivant</button>
                             </div>
                         </div>
                         <div id="finish-part" class="content" role="tabpanel" aria-labelledby="finish-part-trigger">
+                            <h5 id="wait-message">Demande en cours ...</h5>
                             <h5 class="text-center mt-2" id="finish-message">
                                 Votre demande a bien été pris en compte. ✔️ <br>
                                 <small>Nous allons traiter votre demande dans les plus bref délais.</small>
                             </h5>
                             <div class="d-flex justify-content-center ">
-                                <a href="index.html" class="btn btn-link text-primary btn-next-form">Retourner à la page
+                                <a href="{{ path('home') }}" class="btn btn-link text-primary btn-next-form">Retourner à la page
                                     d'accueil</a>
                             </div>
                         </div>
@@ -201,7 +199,7 @@
                             if (window.confirm('Avant de poursuivre, confirmez-vous ces informations ?')) {
                                 window.stepperForm.next();
                                 jQuery.ajax({
-                                    url: "{{ path('demande') }}",
+                                    url: "{{ path('deposer') }}",
                                     method: "post",
                                     data: {
                                         name: $("#formAnnonce").find('input[name="societe"]').val(),
@@ -210,6 +208,7 @@
                                     }
 
                                 }).done(function (data) {
+                                    $('#wait-message').hide(100);
                                     $('#finish-message').slideDown('200');
                                 });
 

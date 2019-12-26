@@ -36,6 +36,21 @@ class SearchData
     public $model;
 
     /**
+     * @var string
+     */
+    public $bodyStyle;
+
+    /**
+     * @var string
+     */
+    public $fuelType;
+
+    /**
+     * @var string
+     */
+    public $transmission;
+
+    /**
      * @var null|integer
      */
     public $minPrice;

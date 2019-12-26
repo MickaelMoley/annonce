@@ -4,45 +4,36 @@
 
 {% endblock %}
 {% block title %} Site d'annonces auto {% endblock %}
-{% block stylesheets%}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.0.3/nouislider.css">
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/css/nouislider.css') }}">
 {% endblock %}
 {% block body %}
 
-    <div class="wrapper">
-        <div class="d-none d-lg-block" id="path">
-            <div class="container">
-                <div class="row">
-                    <div class="col">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item"><a href="{{ path('home') }}"><span>Accueil</span></a></li>
-                            <li class="breadcrumb-item"><a
-                                        href="{{ path('annonces') }}"><span>Chercher une annonce</span></a></li>
-                            <li class="breadcrumb-item"><a href="#"
-                                                           class="text-info"><span>{{ annonces |length }}</span> <span>voitures trouvés</span></a>
-                            </li>
-                        </ol>
-                    </div>
+
+
+    <div class="hero-wrap hero-wrap-2" style="background-image: url({{ asset('assets/images/bg.jpg') }});background-position: 50% 85%;"
+         data-stellar-background-ratio="0.5">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row no-gutters slider-text align-items-end justify-content-start">
+                <div class="col-md-12 ftco-animate text-center mb-5">
+                    <p class="breadcrumbs mb-0"><span class="mr-3"><a href="index.html">Accueil <i
+                                        class="ion-ios-arrow-forward"></i></a></span> <span>Annonces</span></p>
+                    <h1 class="mb-3 bread">Trouver une annonce</h1>
                 </div>
             </div>
         </div>
-        <div class="bg-white d-block d-lg-none mb-3 sticky-top" id="setting-mobile">
-            <div class="container">
-                <div class="row">
-                    <div class="col p-2 d-flex align-items-center justify-content-between">
-                        <button class="btn btn-outline-primary btn-sm btn-round" id="showFilter">Filtre</button>
-                        <a href="#top" class="btn btn-outline-primary btn-sm btn-round"><i class="fas fa-arrow-up"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div id="content">
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm-12 col-md-12 col-lg-3 mb-3">
-                        <div class="border rounded-0 shadow-sm p-3 bg-white sticky-top" id="filtre">
+    </div>
+
+    <section class="ftco-section bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 sidebar">
+                    <div class="sidebar-box bg-white p-4 ftco-animate">
+                        <h3 class="heading-sidebar">Chercher par critères</h3>
+                        <div class="border-0 rounded-0 bg-white sticky-top js-filter" id="filtre">
                             <div class="d-lg-none mb-3 sticky-top bg-white">
-                                <button class="btn btn-primary btn-sm btn-round" id="closeFilter" type="button"><i
+                                <button class="btn btn-outline-main btn-sm btn-round" id="closeFilter" type="button"><i
                                             class="fas fa-chevron-left mr-3"></i>retour
                                 </button>
                             </div>
@@ -54,33 +45,47 @@
                             </div>
                             <div class="form-group">
                                 {{ form_label(form.make, "Recherche par marque") }}
+                                {{ form_errors(form.model) }}
                                 {{ form_widget(form.make) }}
                             </div>
                             <div class="form-group">
                                 {{ form_label(form.model, "Recherche par marque") }}
+                                {{ form_errors(form.model) }}
                                 {{ form_widget(form.model) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_label(form.bodyStyle, "Catégorie") }}
+                                {{ form_widget(form.bodyStyle) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_label(form.fuelType, "Carburant") }}
+                                {{ form_widget(form.fuelType) }}
+                            </div>
+                            <div class="form-group">
+                                {{ form_label(form.transmission, "Boîte de vitesse") }}
+                                {{ form_widget(form.transmission) }}
                             </div>
                             <div class="form-group">
                                 <label for="">Chercher par année</label>
                                 <div id="sliderYear" data-min="{{ minYear }}" data-max="{{ maxYear }}"></div>
                                 <div class="d-flex flex-row justify-content-between mt-3">
-                                    {{ form_widget(form.minYear, { 'attr': { 'class': ' mr-1', 'title': "Année minimum"}}) }}
-                                    {{ form_widget(form.maxYear, { 'attr': { 'class': ' ml-1', 'title': "Année maximun"}}) }}
+                                    {{ form_widget(form.minYear, { 'attr': { 'class': ' mr-1 w-50', 'title': "Année minimum"}}) }}
+                                    {{ form_widget(form.maxYear, { 'attr': { 'class': ' ml-1 w-50', 'title': "Année maximun"}}) }}
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="">Chercher par kilométrage</label>
                                 <div class="d-flex flex-row justify-content-between mt-3">
-                                    {{ form_widget(form.minKilometer, { 'attr': { 'class': ' mr-1', 'title': "Kilométrage minimum"}}) }}
-                                    {{ form_widget(form.maxKilometer, { 'attr': { 'class': ' ml-1', 'title': "KIlomètrage maximun"}}) }}
+                                    {{ form_widget(form.minKilometer, { 'attr': { 'class': ' mr-1 w-50', 'title': "Kilométrage minimum"}}) }}
+                                    {{ form_widget(form.maxKilometer, { 'attr': { 'class': ' ml-1 w-50', 'title': "KIlomètrage maximun"}}) }}
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="">Chercher par prix</label>
                                 <div id="sliderPrice" data-min="{{ minPrice }}" data-max="{{ maxPrice }}"></div>
                                 <div class="d-flex flex-row justify-content-between mt-3">
-                                    {{ form_widget(form.minPrice, { 'attr': { 'class': ' mr-1 ', 'title': "Année minimum" }}) }}
-                                    {{ form_widget(form.maxPrice, { 'attr': { 'class': ' ml-1', 'title': "Année maximun" }}) }}
+                                    {{ form_widget(form.minPrice, { 'attr': { 'class': ' mr-1 w-50', 'title': "Prix minimum" }}) }}
+                                    {{ form_widget(form.maxPrice, { 'attr': { 'class': ' ml-1 w-50', 'title': "Prix maximun" }}) }}
                                 </div>
                             </div>
                             <button type="submit" class="btn btn-primary btn-block"><i class="fas fa-search mr-2"></i>
@@ -89,59 +94,75 @@
 
                             {{ form_end(form) }}
 
-                            <button type="reset" id="resetForm" class="btn btn-link btn-block">Tout effacer</button>
+                            <button type="reset" id="resetForm" class="btn btn-pri btn-block">Tout effacer</button>
                         </div>
                     </div>
-                    <div class="col-md-12 col-lg-6">
-                        {% if annonces|length > 0 %}
-                            {% for annonce in annonces %}
-                                <article class="border rounded d-flex mb-3 shadow-sm--hover">
-                                    <div class="bg-dark d-flex justify-content-center py-1 px-1"><img
-                                                class="list-annonce-image"
-                                                src="{{ annonce.image[0].url[0] }}"
-                                                style="object-fit: cover;"
-                                                alt="Image de {{ annonce.make }} {{ annonce.model }}">
-                                    </div>
-                                    <div class="d-flex flex-column align-content-around bg-white py-2 px-2 w-100">
-                                        <a class="list-annonce-title"
-                                           href="{{ path('annonce', {'slug': annonce.slug }) }}"
-                                           title="Voir cette annonce : {{ annonce.make }} - {{ annonce.model }}"
-                                        >{{ annonce.title }}</a><span
-                                                class="text-info list-annonce-price mb-auto font-weight-bold">{{ annonce.price | number_format(0,'.','.') }} €</span>
-                                        <div class="mb-auto d-flex justify-content-between align-items-center"><a
-                                                    class="list-annonce-place" href="#"><i
-                                                        class="fas fa-map-marker-alt mr-2"></i>{{ annonce.adress.city }}
-                                            </a><a
-                                                    class="list-annonce-entity" href="#">{{ annonce.dealerId }}</a>
+                </div>
+                <div class="col-lg-8 pr-lg-4">
+                    <div class="row">
+                        <div class="col-md-12 ftco-animate">
+
+                            {% if annonces|length > 0 %}
+                                {% for annonce in annonces %}
+                                    <article class="annonce-post-item rounded d-flex mb-3 shadow-sm--hover">
+                                        <div class=" d-flex justify-content-center py-1 px-1">
+                                            <img class="list-annonce-image"
+                                                 src="{% if annonce.image[0].url is iterable %}{{ annonce.image[0].url[0] }}{% else %} {{ annonce.image[0].url }} {% endif %}"
+                                                 style="object-fit: cover;"
+                                                 alt="Image de {{ annonce.make }} {{ annonce.model }}">
                                         </div>
-                                        <p class="list-annonce-meta mb-auto d-flex justify-content-between"><span>
-                                                <i class="fas fa-road mr-2"></i>{{ annonce.mileage['value'] | number_format(0,'.',' ') }} km</span><span><i
-                                                        class="fas fa-cogs mr-2"></i>{{ annonce.transmission|capitalize }}</span><span
-                                                    class="d-none d-sm-block"><i
-                                                        class="fas fa-gas-pump mr-2"></i>{{ annonce.fuelType|capitalize }}</span><span
-                                                    class="d-none d-sm-block d-lg-none"><i
-                                                        class="fas fa-calendar-day mr-2"></i>{{ annonce.year }}</span>
-                                        </p>
-                                    </div>
-                                </article>
-                            {% endfor %}
+                                        <div class="d-flex flex-column align-content-around bg-white py-2 px-2 w-100 text-truncate">
+                                            <a class="list-annonce-title"
+                                               href="{{ path('annonce', {'slug': annonce.slug }) }}"
+                                               title="Voir cette annonce : {{ annonce.make }} - {{ annonce.model }}">{{ annonce.title }}</a><span
+                                                    class=" list-annonce-price mb-auto font-weight-bold">{{ annonce.price | number_format(0,'.','.') }} €</span>
+                                            <div class="mb-auto ">
+                                                <div class="row">
+                                                    <div class="col-6 text-truncate">
+                                                        <a class="list-annonce-place" href="#"><i
+                                                                    class="fas fa-map-marker-alt mr-2 text-main"></i>{{ annonce.adress.city|capitalize }}
+                                                        </a>
+                                                    </div>
+                                                    <div class="col-6 text-right text-truncate">
+                                                        <a class="list-annonce-entity"
+                                                           href="#">{{ annonce.dealerName|capitalize }}</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <p class="list-annonce-meta mb-auto d-flex justify-content-between"><span>
+											<i class="fas fa-road mr-2"></i>{{ annonce.mileage['value'] | number_format(0,'.',' ') }} km</span><span><i
+                                                            class="fas fa-cogs mr-2"></i>{{ annonce.transmission|capitalize }}</span><span
+                                                        class="d-none d-sm-block"><i
+                                                            class="fas fa-gas-pump mr-2"></i>{{ annonce.fuelType|capitalize }}</span><span
+                                                        class="d-none d-sm-block"><i
+                                                            class="fas fa-calendar-day mr-2"></i>{{ annonce.year }}</span>
+                                            </p>
+                                        </div>
+                                    </article>
+                                {% endfor %}
 
-                        {% else %}
-                            <div class="p-5 bg-gray d-flex justify-content-center align-items-center">
-                                <p><i class="fas fa-search mr-2"></i>Aucunes annonces ne correspond à vos critères.</p>
+                            {% else %}
+                                <div class="p-5 bg-gray d-flex justify-content-center align-items-center">
+                                    <p><i class="fas fa-search mr-2"></i>Aucunes annonces ne correspond à vos critères.
+                                    </p>
+                                </div>
+
+
+                            {% endif %}
+
+                        </div>
+                    </div>
+                    <div class="row mt-5">
+                        <div class="col text-center">
+                            <div id="pagination" class="mt-5 d-flex justify-content-center">
+                                {{ knp_pagination_render(annonces) }}
                             </div>
-
-
-                        {% endif %}
-
-                        <div id="pagination" class="mt-5 d-flex justify-content-center">
-                            {{ knp_pagination_render(annonces) }}
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 
 {% endblock %}
 
@@ -151,8 +172,7 @@
     <script>
         const sliderPrice = document.getElementById('sliderPrice');
 
-        if (sliderPrice)
-        {
+        if (sliderPrice) {
             minPrice = document.getElementById('minPrice');
             maxPrice = document.getElementById('maxPrice');
             const minValuePrice = Math.floor(parseInt(sliderPrice.dataset.min, 10) / 10) * 10;
@@ -169,11 +189,10 @@
 
             });
             rangePrice.on('slide', function (values, handle) {
-                if(handle === 0){
+                if (handle === 0) {
                     minPrice.value = Math.round(values[0]);
                 }
-                if(handle === 1)
-                {
+                if (handle === 1) {
                     maxPrice.value = Math.round(values[1]);
                 }
             })
@@ -182,8 +201,7 @@
 
         const sliderYear = document.getElementById('sliderYear');
 
-        if (sliderYear)
-        {
+        if (sliderYear) {
             minYear = document.getElementById('minYear');
             maxYear = document.getElementById('maxYear');
             const minValueYear = Math.floor(parseInt(sliderYear.dataset.min, 10) / 10) * 10;
@@ -200,11 +218,10 @@
 
             });
             rangeYear.on('slide', function (values, handle) {
-                if(handle === 0){
+                if (handle === 0) {
                     minYear.value = Math.round(values[0]);
                 }
-                if(handle === 1)
-                {
+                if (handle === 1) {
                     maxYear.value = Math.round(values[1]);
                 }
             })
@@ -216,8 +233,24 @@
         $reset.click(() => {
             $('form input, form select').each(function () {
                 $(this).val('');
+                document.reload();
             })
-        })
+        });
+
+
+
+
+
+
+
+    </script>
+
+    <script src="{{ asset('assets/js/Filter.js') }}"></script>
+    <script>
+
+        filter = new Filter( document.querySelector('.js-filter'));
+
+
     </script>
 
 {% endblock %}
