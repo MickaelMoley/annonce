@@ -109,6 +109,12 @@ class AnnonceRepository extends ServiceEntityRepository
                 ->andWhere('p.year <= :maxYear')
                 ->setParameter('maxYear', $searchData->maxYear);
         }
+        if(!empty($searchData->dealer_id))
+        {
+            $query = $query
+                ->andWhere('p.dealer_id = :dealerId')
+                ->setParameter('maxYear', $searchData->dealer_id);
+        }
 
         return $query;
     }
@@ -186,7 +192,7 @@ class AnnonceRepository extends ServiceEntityRepository
     }
 
     /**
-     * Récupère la liste unique des marques
+     * Récupère la liste unique des modèles
      * @return integer[]
      */
     public function findModel(): array
@@ -234,6 +240,38 @@ class AnnonceRepository extends ServiceEntityRepository
 
         return $re;
     }
+
+    /**
+     * @param $value
+     * @return array []
+     */
+    public function findModelByMake($make)
+    {
+        return $this->createQueryBuilder('a')
+            ->select('a.model')
+            ->setParameter(':make', $make)
+            ->where('a.make = :make')
+            ->distinct(true)
+            ->getQuery()
+            ->getArrayResult()
+            ;
+    }
+
+    /**
+     * @param $value
+     * @return array []
+     */
+    public function getAnnoncebyDealer($dealer)
+    {
+        return $this->createQueryBuilder('a')
+            ->setParameter(':dealer', $dealer)
+            ->where('a.dealer_id = :dealer')
+            ->distinct(true)
+            ->getQuery()
+            ->getArrayResult()
+            ;
+    }
+
 
 
 

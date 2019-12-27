@@ -102,7 +102,7 @@
                                                                 <div class="select-wrap">
                                                                     <div class="icon"><span
                                                                                 class="ion-ios-arrow-down"></span></div>
-                                                                    <select name="make" id="" class="form-control">
+                                                                    <select name="make" id="make-filter" class="form-control selectpicker" data-live-search="true">
                                                                         <option value="">Marque</option>
                                                                         {% if makes is defined and makes is not empty %}
                                                                             {% for make in makes %}
@@ -120,7 +120,7 @@
                                                                 <div class="select-wrap">
                                                                     <div class="icon">
                                                                         <span class="ion-ios-arrow-down"></span></div>
-                                                                    <select name="model" id="" class="form-control">
+                                                                    <select name="model" id="model-select" class="form-control">
                                                                         <option value="">Modèle</option>
                                                                         {% if models is defined and models is not empty %}
                                                                             {% for model in models %}
@@ -163,7 +163,7 @@
                                                                 <div class="select-wrap">
                                                                     <div class="icon"><span
                                                                                 class="ion-ios-arrow-down"></span></div>
-                                                                    <select name="" id="" class="form-control">
+                                                                    <select name="" id="model-select" class="form-control">
                                                                         <option value="">Category</option>
                                                                         <option value="">Full Time</option>
                                                                         <option value="">Part Time</option>
@@ -295,8 +295,23 @@
             },
         });
 
-        new Glide('.glide').mount()
-    </script>
 
+    </script>
+    <script>
+        $('#make-filter').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
+            $.post('{{ path('api_fetchModelByMake') }}', { make: this.value })
+                .done(function (data) {
+                    $('#model-select').empty();
+                    data.forEach((element) => {
+                        $('#model-select')
+                            .append(`<option value="${element.model.toLowerCase()}">${element.model}</option>`);
+                        console.log(element.model)
+                    });
+
+                })
+            ;
+        });
+
+    </script>
 
 {% endblock %}

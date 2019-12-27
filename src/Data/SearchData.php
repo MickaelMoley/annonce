@@ -79,6 +79,11 @@ class SearchData
      */
     public $maxKilometer;
 
+    /**
+     * @var string
+     */
+    public $dealer_id;
+
 
 
 }

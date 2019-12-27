@@ -34,7 +34,7 @@
 
         @media (min-width: 768px) {
             .gallery-top {
-                height: 350px;
+                height: 450px;
                 width: 100%;
             }
 
@@ -59,7 +59,7 @@
 
 {% block body %}
     <div class="hero-wrap hero-wrap-2"
-         style="background-image: url({{ asset('assets/images/bg.jpg') }});background-position: 50% 80%; height: 200px !important;"
+         style="background-image: url({{ asset('assets/images/bg.jpg') }});background-position: 50% 80%; height: 110px !important;"
          data-stellar-background-ratio="0.5">
         <div class="overlay"></div>
         <div class="container">
@@ -75,19 +75,43 @@
             </div>
         </div>
     </div>
-
-
-    <section class="ftco-section ftco-degree-bg">
+    <section>
         <div class="container">
             <div class="row">
-                <div class="col-md-8 ftco-animate">
+                <div class="col">
+                    <div class="row">
+                        <div class="col">
+                            <nav aria-label="breadcrumb" class="mt-4">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="{{ path('home') }}">Accueil</a></li>
+                                    <li class="breadcrumb-item"><a href="{{ path('annonces') }}">Annonces</a></li>
+                                    <li class="breadcrumb-item" aria-current="page"><a
+                                                href="{{ path('annonces', { 'make': annonce.make }) }}"
+                                                class="text-dark">{{ annonce.make }}</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page"><a
+                                                href="{{ path('annonces', { 'model': annonce.model }) }}"
+                                                class="text-dark">{{ annonce.model }}</a></li>
+                                </ol>
+                            </nav>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class=" ftco-degree-bg">
+        <div class="container">
+
+            <div class="row">
+                <div class="col-lg-8 ftco-animate">
                     {% for message in app.flashes('success') %}
                         <div class="alert alert-success">
                             {{ message }}
                         </div>
                     {% endfor %}
-
-                    <div class="swiper-container gallery-top pt-3" id="annonce-collection-image">
+                    <div class="swiper-container gallery-top" id="annonce-collection-image">
                         <div class="swiper-wrapper">{% if annonce.image[0].url is iterable %}
                                 {% for image in annonce.image %}
                                     <div class="swiper-slide"
@@ -122,56 +146,20 @@
                             {% endif %}
                         </div>
                     </div>
-                    <h2 class="mb-3">{{ annonce.title }}</h2>
+
+
+                    <h2 class="mb-3 font-weight-medium a-title">{{ annonce.title }}</h2>
+                    <p style="color: #2D3748;"><i
+                                class="fa fa-map-marker mr-2"></i>{% if annonce.adress is not empty %}{{ annonce.adress['city'] }}, {{ annonce.adress['postal_code'] }}{% else %} Non spécifié*{% endif %}
+                    </p>
                     <h4 class="text-primary">{% if annonce.price is not empty %} {{ annonce.price | number_format(2,'.',',') }} € {% else %} Le prix n'a pas été défini. Contacter le vendeur {% endif %} </h4>
-                    <hr>
-                    <h3>Caractéristiques</h3>
-                    <div class="row mt-3">
-                        <div class="col-12 col-lg-6">
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item d-flex justify-content-between">
-                                    <span class="text-dark"><i
-                                                class="fas fa-car-side mr-2"></i>Catégorie</span><span> {% if annonce.bodyStyle is not empty %} {{ annonce.bodyStyle|capitalize }} {% else %} Non spécifié* {% endif %} </span>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between"><span class="text-dark"><i
-                                                class="fas fa-car mr-2"></i>Marque</span><span
-                                            class="text-muted">{% if annonce.make is not empty %}{{ annonce.make|capitalize }}{% else %} Non spécifié*{% endif %}</span>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between"><span class="text-dark"><i
-                                                class="fas fa-car-alt mr-2"></i>Modèle</span><span>{% if annonce.model is not empty %}{{ annonce.model|capitalize }}{% else %} Non spécifié*{% endif %}</span>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between"><span class="text-dark"><i
-                                                class="fas fa-hashtag mr-2"></i>Référence</span><span>{{ annonce.vehicleId }}</span>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between">
-                                <span class="text-dark">
-                                    <i class="fas fa-calendar-day mr-2"></i>Mise en circulation&nbsp;</span><span>{% if annonce.year is not empty %}{{ annonce.year }}{% else %} Non spécifié*{% endif %}</span>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="col-12 col-lg-6">
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item d-flex justify-content-between"><span class="text-dark"><i
-                                                class="fas fa-gas-pump mr-2"></i>Carburant&nbsp;</span><span>{% if annonce.fuelType is not empty %}{{ annonce.fuelType|capitalize }}{% else %} Non spécifié*{% endif %}</span>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between"><span class="text-dark"><i
-                                                class="fas fa-road mr-2"></i>Kilométrage</span><span>{% if annonce.mileage['value'] is not empty %}{{ annonce.mileage['value'] | number_format(0,'',' ') }} km{% else %} Non spécifié*{% endif %}</span>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between"><span class="text-dark"><i
-                                                class="fas fa-cog mr-2"></i>Boîte</span><span>{% if annonce.transmission is not empty %}{{ annonce.transmission|capitalize }}{% else %} Non spécifié*{% endif %}</span>
-                                </li>
-                                <li class="list-group-item d-flex justify-content-between"><span class="text-dark"><i
-                                                class="fas fa-palette mr-2"></i>Couleur extérieur</span><span>{% if annonce.exteriorColor is not empty %}{{ annonce.exteriorColor }}{% else %} Non spécifié*{% endif %}</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
+
                     <hr>
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                         <li class="nav-item">
                             <a class="nav-link active" id="description-tab" data-toggle="tab" href="#description"
                                role="tab"
-                               aria-controls="description" aria-selected="true">Description</a>
+                               aria-controls="description" aria-selected="true">Caractéristiques</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" id="options-tab" data-toggle="tab" href="#options" role="tab"
@@ -179,74 +167,165 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" id="note-tab" data-toggle="tab" href="#note" role="tab"
-                               aria-controls="note" aria-selected="false">Note du vendeur</a>
+                               aria-controls="note" aria-selected="false">Note de vendeur</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="localisation-tab" data-toggle="tab" href="#localisation" role="tab"
+                               aria-controls="localisation" aria-selected="false">Localisation</a>
                         </li>
                     </ul>
                     <div class="tab-content" id="myTabContent">
                         <div class="tab-pane fade show active" id="description" role="tabpanel"
                              aria-labelledby="description-tab">
-
+                            <div class="row mt-3">
+                                <div class="col-12 col-lg-6">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item d-flex justify-content-between">
+                                    <span class="text-dark"><i
+                                                class="fas fa-car-side mr-2"></i>Catégorie</span><span> {% if annonce.bodyStyle is not empty %} {{ annonce.bodyStyle|capitalize }} {% else %} Non spécifié* {% endif %} </span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between"><span
+                                                    class="text-dark"><i
+                                                        class="fas fa-car mr-2"></i>Marque</span><span
+                                                    class="text-muted">{% if annonce.make is not empty %}{{ annonce.make|capitalize }}{% else %} Non spécifié*{% endif %}</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between"><span
+                                                    class="text-dark"><i
+                                                        class="fas fa-car-alt mr-2"></i>Modèle</span><span>{% if annonce.model is not empty %}{{ annonce.model|capitalize }}{% else %} Non spécifié*{% endif %}</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between"><span
+                                                    class="text-dark"><i
+                                                        class="fas fa-hashtag mr-2"></i>Référence</span><span>{{ annonce.vehicleId }}</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between">
+                                <span class="text-dark">
+                                    <i class="fas fa-calendar-day mr-2"></i>Mise en circulation&nbsp;</span><span>{% if annonce.year is not empty %}{{ annonce.year }}{% else %} Non spécifié*{% endif %}</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-12 col-lg-6">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item d-flex justify-content-between"><span
+                                                    class="text-dark"><i
+                                                        class="fas fa-gas-pump mr-2"></i>Carburant&nbsp;</span><span>{% if annonce.fuelType is not empty %}{{ annonce.fuelType|capitalize }}{% else %} Non spécifié*{% endif %}</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between"><span
+                                                    class="text-dark"><i
+                                                        class="fas fa-road mr-2"></i>Kilométrage</span><span>{% if annonce.mileage['value'] is not empty %}{{ annonce.mileage['value'] | number_format(0,'',' ') }} km{% else %} Non spécifié*{% endif %}</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between"><span
+                                                    class="text-dark"><i
+                                                        class="fas fa-cog mr-2"></i>Boîte</span><span>{% if annonce.transmission is not empty %}{{ annonce.transmission|capitalize }}{% else %} Non spécifié*{% endif %}</span>
+                                        </li>
+                                        <li class="list-group-item d-flex justify-content-between"><span
+                                                    class="text-dark"><i
+                                                        class="fas fa-palette mr-2"></i>Couleur extérieur</span><span>{% if annonce.exteriorColor is not empty %}{{ annonce.exteriorColor }}{% else %} Non spécifié*{% endif %}</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
                         <div class="tab-pane fade" id="options" role="tabpanel" aria-labelledby="options-tab">
                             <div class="row">
-                                {#
+
                                 {% set currentFeature = 0 %}
-                                 {% set limitPerColumn = annonce.features|length / 4 %}
+                                {% set limitPerColumn = annonce.features|length / 4 %}
+                                {% if limitPerColumn  < 10 %}
+                                    {% set limitPerColumn = annonce.features|length %}
+                                {% endif %}
+                                {% for feature in annonce.features %}
+                                    {% if currentFeature == 0 %}
 
-                                 {% for feature in annonce.features %}
-                                     {% if currentFeature == 0 %}
-                                         <div class="col-12 col-md-6 col-lg-6">
-                                         <ul class="list-unstyled text-dark p-3">
-                                     {% endif %}
-                                     <li><i class="fas fa-check mr-2"></i>{{ feature|capitalize }}</li>
-                                     {% set currentFeature = currentFeature + 1 %}
-                                     {% if currentFeature >= limitPerColumn %}
-                                         {% set currentFeature = 0 %}
-                                         </ul>
-                                         </div>
-                                     {% endif %}
+                                        <div class="col-12 col-md-6 col-lg-6">
+                                        <ul class="list-unstyled text-dark p-3">
 
-                                 {% endfor %}#}
+                                    {% endif %}
+
+                                    <li><i class="fas fa-check mr-2"></i>{{ feature|capitalize }}</li>
+
+                                    {% set currentFeature = currentFeature + 1 %}
+
+                                    {% if currentFeature >= limitPerColumn or  loop.index == annonce.features|length %}
+
+                                        {% set currentFeature = 0 %}
+
+                                        </ul>
+                                        </div>
+                                    {% endif %}
+
+                                {% endfor %}
 
                             </div>
                         </div>
-                        <div class="tab-pane fade p-3" id="note" role="tabpanel" aria-labelledby="note-tab">
+                        <div class="tab-pane fade p-3 text-dark" id="note" role="tabpanel" aria-labelledby="note-tab">
                             {{ annonce.description|raw }}
+                        </div>
+                        <div class="tab-pane fade p-3 text-dark" id="localisation" role="tabpanel"
+                             aria-labelledby="localisation-tab">
+                            <iframe
+                                    width="100%"
+                                    height="500px"
+                                    frameborder="0"
+                                    scrolling="no"
+                                    marginheight="0"
+                                    marginwidth="0"
+                                    src="https://maps.google.com/maps?q={{ annonce.latitude }},{{ annonce.longitude }}&hl=fr&z=14&amp;output=embed"
+                            >
+                            </iframe>
+                            <br/>
+                            <small>
+                                <a href="https://maps.google.com/maps?q={{ annonce.latitude }},{{ annonce.longitude }}&hl=fr;z=14&amp;output=embed"
+                                        style="color:#0000FF;text-align:left"
+                                        target="_blank">
+                                    Agrandir la carte
+                                </a>
+                            </small>
                         </div>
                     </div>
 
                 </div>
-                <div class="col-md-4 pl-md-5 sidebar ftco-animate">
+                <div class="col-lg-4 mt-lg-0 mt-5 sidebar ftco-animate border-1">
                     <div class="sidebar-box">
-                        <div class="media">
-                            <div class="media-body">
-                                <h5 class="mt-0">{{ annonce.dealerName }}</h5>
+                        <div class="card  shadow-sm" style="border: none;">
+                            <div class="card-header">
+                                <div class="media">
+                                    <div class="media-body">
+                                        <h5 class="mt-0">{{ annonce.dealerName }}</h5>
+                                        <h6 class="font-weight-medium"><a href="">{{ dealerAnnonce|length }} annonces en lignes</a></h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr class="mx-4">
+                            <div class="card-body">
+                                {{ form_start(contact) }}
+                                <div class="form-group">
+                                    {{ form_label(contact.email, "Adresse mail") }}
+                                    {{ form_errors(contact.email) }}
+                                    {{ form_widget(contact.email, { 'attr':{}}) }}
+                                    {{ form_help(contact.email) }}
+                                </div>
+                                <div class="form-group">
+                                    {{ form_label(contact.phone, "Téléphone") }}
+                                    {{ form_errors(contact.phone) }}
+                                    {{ form_widget(contact.phone, { 'attr':{}}) }}
+                                    {{ form_help(contact.phone) }}
+                                </div>
+                                <div class="form-group">
+                                    {{ form_label(contact.message, "Message") }}
+                                    {{ form_errors(contact.message) }}
+                                    {{ form_widget(contact.message, { 'attr':{'rows': 6, 'placeholder': "Bonjour, je suis intéressé par ce véhicule. Je souhaite prendre contact avec vous."}}) }}
+                                    {{ form_help(contact.message) }}
+                                </div>
+                                {{ form_rest(contact) }}
+                                <button type="submit" class="btn btn-block btn-primary" style="padding: 1rem 0.75rem"><i
+                                            class="fa fa-envelope mr-2"></i>Envoyer mon message
+                                </button>
+                                {{ form_end(contact) }}
                             </div>
                         </div>
+
                         <hr>
-                        {{ form_start(contact) }}
-                        <div class="form-group">
-                            {{ form_label(contact.email, "Adresse mail") }}
-                            {{ form_errors(contact.email) }}
-                            {{ form_widget(contact.email, { 'attr':{}}) }}
-                            {{ form_help(contact.email) }}
-                        </div>
-                        <div class="form-group">
-                            {{ form_label(contact.phone, "Téléphone") }}
-                            {{ form_errors(contact.phone) }}
-                            {{ form_widget(contact.phone, { 'attr':{}}) }}
-                            {{ form_help(contact.phone) }}
-                        </div>
-                        <div class="form-group">
-                            {{ form_label(contact.message, "Message") }}
-                            {{ form_errors(contact.message) }}
-                            {{ form_widget(contact.message, { 'attr':{'rows': 6, 'placeholder': "Bonjour, je suis intéressé par ce véhicule. Je souhaite prendre contact avec vous."}}) }}
-                            {{ form_help(contact.message) }}
-                        </div>
-                        {{ form_rest(contact) }}
-                        <button type="submit" class="btn btn-block btn-primary btn-lg"><i
-                                    class="fa fa-envelope mr-2"></i>Envoyer mon message
-                        </button>
+
                     </div>
 
                     <div class="sidebar-box ftco-animate">

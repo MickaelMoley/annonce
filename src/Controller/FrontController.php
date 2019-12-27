@@ -92,7 +92,7 @@ class FrontController extends AbstractController
      * @param Annonce $annonce
      * @return Response
      */
-    public function showAnnonce(Annonce $annonce, \Swift_Mailer $mailer, Request $request): Response
+    public function showAnnonce(Annonce $annonce, \Swift_Mailer $mailer, Request $request, AnnonceRepository $annonceRepository): Response
     {
         $contact = new Contact();
         $contact->setVehicleId($annonce->getVehicleId());
@@ -119,9 +119,12 @@ class FrontController extends AbstractController
             $this->addFlash('success', 'La demande de contact a bien été envoyée !');
         }
 
+        $numberAnnonce = $annonceRepository->getAnnoncebyDealer($annonce->getDealerId());
+
         return $this->render('front/annonce.html.twig', [
             'annonce' => $annonce,
-            'contact' => $form->createView()
+            'contact' => $form->createView(),
+            'dealerAnnonce' => $numberAnnonce
         ]);
     }
 
@@ -161,18 +164,49 @@ class FrontController extends AbstractController
         return $this->render("front/deposer.html.twig");
     }
 
+
     /**
-     * Récupère la liste des annonces depuis un lien : default -> URL "https://www.vroomiz.fr/export/facebook/facebook.xml"
-     * @Route("/fetch", name="fetch")
-     * @param EasyXml $myXml
+     * @Route("/dealer/{dealerId}", name="dealer_store")
+     * @param Request $request
+     * @param AnnonceRepository $annonceRepository
      * @return Response
      */
-    public function fetchXML(EasyXml $myXml)
-    {
-        $myXml->execute('uploads/facebook.xml', false);
 
-        return $this->render('front/fetch.html.twig', [
-            'fetcher' => $myXml
+    public function dealer(Request $request, AnnonceRepository $annonceRepository)
+    {
+
+        $data = new SearchData();
+        $data->current_page = $request->get('page', 1);
+
+        /**
+         * Construire le filtre par rapport à la base de donnée
+         */
+        [$minPrice, $maxPrice] = $annonceRepository->findMinMaxPrice($data);
+        [$minYear, $maxYear] = $annonceRepository->findMinMaxYear($data);
+        $makes = $annonceRepository->findMake();
+        $models = $annonceRepository->findModel();
+        $bodyStyle = $annonceRepository->findBodyStyle();
+
+        $form = $this->createForm(SearchForm::class, $data, ['makes' => $makes, 'models' => $models, 'bodyStyle' => $bodyStyle]);
+
+        $form->handleRequest($request);
+
+
+        $annonces = $annonceRepository->findSearch($data);
+
+
+        return $this->render('front/recherche.twig', [
+            'annonces' => $annonces,
+            'form' => $form->createView(),
+            'minPrice' => $minPrice,
+            'maxPrice' => $maxPrice,
+            'minYear' => $minYear,
+            'maxYear' => $maxYear,
+            'makes' => $makes,
+            'models' => $models
         ]);
     }
+
+
+
 }

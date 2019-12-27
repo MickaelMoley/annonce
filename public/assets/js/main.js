@@ -313,6 +313,8 @@
     fixedContentPos: false
   });
 
+  $('select').selectpicker();
+
 
 })(jQuery);
 
