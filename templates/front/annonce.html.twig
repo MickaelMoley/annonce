@@ -86,10 +86,10 @@
                                     <li class="breadcrumb-item"><a href="{{ path('home') }}">Accueil</a></li>
                                     <li class="breadcrumb-item"><a href="{{ path('annonces') }}">Annonces</a></li>
                                     <li class="breadcrumb-item" aria-current="page"><a
-                                                href="{{ path('annonces', { 'make': annonce.make }) }}"
+                                                href="{{ path('annonces', { 'make': annonce.make|lower }) }}"
                                                 class="text-dark">{{ annonce.make }}</a></li>
                                     <li class="breadcrumb-item active" aria-current="page"><a
-                                                href="{{ path('annonces', { 'model': annonce.model }) }}"
+                                                href="{{ path('annonces', { 'model': annonce.model|lower }) }}"
                                                 class="text-dark">{{ annonce.model }}</a></li>
                                 </ol>
                             </nav>
@@ -286,7 +286,7 @@
                 </div>
                 <div class="col-lg-4 mt-lg-0 mt-5 sidebar ftco-animate border-1">
                     <div class="sidebar-box">
-                        <div class="card  shadow-sm" style="border: none;">
+                        <div class="card  shadow-sm" style="border: none;border-top: 4px blue solid;">
                             <div class="card-header">
                                 <div class="media">
                                     <div class="media-body">
@@ -385,5 +385,20 @@
         });
 
 
+    </script>
+
+    <script>
+        $('#make-filter').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
+            $.post('{{ path('api_fetchModelByMake') }}', {make: this.value})
+                .done(function (data) {
+                    $('#model-select').empty();
+                    data.forEach((element) => {
+                        $('#model-select')
+                            .append(`<option value="${element.model.toLowerCase()}">${element.model}</option>`);
+                        console.log(element.model)
+                    });
+
+                })
+            ;
     </script>
 {% endblock %}

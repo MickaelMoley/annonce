@@ -60,7 +60,8 @@
     </style>
 {% endblock %}
 {% block body %}
-    <div class="hero-wrap img" style="background-image: url({{ asset('assets/images/bg.jpg') }});background-position:50% 90%">
+    <div class="hero-wrap img"
+         style="background-image: url({{ asset('assets/images/bg.jpg') }});background-position:50% 90%">
         <div class="overlay"></div>
         <div class="container">
             <div class="row d-md-flex no-gutters slider-text align-items-center justify-content-center">
@@ -102,7 +103,9 @@
                                                                 <div class="select-wrap">
                                                                     <div class="icon"><span
                                                                                 class="ion-ios-arrow-down"></span></div>
-                                                                    <select name="make" id="make-filter" class="form-control selectpicker" data-live-search="true">
+                                                                    <select name="make" id="make-filter"
+                                                                            class="form-control selectpicker"
+                                                                            data-live-search="true">
                                                                         <option value="">Marque</option>
                                                                         {% if makes is defined and makes is not empty %}
                                                                             {% for make in makes %}
@@ -120,7 +123,8 @@
                                                                 <div class="select-wrap">
                                                                     <div class="icon">
                                                                         <span class="ion-ios-arrow-down"></span></div>
-                                                                    <select name="model" id="model-select" class="form-control">
+                                                                    <select name="model" id="model-select"
+                                                                            class="form-control">
                                                                         <option value="">Modèle</option>
                                                                         {% if models is defined and models is not empty %}
                                                                             {% for model in models %}
@@ -136,60 +140,8 @@
                                                         <div class="form-group">
                                                             <div class="form-field">
                                                                 <button type="submit"
-                                                                        class="form-control btn btn-primary">Chercher</button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-
-                                        <div class="tab-pane fade" id="v-pills-2" role="tabpanel"
-                                             aria-labelledby="v-pills-performance-tab">
-                                            <form action="#" class="search-job">
-                                                <div class="row">
-                                                    <div class="col-md">
-                                                        <div class="form-group">
-                                                            <div class="form-field">
-                                                                <div class="icon"><span class="icon-user"></span></div>
-                                                                <input type="text" class="form-control"
-                                                                       placeholder="eg. Adam Scott">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md">
-                                                        <div class="form-group">
-                                                            <div class="form-field">
-                                                                <div class="select-wrap">
-                                                                    <div class="icon"><span
-                                                                                class="ion-ios-arrow-down"></span></div>
-                                                                    <select name="" id="model-select" class="form-control">
-                                                                        <option value="">Category</option>
-                                                                        <option value="">Full Time</option>
-                                                                        <option value="">Part Time</option>
-                                                                        <option value="">Freelance</option>
-                                                                        <option value="">Internship</option>
-                                                                        <option value="">Temporary</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md">
-                                                        <div class="form-group">
-                                                            <div class="form-field">
-                                                                <div class="icon"><span class="icon-map-marker"></span>
-                                                                </div>
-                                                                <input type="text" class="form-control"
-                                                                       placeholder="Location">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md">
-                                                        <div class="form-group">
-                                                            <div class="form-field">
-                                                                <button type="submit"
-                                                                        class="form-control btn btn-primary">Search</button>
+                                                                        class="form-control btn btn-primary">Chercher
+                                                                </button>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -253,12 +205,17 @@
                             {% for annonce in annonces %}
                                 <div class="col-12 col-md-12 col-lg-3 ftco-animate">
                                     <div class="card annonce-post-item border-0 d-flex flex-column">
-                                        <img src="{% if annonce.image[0].url is iterable %}{{ annonce.image[0].url[0] }}{% else %} {{ annonce.image[0].url }} {% endif %}" class="card-img-top" alt="Image de {{ annonce.make }} {{ annonce.model }}">
+                                        <img src="{% if annonce.image[0].url is iterable %}{{ annonce.image[0].url[0] }}{% else %} {{ annonce.image[0].url }} {% endif %}"
+                                             class="card-img-top" alt="Image de {{ annonce.make }} {{ annonce.model }}">
                                         <div class="card-body">
                                             <h5 class="card-title">{{ annonce.title }}</h5>
-                                            <h6 class="text-primary font-weight-bold card-subtitle">{{ annonce.price | number_format(0,'.','.') }} €</h6>
-                                            <p class="card-text"><i class="fas fa-map-marker-alt mr-2 text-main"></i> {{ annonce.adress.city|capitalize }} </p>
-                                            <a href="{{ path('annonce', {'slug': annonce.slug }) }}" class="btn btn-outline-primary">Voir l'annonce</a>
+                                            <h6 class="text-primary font-weight-bold card-subtitle">{{ annonce.price | number_format(0,'.','.') }}
+                                                €</h6>
+                                            <p class="card-text"><i
+                                                        class="fas fa-map-marker-alt mr-2 text-main"></i> {{ annonce.adress.city|capitalize }}
+                                            </p>
+                                            <a href="{{ path('annonce', {'slug': annonce.slug }) }}"
+                                               class="btn btn-outline-primary">Voir l'annonce</a>
                                         </div>
                                     </div>
                                 </div>
@@ -299,7 +256,7 @@
     </script>
     <script>
         $('#make-filter').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
-            $.post('{{ path('api_fetchModelByMake') }}', { make: this.value })
+            $.post('{{ path('api_fetchModelByMake') }}', {make: this.value})
                 .done(function (data) {
                     $('#model-select').empty();
                     data.forEach((element) => {

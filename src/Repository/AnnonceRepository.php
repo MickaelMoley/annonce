@@ -242,6 +242,31 @@ class AnnonceRepository extends ServiceEntityRepository
     }
 
     /**
+     * Récupère la liste unique des types de carburant
+     * @return integer[]
+     */
+    public function findCarburant(): array
+    {
+        $resultat = $this->createQueryBuilder('ft')
+            ->select('ft.fuel_type')
+            ->orderBy('ft.fuel_type', 'ASC')
+            ->distinct(true)
+            ->getQuery()
+            ->getArrayResult()
+        ;
+        $re = [];
+        foreach ($resultat as $item)
+        {
+            foreach ($item as $fuelType)
+            {
+                array_push($re, $fuelType);
+            }
+        }
+
+        return $re;
+    }
+
+    /**
      * @param $value
      * @return array []
      */

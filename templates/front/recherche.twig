@@ -46,12 +46,12 @@
                             <div class="form-group">
                                 {{ form_label(form.make, "Recherche par marque") }}
                                 {{ form_errors(form.model) }}
-                                {{ form_widget(form.make) }}
+                                {{ form_widget(form.make, {'attr': {'class': 'selectpicker'}}) }}
                             </div>
                             <div class="form-group">
                                 {{ form_label(form.model, "Recherche par marque") }}
                                 {{ form_errors(form.model) }}
-                                {{ form_widget(form.model) }}
+                                {{ form_widget(form.model, {'attr': {'class':'model-select'}}) }}
                             </div>
                             <div class="form-group">
                                 {{ form_label(form.bodyStyle, "Catégorie") }}
@@ -88,7 +88,7 @@
                                     {{ form_widget(form.maxPrice, { 'attr': { 'class': ' ml-1 w-50', 'title': "Prix maximun" }}) }}
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary btn-block"><i class="fas fa-search mr-2"></i>
+                            <button type="submit" class="btn btn-primary btn-block" style="padding: 1rem 0.75rem"><i class="fas fa-search mr-2"></i>
                                 Chercher
                             </button>
 
@@ -241,14 +241,6 @@
 
 
 
-
-
-    </script>
-
-    <script src="{{ asset('assets/js/Filter.js') }}"></script>
-    <script>
-
-        filter = new Filter( document.querySelector('.js-filter'));
 
 
     </script>

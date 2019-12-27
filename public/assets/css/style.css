@@ -14333,8 +14333,13 @@ textarea.form-control {
   }
 }
 
-.annonce-price {
-  font-size: .85rem
+.list-annonce-price {
+  font-size: .85rem;
+  color: #3182CE;
+
+}
+.list-annonce-title {
+  color: #1A202C;
 }
 
 
@@ -14343,7 +14348,7 @@ textarea.form-control {
 .list-annonce-place {
   font-size: .75rem !important;
   letter-spacing: 0;
-  color: var(--gray);
+  color: #4A5568;
 }
 
 @media (min-width: 768px) and (max-width: 991px) {
@@ -14430,12 +14435,12 @@ textarea.form-control {
     font-size: .85rem;
     letter-spacing: 0;
   }
-  
+
   .list-annonce-price {
     font-size: .75rem !important
   }
-  
-  
+
+
   .list-annonce-image {
     width: 8rem;
     min-width: 6rem;

@@ -82,6 +82,20 @@ class SearchForm extends AbstractType
                 },
                 'group_by' => null
             ])
+            ->add('fuelType', ChoiceType::class, [
+                'required' => false,
+                'choices' => $options['fuelType'],
+                'choice_label' => function ($choice, $key, $value) {
+                    return ucfirst($value);
+
+                },
+                'choice_value' => function ($value) {
+
+                    return strtolower($value);
+
+                },
+                'group_by' => null
+            ])
             ->add('transmission', ChoiceType::class, [
                 'required' => false,
                 'choices' => [
@@ -143,6 +157,7 @@ class SearchForm extends AbstractType
             'makes' => null,
             'models' => null,
             'bodyStyle' => null,
+            'fuelType' => null,
             'method' => 'GET',
             'csrf_protection' => false
         ]);

@@ -7,8 +7,8 @@ $white: #fff;
 $black: #000000;
 // $darken: #3a4348;
 
-$primary: #206dfb;
-$secondary: #fdab44;
+$primary: #3182CE;
+$secondary: #ffa92d;
 
 
 
@@ -2264,4 +2264,156 @@ textarea.form-control {
     stroke-dasharray: 89, 200;
     stroke-dashoffset: -136px;
   }
+}
+
+
+
+@media (min-width: 360px) {
+	.list-annonce-image {
+		width: 24rem;
+		height: auto;
+	}
+}
+
+.list-annonce-price {
+	font-size: .85rem;
+
+}
+
+
+.list-annonce-entity,
+.list-annonce-meta,
+.list-annonce-place {
+	font-size: .75rem !important;
+	letter-spacing: 0;
+	color: #4A5568;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+
+	.list-annonce-entity,
+	.list-annonce-meta,
+	.list-annonce-place {
+		font-size: 1rem !important;
+		letter-spacing: 0
+	}
+
+	.list-annonce-title {
+		font-size: 1.3rem !important;
+		letter-spacing: 0
+	}
+
+	.list-annonce-price {
+		font-size: 1.1rem !important
+	}
+
+	.list-annonce-image {
+		width: 192px;
+		height: auto
+	}
+
+	.annonce-price {
+		font-size: 1rem
+	}
+
+}
+
+@media (min-width: 576px) and (max-width: 767px) {
+
+	.list-annonce-entity,
+	.list-annonce-meta,
+	.list-annonce-place {
+		font-size: .85rem !important;
+		letter-spacing: 0
+	}
+
+	.list-annonce-title {
+		font-size: 1rem !important;
+		letter-spacing: 0
+	}
+
+	.list-annonce-price {
+		font-size: 1rem !important
+	}
+
+
+	.list-annonce-image {
+		width: 8rem;
+		min-width: 6rem;
+		height: 8rem;
+	}
+}
+
+@media (min-width: 992px) {
+	.list-annonce-image {
+		width: 200px;
+		height: auto
+	}
+
+	.list-annonce-entity,
+	.list-annonce-meta,
+	.list-annonce-place {
+		font-size: 0.95rem !important;
+		letter-spacing: 0
+	}
+
+	.list-annonce-title {
+		font-size: 1.2rem !important;
+		letter-spacing: 0
+	}
+
+	.list-annonce-price {
+		font-size: 1.1rem !important
+	}
+
+}
+
+@media (max-width: 575px){
+	.list-annonce-title {
+		font-size: .85rem;
+		letter-spacing: 0;
+	}
+
+	.list-annonce-price {
+		font-size: .75rem !important
+	}
+
+
+	.list-annonce-image {
+		width: 8rem;
+		min-width: 6rem;
+		height: 8rem;
+	}
+}
+
+.card-header{
+	background-color: transparent !important;
+	border-bottom: 0;
+}
+
+.category-title{
+	font-size: 1.5rem !important;
+}
+
+.nav-tabs .nav-link{
+	color: #718096;
+}
+
+.nav-tabs .nav-link {
+	border: 1px solid transparent;
+	border-top-left-radius: 0.25rem;
+	border-top-right-radius: 0.25rem;
+}
+
+.nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
+	color: #495057;
+	background-color: #fff;
+	border-color: #fff #fff #2D3748;
+}
+
+.breadcrumb{background-color: transparent}
+
+.a-title{
+	font-size: 1.5rem;
+	color:#1A202C;
 }

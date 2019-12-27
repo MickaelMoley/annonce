@@ -65,8 +65,9 @@ class FrontController extends AbstractController
         $makes = $annonceRepository->findMake();
         $models = $annonceRepository->findModel();
         $bodyStyle = $annonceRepository->findBodyStyle();
+        $fuelTypes = $annonceRepository->findCarburant();
 
-        $form = $this->createForm(SearchForm::class, $data, ['makes' => $makes, 'models' => $models, 'bodyStyle' => $bodyStyle]);
+        $form = $this->createForm(SearchForm::class, $data, ['makes' => $makes, 'models' => $models, 'bodyStyle' => $bodyStyle, 'fuelType' => $fuelTypes]);
 
         $form->handleRequest($request);
 
@@ -82,7 +83,8 @@ class FrontController extends AbstractController
             'minYear' => $minYear,
             'maxYear' => $maxYear,
             'makes' => $makes,
-            'models' => $models
+            'models' => $models,
+            'fuelType' => $fuelTypes
         ]);
     }
 
