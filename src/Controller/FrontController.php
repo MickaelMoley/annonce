@@ -8,12 +8,9 @@ use App\Entity\Contact;
 use App\Form\ContactType;
 use App\Form\SearchForm;
 use App\Repository\AnnonceRepository;
-use App\Services\EasyXml;
-use Doctrine\ORM\EntityManagerInterface;
 use Swift_Mailer;
 use Swift_Message;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -100,19 +97,19 @@ class FrontController extends AbstractController
         $contact->setVehicleId($annonce->getVehicleId());
         $form = $this->createForm(ContactType::class, $contact);
         $form->handleRequest($request);
-        if($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
 
             $contact = $form->getData();
 
-            $message    =   (new Swift_Message("Demande de contact n° réf véhicule : ".$annonce->getVehicleId()))
+            $message = (new Swift_Message("Demande de contact n° réf véhicule : " . $annonce->getVehicleId()))
                 ->setFrom('contact@site.fr')
                 ->setTo('jeremy@vroomiz.fr')
                 ->setBody(
                     $this->renderView('email/email.html.twig', [
-                        'email'     => $contact->email,
-                        'tel'       => $contact->phone,
-                        'ref'       => $contact->vehicleId,
-                        'message'   => $contact->message
+                        'email' => $contact->email,
+                        'tel' => $contact->phone,
+                        'ref' => $contact->vehicleId,
+                        'message' => $contact->message
                     ]),
                     'text/html'
                 );
@@ -120,13 +117,15 @@ class FrontController extends AbstractController
 
             $this->addFlash('success', 'La demande de contact a bien été envoyée !');
         }
+        $data = new SearchData();
+        $data->limitPerPage = 4;
 
-        $numberAnnonce = $annonceRepository->getAnnoncebyDealer($annonce->getDealerId());
+        $annonces = $annonceRepository->getAnnoncebyDealer($annonce->getDealerId());
 
         return $this->render('front/annonce.html.twig', [
             'annonce' => $annonce,
+            'annonces' => $annonces,
             'contact' => $form->createView(),
-            'dealerAnnonce' => $numberAnnonce
         ]);
     }
 
@@ -138,25 +137,25 @@ class FrontController extends AbstractController
      */
     public function deposerAnnonce(Request $request, \Swift_Mailer $mailer): Response
     {
-        if($request->isXmlHttpRequest()){
+        if ($request->isXmlHttpRequest()) {
 
-            $name       =   $request->get('name');
-            $email      =   $request->get('email');
-            $tel        =   $request->get('tel');
+            $name = $request->get('name');
+            $email = $request->get('email');
+            $tel = $request->get('tel');
 
-            $ref        =   $request->get('ref') || null;
-            $message    =   $request->get('message') || null;
+            $ref = $request->get('ref') || null;
+            $message = $request->get('message') || null;
 
-            $message    =   (new Swift_Message($ref = null ? "Déposer une annonce" : "Demande de contact"))
+            $message = (new Swift_Message($ref = null ? "Déposer une annonce" : "Demande de contact"))
                 ->setFrom('contact@site.fr')
                 ->setTo('jeremy@vroomiz.fr')
                 ->setBody(
                     $this->renderView('email/email.html.twig', [
-                        'name'      => $name,
-                        'email'     => $email,
-                        'tel'       => $tel,
-                        'ref'       => $ref,
-                        'message'   => $message
+                        'name' => $name,
+                        'email' => $email,
+                        'tel' => $tel,
+                        'ref' => $ref,
+                        'message' => $message
                     ]),
                     'text/html'
                 );
@@ -168,7 +167,7 @@ class FrontController extends AbstractController
 
 
     /**
-     * @Route("/dealer/{dealerId}", name="dealer_store")
+     * @Route("/dealer", name="dealer_store")
      * @param Request $request
      * @param AnnonceRepository $annonceRepository
      * @return Response
@@ -179,14 +178,20 @@ class FrontController extends AbstractController
 
         $data = new SearchData();
         $data->current_page = $request->get('page', 1);
+        $data->dealer_id = $request->get('dealer_id');
+
+        if (empty($data->dealer_id)) {
+            $this->addFlash("Une erreur s'est produite. Veuillez réessayer.");
+            return $this->redirectToRoute('annonces');
+        }
 
         /**
          * Construire le filtre par rapport à la base de donnée
          */
         [$minPrice, $maxPrice] = $annonceRepository->findMinMaxPrice($data);
         [$minYear, $maxYear] = $annonceRepository->findMinMaxYear($data);
-        $makes = $annonceRepository->findMake();
-        $models = $annonceRepository->findModel();
+        $makes = $annonceRepository->findMake($data->dealer_id);
+        $models = $annonceRepository->findModel($data->dealer_id);
         $bodyStyle = $annonceRepository->findBodyStyle();
 
         $form = $this->createForm(SearchForm::class, $data, ['makes' => $makes, 'models' => $models, 'bodyStyle' => $bodyStyle]);
@@ -197,7 +202,7 @@ class FrontController extends AbstractController
         $annonces = $annonceRepository->findSearch($data);
 
 
-        return $this->render('front/recherche.twig', [
+        return $this->render('front/dealer.twig', [
             'annonces' => $annonces,
             'form' => $form->createView(),
             'minPrice' => $minPrice,
@@ -208,7 +213,6 @@ class FrontController extends AbstractController
             'models' => $models
         ]);
     }
-
 
 
 }

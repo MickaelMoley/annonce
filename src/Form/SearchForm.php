@@ -5,17 +5,12 @@ namespace App\Form;
 
 
 use App\Data\SearchData;
-use App\Entity\Annonce;
-use App\Repository\AnnonceRepository;
-use function PHPSTORM_META\map;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SearchForm extends AbstractType
@@ -145,6 +140,10 @@ class SearchForm extends AbstractType
                 'attr' => [
                     'placeholder' => 'max'
                 ]
+            ])
+            ->add('dealer_id', HiddenType::class, [
+                'label' => false,
+                'required' => false,
             ]);
 
     }

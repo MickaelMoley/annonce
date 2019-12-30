@@ -11,9 +11,23 @@
 {% endblock %}
 
 {% block body %}
+    <div class="hero-wrap hero-wrap-2"
+         style="background-image: url({{ asset('assets/images/bg.jpg') }});background-position: 50% 85%;"
+         data-stellar-background-ratio="0.5">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row no-gutters slider-text align-items-end justify-content-start">
+                <div class="col-md-12 ftco-animate text-center mb-5">
+                    <p class="breadcrumbs mb-0"><span class="mr-3"><a href="index.html">Accueil <i
+                                        class="ion-ios-arrow-forward"></i></a></span> <span>Annonces</span></p>
+                    <h1 class="mb-3 bread">Deposer une annonce</h1>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="wrapper">
-        <section class="section">
+        <section class="ftco-section">
             <div class="container">
                 <h4 class="text-center">
                     Vous souhaitez déposer une annonce ?
@@ -22,9 +36,9 @@
                 <p class="text-center lead">Vous pouvez utiliser le formulaire
                     ci-dessous afin de compléter votre démarche.
                 </p>
-                <div class="alert alert-warning" role="alert">
+                <div class="alert alert-info" role="alert">
                     <div class="container">
-                        <strong>Attention!</strong> Vous devez représenter une société afin de poursuivre ces étapes.
+                        <strong>Info!</strong> Vous devez représenter une société afin de poursuivre ces étapes.
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
               <span aria-hidden="true">
                 <i class="now-ui-icons ui-1_simple-remove"></i>
@@ -34,13 +48,9 @@
                 </div>
                 <div id="annonceWizard" class="bs-stepper">
                     <div class="bs-stepper-header" role="tablist">
-                        <!-- your steps here -->
-
                         <div class="step" data-target="#statut-part">
                             <button type="button" class="step-trigger" role="tab" aria-controls="statut-part"
                                     id="statut-part-trigger">
-
-
                             </button>
                         </div>
 
@@ -49,27 +59,19 @@
                         <div class="step" data-target="#information-part">
                             <button type="button" class="step-trigger" role="tab" aria-controls="information-part"
                                     id="information-part-trigger">
-
-
                             </button>
                         </div>
-
                         <div class="line"></div>
-
                         <div class="step" data-target="#finish-part">
                             <button type="button" class="step-trigger" role="tab" aria-controls="finish-part"
                                     id="finish-part-trigger">
-
-
                             </button>
                         </div>
 
 
                     </div>
                     <div class="bs-stepper-content">
-                        <!-- your steps content here -->
                         <div id="statut-part" class="content" role="tabpanel" aria-labelledby="statut-part-trigger">
-
                             <h5 class="text-center mt-2">
                                 Votre status
                             </h5>
@@ -138,7 +140,7 @@
                         <div id="finish-part" class="content" role="tabpanel" aria-labelledby="finish-part-trigger">
                             <h5 id="wait-message">Demande en cours ...</h5>
                             <h5 class="text-center mt-2" id="finish-message">
-                                Votre demande a bien été pris en compte. ✔️ <br>
+                                Nous avons bien réceptionner votre demande. ✔️ <br>
                                 <small>Nous allons traiter votre demande dans les plus bref délais.</small>
                             </h5>
                             <div class="d-flex justify-content-center ">
@@ -155,7 +157,7 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/bs-stepper/dist/js/bs-stepper.min.js"></script>
     <script>
 
@@ -174,7 +176,7 @@
             });
 
             var btnNextList = [].slice.call(document.querySelectorAll('.btn-next-form'));
-            var formList = [].slice.call(stepperFormEl.querySelectorAll('.formAnnonce'));
+            var form = $('#formAnnonce');
 
             btnNextList.forEach(function (btn) {
                 btn.addEventListener('click', function () {
@@ -190,7 +192,7 @@
                             break;
                         // Vérification de la deuxième étape
                         case 1:
-                            var valid = $('#formAnnonce').valid();
+                            var valid = form.valid();
 
                             if (!valid) {
                                 window.$validator.focusInvalid();
@@ -202,9 +204,9 @@
                                     url: "{{ path('deposer') }}",
                                     method: "post",
                                     data: {
-                                        name: $("#formAnnonce").find('input[name="societe"]').val(),
-                                        email: $("#formAnnonce").find('input[name="email"]').val(),
-                                        tel: $("#formAnnonce").find('input[name="tel"]').val()
+                                        name:form.find('input[name="societe"]').val(),
+                                        email: form.find('input[name="email"]').val(),
+                                        tel: form.find('input[name="tel"]').val()
                                     }
 
                                 }).done(function (data) {

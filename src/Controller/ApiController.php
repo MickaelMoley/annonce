@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Data\SearchData;
 use App\Repository\AnnonceRepository;
 use App\Services\EasyXml;
+use PhpParser\Node\Expr\Array_;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,10 +22,12 @@ class ApiController extends AbstractController
 
         if($request->isXmlHttpRequest())
         {
-            $data = $request->get('make');
+            $data = [];
+            $data['make']= $request->get('make');
+            $data['dealerId'] = $request->get('dealer_id') || "";
             $annonce = null;
             if(!empty($data)){
-                $annonce = $annonceRepository->findModelByMake($data);
+                $annonce = $annonceRepository->findModelByMake($data['make'], $data['dealerId']);
             }
             else{
                 $annonce = $annonceRepository->findModel();

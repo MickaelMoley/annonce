@@ -113,7 +113,7 @@ class AnnonceRepository extends ServiceEntityRepository
         {
             $query = $query
                 ->andWhere('p.dealer_id = :dealerId')
-                ->setParameter('maxYear', $searchData->dealer_id);
+                ->setParameter('dealerId', $searchData->dealer_id);
         }
 
         return $query;
@@ -170,10 +170,12 @@ class AnnonceRepository extends ServiceEntityRepository
      * Récupère la liste unique des marques
      * @return integer[]
      */
-    public function findMake(): array
+    public function findMake($dealer = ""): array
     {
         $resultat = $this->createQueryBuilder('ma')
             ->select('ma.make')
+            ->setParameter(':dealerId', $dealer)
+            ->andwhere('ma.dealer_id = :dealerId')
             ->orderBy('ma.make', 'ASC')
             ->distinct(true)
             ->getQuery()
@@ -195,10 +197,12 @@ class AnnonceRepository extends ServiceEntityRepository
      * Récupère la liste unique des modèles
      * @return integer[]
      */
-    public function findModel(): array
+    public function findModel($dealer = ""): array
     {
         $resultat = $this->createQueryBuilder('mo')
             ->select('mo.model')
+            ->setParameter(':dealerId', $dealer)
+            ->andwhere('mo.dealer_id = :dealerId')
             ->orderBy('mo.model', 'ASC')
             ->distinct(true)
             ->getQuery()
@@ -270,12 +274,13 @@ class AnnonceRepository extends ServiceEntityRepository
      * @param $value
      * @return array []
      */
-    public function findModelByMake($make)
+    public function findModelByMake($make, $dealer = null)
     {
         return $this->createQueryBuilder('a')
             ->select('a.model')
             ->setParameter(':make', $make)
-            ->where('a.make = :make')
+            ->setParameter(':dealerId', $dealer)
+            ->where('a.make = :make and a.dealer_id = :dealerId')
             ->distinct(true)
             ->getQuery()
             ->getArrayResult()

@@ -11,7 +11,8 @@
 
 
 
-    <div class="hero-wrap hero-wrap-2" style="background-image: url({{ asset('assets/images/bg.jpg') }});background-position: 50% 85%;"
+    <div class="hero-wrap hero-wrap-2"
+         style="background-image: url({{ asset('assets/images/bg.jpg') }});background-position: 50% 85%;"
          data-stellar-background-ratio="0.5">
         <div class="overlay"></div>
         <div class="container">
@@ -25,13 +26,32 @@
         </div>
     </div>
 
-    <section class="ftco-section bg-light">
+    <div class="d-flex justify-content-between mt-3 p-3">
+        <button class="btn btn-outline-dark btn-round d-lg-none" id="showFilter">
+            Filtre
+        </button>
+
+        <div class="dropdown">
+            <button class="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenuButton"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Trier par
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="#">+ récentsZ</a>
+                <a class="dropdown-item" href="#">Another action</a>
+                <a class="dropdown-item" href="#">Something else here</a>
+            </div>
+        </div>
+    </div>
+    <section class="ftco-section" style="background: hsla(0, 0%, 98%, 1) !important;">
         <div class="container">
             <div class="row">
                 <div class="col-lg-4 sidebar">
-                    <div class="sidebar-box bg-white p-4 ftco-animate">
-                        <h3 class="heading-sidebar">Chercher par critères</h3>
-                        <div class="border-0 rounded-0 bg-white sticky-top js-filter" id="filtre">
+                    <div id="filtre" class="sidebar-box bg-white p-4 ftco-animate modal"
+                         style="border-top: 4px #206dfb solid;border-top-right-radius: 4px;border-top-left-radius: 4px;">
+
+                        <div class="border-0 rounded-0 bg-white sticky-top js-filter pt-5 pt-lg-0">
+                            <h3 class="heading-sidebar mt-5 mt-lg-0">Chercher par critères</h3>
                             <div class="d-lg-none mb-3 sticky-top bg-white">
                                 <button class="btn btn-outline-main btn-sm btn-round" id="closeFilter" type="button"><i
                                             class="fas fa-chevron-left mr-3"></i>retour
@@ -46,12 +66,12 @@
                             <div class="form-group">
                                 {{ form_label(form.make, "Recherche par marque") }}
                                 {{ form_errors(form.model) }}
-                                {{ form_widget(form.make, {'attr': {'class': 'selectpicker'}}) }}
+                                {{ form_widget(form.make, {'attr': {'class': 'selectpicker ', 'id': 'make-filter', 'data-live-search': true}}) }}
                             </div>
                             <div class="form-group">
                                 {{ form_label(form.model, "Recherche par marque") }}
                                 {{ form_errors(form.model) }}
-                                {{ form_widget(form.model, {'attr': {'class':'model-select'}}) }}
+                                {{ form_widget(form.model, {'attr': {'id':'model-select'}}) }}
                             </div>
                             <div class="form-group">
                                 {{ form_label(form.bodyStyle, "Catégorie") }}
@@ -88,7 +108,8 @@
                                     {{ form_widget(form.maxPrice, { 'attr': { 'class': ' ml-1 w-50', 'title': "Prix maximun" }}) }}
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary btn-block" style="padding: 1rem 0.75rem"><i class="fas fa-search mr-2"></i>
+                            <button type="submit" class="btn btn-primary btn-block" style="padding: 1rem 0.75rem"><i
+                                        class="fas fa-search mr-2"></i>
                                 Chercher
                             </button>
 
@@ -125,7 +146,7 @@
                                                     </div>
                                                     <div class="col-6 text-right text-truncate">
                                                         <a class="list-annonce-entity"
-                                                           href="#">{{ annonce.dealerName|capitalize }}</a>
+                                                           href="{{ path('dealer_store', { 'dealer_id' : annonce.dealerId }) }}">{{ annonce.dealerName|capitalize }}</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -170,6 +191,29 @@
     {{ parent() }}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.0.3/nouislider.js"></script>
     <script>
+
+
+        $(document).ready(() => {
+
+            checkIfMobile($(window).width());
+        });
+
+        $(window).resize(() => {
+            checkIfMobile($(this).width())
+        });
+
+        function checkIfMobile(windowWidth) {
+
+            if (windowWidth >= 992) {
+                console.log('oui')
+                $('#filtre').removeClass('modal');
+            } else {
+                console.log('laa')
+                $('#filtre').addClass('modal');
+            }
+        }
+
+
         const sliderPrice = document.getElementById('sliderPrice');
 
         if (sliderPrice) {
@@ -237,12 +281,46 @@
             })
         });
 
+        /*
+        * Récupèrer la liste des modèles d'une marque lorsqu'on fait une recherche et récupère une recherche
+        * */
+        fetchModelByMake($('#make').val());
+
+        $('#make').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
+            fetchModelByMake(this.value);
+        });
+
+        function fetchModelByMake(value) {
+            $.post('{{ path('api_fetchModelByMake') }}', {make: value, dealer_id: ""})
+                .done(function (data) {
+                    $('#model').empty();
+                    data.forEach((element) => {
+                        $('#model')
+                            .append(`<option value="${element.model.toLowerCase()}">${element.model}</option>`);
+                        console.log(element.model)
+                    });
+
+                })
+            ;
+        }
+
+        var modal = $('#filtre');
+
+        var openModal = $('#showFilter');
+
+        var closeModal = $('#closeFilter');
+
+        openModal.click(() => {
+            modal.show();
+        });
 
 
-
-
+        closeModal.click(() => {
+            modal.hide();
+        });
 
 
     </script>
+
 
 {% endblock %}
