@@ -14409,7 +14409,7 @@ textarea.form-control {
 @media (min-width: 992px) {
   .list-annonce-image {
     width: 200px;
-    height: auto
+    height: 8rem;
   }
 
   .list-annonce-entity,
@@ -14533,4 +14533,33 @@ textarea.form-control {
 
 .btn-round{
   border-radius: 25px;
+}
+
+.form-control{
+  display: block;
+  width: 100%;
+  height: calc(1.95rem + 1.2rem + .0625rem);
+  padding: .6rem .75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #869ab8;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: .0625rem solid #e9ecef;
+  border-radius: .125rem;
+  box-shadow: 0 4px 30px rgba(0,0,0,.05);
+  transition: all .3s ease-in-out;
+}
+
+.font-weight-medium{
+  font-weight: 600;
+}
+
+.list-group-item{
+  border: none;
+}
+
+.bg-gray{
+  background: #f8f9fa !important;
 }

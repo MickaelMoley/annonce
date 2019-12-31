@@ -47,7 +47,8 @@ class AnnonceRepository extends ServiceEntityRepository
                  OR p.vehicle_id LIKE :q 
                  OR p.year LIKE :q 
                  OR p.adress LIKE :q 
-                 OR p.fuel_type LIKE :q')
+                 OR p.fuel_type LIKE :q
+                 OR p.dealerName LIKE :q')
                 ->setParameter('q', "%$searchData->q%");
         }
 
@@ -77,11 +78,27 @@ class AnnonceRepository extends ServiceEntityRepository
                 ->andWhere('p.fuel_type LIKE :fuelType')
                 ->setParameter('fuelType', "%$searchData->fuelType%");
         }
+
+        if(!empty($searchData->minKilometer) && $ignoreFilter === false)
+        {
+            $query = $query
+                ->andWhere('p.mileage >= :minKilometer')
+                ->setParameter('minKilometer', $searchData->minKilometer);
+
+        }
+        if(!empty($searchData->maxKilometer) && $ignoreFilter === false)
+        {
+            $query = $query
+                ->andWhere('p.mileage <= :maxKilometer')
+                ->setParameter('maxKilometer', $searchData->maxKilometer);
+        }
+
         if(!empty($searchData->transmission))
         {
             $query = $query
                 ->andWhere('p.transmission LIKE :transmission')
                 ->setParameter('transmission', "%$searchData->transmission%");
+
         }
 
 
@@ -130,6 +147,7 @@ class AnnonceRepository extends ServiceEntityRepository
 
         $query = $this->getSearchQuery($searchData)->getQuery();
 
+
         return $this->paginator->paginate(
             $query,
             $searchData->current_page,
@@ -139,18 +157,38 @@ class AnnonceRepository extends ServiceEntityRepository
 
     /**
      * Récupère le prix minimun et maximum parmis la liste des annonces
+     * @param SearchData $searchData
      * @return integer[]
      */
     public function findMinMaxPrice(SearchData $searchData): array
     {
-        $resultat = $this->getSearchQuery($searchData, true)
+        $result = $this->getSearchQuery($searchData, true)
             ->select('MIN(p.price) as min', 'MAX(p.price) as max')
             ->getQuery()
             ->getScalarResult();
 
 
-        return [$resultat[0]['min'], $resultat[0]['max']];
+
+        return [$result[0]['min'], $result[0]['max']];
     }
+
+    /**
+     * Récupère le kilometre minimun et maximum parmis la liste des annonces
+     * @param SearchData $searchData
+     * @return integer[]
+     */
+    public function findMinMaxKilometer(SearchData $searchData): array
+    {
+        $result = $this->getSearchQuery($searchData, true)
+            ->select('MIN(p.mileage) as min', 'MAX(p.mileage) as max')
+            ->getQuery()
+            ->getScalarResult();
+
+        dump($result);
+
+        return [$result[0]['min'], $result[0]['max']];
+    }
+
 
     /**
      * Récupère le date minimun et maximum parmis la liste des annonces
@@ -278,6 +316,27 @@ class AnnonceRepository extends ServiceEntityRepository
             foreach ($item as $fuelType)
             {
                 array_push($re, $fuelType);
+            }
+        }
+
+        return $re;
+    }
+
+    public function findTransmission(): array
+    {
+        $result = $this->createQueryBuilder('t')
+            ->select('t.transmission')
+            ->orderBy('t.transmission', 'ASC')
+            ->distinct(true)
+            ->getQuery()
+            ->getArrayResult()
+        ;
+        $re = [];
+        foreach ($result as $item)
+        {
+            foreach ($item as $transmission)
+            {
+                array_push($re, $transmission);
             }
         }
 

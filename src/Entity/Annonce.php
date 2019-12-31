@@ -57,9 +57,9 @@ class Annonce
     private $year;
 
     /**
-     * @ORM\Column(type="json")
+     * @ORM\Column(type="string")
      */
-    private $mileage = [];
+    private $mileage;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -252,12 +252,12 @@ class Annonce
         return $this;
     }
 
-    public function getMileage(): ?array
+    public function getMileage(): ?string
     {
         return $this->mileage;
     }
 
-    public function setMileage(array $mileage): self
+    public function setMileage(string $mileage): self
     {
         $this->mileage = $mileage;
 

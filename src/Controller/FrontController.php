@@ -58,25 +58,36 @@ class FrontController extends AbstractController
          * Construire le filtre par rapport à la base de donnée
          */
         [$minPrice, $maxPrice] = $annonceRepository->findMinMaxPrice($data);
+        [$minKilometer, $maxKilometer] = $annonceRepository->findMinMaxKilometer($data);
         [$minYear, $maxYear] = $annonceRepository->findMinMaxYear($data);
         $makes = $annonceRepository->findMake();
         $models = $annonceRepository->findModel();
         $bodyStyle = $annonceRepository->findBodyStyle();
         $fuelTypes = $annonceRepository->findCarburant();
 
-        $form = $this->createForm(SearchForm::class, $data, ['makes' => $makes, 'models' => $models, 'bodyStyle' => $bodyStyle, 'fuelType' => $fuelTypes]);
+        $transmission = $annonceRepository->findTransmission();
+
+        $form = $this->createForm(SearchForm::class, $data, [
+            'makes' => $makes,
+            'models' => $models,
+            'bodyStyle' => $bodyStyle,
+            'fuelType' => $fuelTypes,
+            'transmission' => $transmission
+        ])
+        ;
 
         $form->handleRequest($request);
 
 
         $annonces = $annonceRepository->findSearch($data);
 
-
         return $this->render('front/recherche.twig', [
             'annonces' => $annonces,
             'form' => $form->createView(),
             'minPrice' => $minPrice,
             'maxPrice' => $maxPrice,
+            'minKilometer' => $minKilometer,
+            'maxKilometer' => $maxKilometer,
             'minYear' => $minYear,
             'maxYear' => $maxYear,
             'makes' => $makes,
@@ -120,7 +131,7 @@ class FrontController extends AbstractController
         $data = new SearchData();
         $data->limitPerPage = 4;
 
-        $annonces = $annonceRepository->findBy(['dealer_id' => $annonce->getDealerId()]);
+        $annonces = $annonceRepository->findSearch($data);
 
         return $this->render('front/annonce.html.twig', [
             'annonce' => $annonce,
@@ -194,7 +205,21 @@ class FrontController extends AbstractController
         $models = $annonceRepository->findModel($data->dealer_id);
         $bodyStyle = $annonceRepository->findBodyStyle();
 
-        $form = $this->createForm(SearchForm::class, $data, ['makes' => $makes, 'models' => $models, 'bodyStyle' => $bodyStyle]);
+        $fuelTypes = $annonceRepository->findCarburant();
+        $transmission = $annonceRepository->findTransmission();
+
+
+
+
+
+        $form = $this->createForm(SearchForm::class, $data, [
+            'makes' => $makes,
+            'models' => $models,
+            'bodyStyle' => $bodyStyle,
+            'fuelType' => $fuelTypes,
+            'transmission' => $transmission
+        ])
+        ;
 
         $form->handleRequest($request);
 

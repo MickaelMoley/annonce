@@ -84,6 +84,4 @@ class SearchData
      */
     public $dealer_id;
 
-
-
 }

@@ -76,7 +76,7 @@ class EasyXml
         $annonce->setModel($updateAnnonce->model);
         $annonce->setImage($updateAnnonce->image);
         $annonce->setYear($updateAnnonce->year);
-        $annonce->setMileage(['value' => $updateAnnonce->mileage->value, 'unit' => $updateAnnonce->mileage->unit]);
+        $annonce->setMileage($updateAnnonce->mileage->value);
         $annonce->setDrivetrain($updateAnnonce->drivetrain);
 
         if(is_string($updateAnnonce->vehicle_registration_plate))
@@ -93,6 +93,9 @@ class EasyXml
             $annonce->setFeatures($updateAnnonce->features->feature);
         }
 
+        $annonce->setDealerId(str_replace('vobiz_', "", $updateAnnonce->dealer_id));
+        $annonce->setDealerName($updateAnnonce->dealer_name);
+        $annonce->setDealerPhone($updateAnnonce->dealer_phone);
 
         $annonce->setAdress([
             'addr1' => $updateAnnonce->address->component[0],
@@ -118,11 +121,8 @@ class EasyXml
         $this->updatedAnnonce += 1;
     }
 
-    private function newAnnonce($data, DealerRepository $dealerRepository)
+    private function newAnnonce($data)
     {
-        $dealer = $dealerRepository->findOneBy(['dealer_id' => $data->getDealerId]);
-
-
 
         $annonce = new Annonce();
         $annonce->setVehicleId($data->vehicle_id);
@@ -134,7 +134,7 @@ class EasyXml
         $annonce->setModel($data->model);
         $annonce->setImage($data->image);
         $annonce->setYear($data->year);
-        $annonce->setMileage(['value' => $data->mileage->value, 'unit' => $data->mileage->unit]);
+        $annonce->setMileage($data->mileage->value);
         $annonce->setDrivetrain($data->drivetrain);
 
         if(!is_string($data->vehicle_registration_plate)){
@@ -170,23 +170,12 @@ class EasyXml
 
 
 
-//        $annonce->setDealer(str_replace('vobiz_', "", $data->dealer_id));
+        $annonce->setDealerId(str_replace('vobiz_', "", $data->dealer_id));
         $annonce->setDealerName($data->dealer_name);
         $annonce->setDealerPhone($data->dealer_phone);
         $annonce->setFbPageId($data->fb_page_id);
         $annonce->setDealerCommunicationChannel($data->dealer_communication_channel);
         $annonce->setDealerPrivacyPolicyUrl($data->dealer_privacy_policy_url);
-
-
-        if(!$dealer)
-        {
-            $dealer = new Dealer();
-            $dealer->setDealerId($data->getDealerId);
-            $dealer->setName($data->dealer_name);
-            $dealer->setPhone($data->dealer_phone);
-            $dealer->addAnnonce($annonce);
-
-        }
 
         $this->em->persist($annonce);
         $this->em->flush();

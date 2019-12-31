@@ -26,37 +26,45 @@
         </div>
     </div>
 
-    <div class="d-flex justify-content-between mt-3 p-3">
-        <button class="btn btn-outline-dark btn-round d-lg-none" id="showFilter">
-            Filtre
-        </button>
+    <div class=" p-3">
+        <div class="container">
+            <div class="row">
+                <div class="col d-flex justify-content-between justify-content-lg-end">
+                    <button class="btn btn-outline-dark d-lg-none" id="showFilter">
+                        <i class="fa fa-search mr-2"></i>
+                        Filtre
+                    </button>
 
-        <div class="dropdown">
-            <button class="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenuButton"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Trier par
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#">+ récentsZ</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <a class="dropdown-item" href="#">Something else here</a>
+                    <div class="dropdown">
+                        <button class="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenuButton"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Trier par
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="#">+ récents</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+                            <a class="dropdown-item" href="#">Something else here</a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-    <section class="ftco-section" style="background: hsla(0, 0%, 98%, 1) !important;">
+    <section class="ftco-section bg-gray">
         <div class="container">
             <div class="row">
                 <div class="col-lg-4 sidebar">
                     <div id="filtre" class="sidebar-box bg-white p-4 ftco-animate modal"
                          style="border-top: 4px #206dfb solid;border-top-right-radius: 4px;border-top-left-radius: 4px;">
 
-                        <div class="border-0 rounded-0 bg-white sticky-top js-filter pt-5 pt-lg-0">
-                            <h3 class="heading-sidebar mt-5 mt-lg-0">Chercher par critères</h3>
+                        <div class="border-0 rounded-0 bg-white sticky-top js-filter">
                             <div class="d-lg-none mb-3 sticky-top bg-white">
-                                <button class="btn btn-outline-main btn-sm btn-round" id="closeFilter" type="button"><i
+                                <button class="btn btn-outline-dark btn-sm btn-round" id="closeFilter" type="button"><i
                                             class="fas fa-chevron-left mr-3"></i>retour
                                 </button>
                             </div>
+                            <h3 class="heading-sidebar mt-5 mt-lg-0">Chercher par critères</h3>
+
 
                             {{ form_start(form) }}
                             <div class="form-group">
@@ -66,10 +74,10 @@
                             <div class="form-group">
                                 {{ form_label(form.make, "Recherche par marque") }}
                                 {{ form_errors(form.model) }}
-                                {{ form_widget(form.make, {'attr': {'class': 'selectpicker ', 'id': 'make-filter', 'data-live-search': true}}) }}
+                                {{ form_widget(form.make, {'attr': {'class': 'selectpicker ', 'id': 'make-filter', 'data-live-search': true, 'title': "Marque"}}) }}
                             </div>
                             <div class="form-group">
-                                {{ form_label(form.model, "Recherche par marque") }}
+                                {{ form_label(form.model, "Recherche par modèle") }}
                                 {{ form_errors(form.model) }}
                                 {{ form_widget(form.model, {'attr': {'id':'model-select'}}) }}
                             </div>
@@ -95,6 +103,8 @@
                             </div>
                             <div class="form-group">
                                 <label for="">Chercher par kilométrage</label>
+                                <div id="sliderKilometer" data-min="{{ minKilometer }}"
+                                     data-max="{{ maxKilometer }}"></div>
                                 <div class="d-flex flex-row justify-content-between mt-3">
                                     {{ form_widget(form.minKilometer, { 'attr': { 'class': ' mr-1 w-50', 'title': "Kilométrage minimum"}}) }}
                                     {{ form_widget(form.maxKilometer, { 'attr': { 'class': ' ml-1 w-50', 'title': "KIlomètrage maximun"}}) }}
@@ -151,7 +161,7 @@
                                                 </div>
                                             </div>
                                             <p class="list-annonce-meta mb-auto d-flex justify-content-between"><span>
-											<i class="fas fa-road mr-2"></i>{{ annonce.mileage['value'] | number_format(0,'.',' ') }} km</span><span><i
+											<i class="fas fa-road mr-2"></i>{{ annonce.mileage | number_format(0,'.',' ') }} km</span><span><i
                                                             class="fas fa-cogs mr-2"></i>{{ annonce.transmission|capitalize }}</span><span
                                                         class="d-none d-sm-block"><i
                                                             class="fas fa-gas-pump mr-2"></i>{{ annonce.fuelType|capitalize }}</span><span
@@ -191,10 +201,7 @@
     {{ parent() }}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/14.0.3/nouislider.js"></script>
     <script>
-
-
         $(document).ready(() => {
-
             checkIfMobile($(window).width());
         });
 
@@ -205,10 +212,8 @@
         function checkIfMobile(windowWidth) {
 
             if (windowWidth >= 992) {
-                console.log('oui')
                 $('#filtre').removeClass('modal');
             } else {
-                console.log('laa')
                 $('#filtre').addClass('modal');
             }
         }
@@ -229,8 +234,6 @@
                     'min': minValuePrice,
                     'max': maxValuePrice
                 }
-
-
             });
             rangePrice.on('slide', function (values, handle) {
                 if (handle === 0) {
@@ -240,11 +243,33 @@
                     maxPrice.value = Math.round(values[1]);
                 }
             })
-
+        }
+        const sliderKilometer = document.getElementById('sliderKilometer');
+        if (sliderKilometer) {
+            minKilometer = document.getElementById('minKilometer');
+            maxKilometer = document.getElementById('maxKilometer');
+            const minValueKilometer = Math.floor(parseInt(sliderKilometer.dataset.min, 10) / 10) * 10;
+            const maxValueKilometer = Math.ceil(parseInt(sliderKilometer.dataset.max, 10) / 10) * 10;
+            const rangeKilometer = noUiSlider.create(sliderKilometer, {
+                start: [minKilometer.value || minValueKilometer, maxKilometer.value || maxValueKilometer],
+                connect: true,
+                step: 1,
+                range: {
+                    'min': 0,
+                    'max': 300000
+                }
+            });
+            rangeKilometer.on('slide', function (values, handle) {
+                if (handle === 0) {
+                    minKilometer.value = Math.round(values[0]);
+                }
+                if (handle === 1) {
+                    maxKilometer.value = Math.round(values[1]);
+                }
+            })
         }
 
         const sliderYear = document.getElementById('sliderYear');
-
         if (sliderYear) {
             minYear = document.getElementById('minYear');
             maxYear = document.getElementById('maxYear');
@@ -258,8 +283,6 @@
                     'min': minValueYear,
                     'max': maxValueYear
                 }
-
-
             });
             rangeYear.on('slide', function (values, handle) {
                 if (handle === 0) {
@@ -269,21 +292,17 @@
                     maxYear.value = Math.round(values[1]);
                 }
             })
-
         }
-
         $reset = $('#resetForm');
-
         $reset.click(() => {
-            $('form input, form select').each(function () {
-                $(this).val('');
-                document.reload();
-            })
+            $('form :input').val('');
+            $(".selectpicker").selectpicker("refresh");
+            fetchModelByMake()
         });
 
-        /*
-        * Récupèrer la liste des modèles d'une marque lorsqu'on fait une recherche et récupère une recherche
-        * */
+        {#
+            Récupèrer la liste des modèles d'une marque lorsqu'on fait une recherche et récupère une recherche
+        #}
         $(document).ready(() => {
             fetchModelByMake($('#make').val());
 
@@ -297,18 +316,22 @@
         function fetchModelByMake(value) {
             $.post('{{ path('api_fetchModelByMake') }}', {make: value, state: 'all'})
                 .done(function (data) {
-                    console.table(data);
                     $('#model').empty();
-                    data.forEach((element) => {
-                        $item = element.model ? element.model : element;
-                        $('#model')
-                            .append(`<option value="${$item.toLowerCase()}">${$item}</option>`);
+                    $('#model')
+                        .append(`<option value="">Modèle</option>`);
+                    if (data) {
 
-                    });
+                        data.forEach((element) => {
+                            $item = element.model ? element.model : element;
+
+                            $('#model')
+                                .append(`<option value="${$item.toLowerCase()}">${$item}</option>`);
+                        });
+                    }
                     {#
                     Fixe le menu SELECT qui ne focus pas sur la bonne valeur; par rapport à l'URL
                     #}
-                    if(getUrlParameter('model')){
+                    if (getUrlParameter('model')) {
                         document.getElementById('model').value = getUrlParameter('model');
                     }
                 })
@@ -330,22 +353,16 @@
             }
         };
 
-        var modal = $('#filtre');
-
-        var openModal = $('#showFilter');
-
-        var closeModal = $('#closeFilter');
+        let modal = $('#filtre');
+        let openModal = $('#showFilter');
+        let closeModal = $('#closeFilter');
 
         openModal.click(() => {
             modal.show();
         });
-
-
         closeModal.click(() => {
             modal.hide();
         });
-
-
     </script>
 
 

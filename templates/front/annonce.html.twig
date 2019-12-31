@@ -75,7 +75,7 @@
             </div>
         </div>
     </div>
-    <section>
+    <section class="d-none d-lg-block">
         <div class="container">
             <div class="row">
                 <div class="col">
@@ -211,7 +211,7 @@
                                         </li>
                                         <li class="list-group-item d-flex justify-content-between"><span
                                                     class="text-dark"><i
-                                                        class="fas fa-road mr-2"></i>Kilométrage</span><span>{% if annonce.mileage['value'] is not empty %}{{ annonce.mileage['value'] | number_format(0,'',' ') }} km{% else %} Non spécifié*{% endif %}</span>
+                                                        class="fas fa-road mr-2"></i>Kilométrage</span><span>{% if annonce.mileage is not empty %}{{ annonce.mileage | number_format(0,'',' ') }} km{% else %} Non spécifié*{% endif %}</span>
                                         </li>
                                         <li class="list-group-item d-flex justify-content-between"><span
                                                     class="text-dark"><i
@@ -282,7 +282,13 @@
                             </small>
                         </div>
                     </div>
-
+                    <hr>{% set currentPath = path(app.request.attributes.get('_route'),
+                        app.request.attributes.get('_route_params')) %}
+                    <div class="d-flex justify-content-between">
+                        <a href="javascript:window.print()" class="mr-3  text-dark"><i class="fa fa-print mr-2"></i>Imprimer l'annonce</a>
+                        <a class="text-body" href="mailto:?subject=Annonce%20de%20Pubauto%20-%20{{ annonce.make }}%20{{ annonce.model }}&body=Bonjour,je%20t'envoie%20l'annonce%20de%20PubAuto.Jete%20un%20coup%20d'oeil.&#10;Voici%20le%20lien%20:{{ app.request.getSchemeAndHttpHost ~ annonce.slug }}"><i class="fa fa-envelope mr-2"></i>Partager par mail</a>
+                    </div>
+                    <hr>
                 </div>
                 <div class="col-lg-4 mt-lg-0 mt-5 sidebar ftco-animate border-1">
                     <div class="sidebar-box">
@@ -290,8 +296,8 @@
                             <div class="card-header">
                                 <div class="media">
                                     <div class="media-body">
-                                        <h5 class="mt-0">{{ annonce.dealerName }}</h5>
-                                        <h6 class="font-weight-medium"><a href="{{ path('dealer_store', { 'dealer_id': annonce.dealerId}) }}" data-toggle="tooltip" data-placement="top" title="Voir la boutique">{{ annonces|length }} annonces en lignes</a></h6>
+                                        <a href="{{ path('dealer_store', { 'dealer_id': annonce.dealerId}) }}" data-toggle="tooltip" data-placement="top" title="Voir la boutique"> <h5 class="mt-0">{{ annonce.dealerName }}</h5>
+                                            <h6 class="font-weight-medium">{{ annonces|length }} annonces en lignes</h6></a>
                                     </div>
                                 </div>
                             </div>
@@ -339,7 +345,7 @@
                                  <h3 class="heading"><a href="#">{{ annonce.title }}</a>
                                  </h3>
                                  <div class="meta">
-                                     <div><a href="{{ path('annonces', { 'minKilometer': annonce.mileage['value']}) }}"><{% if annonce.mileage['value'] is not empty %}i class="fas fa-road "></i> {{ annonce.mileage['value'] | number_format(0,'',' ') }} km{% else %} Non spécifié*{% endif %}</a></div>
+                                     <div><a href="{{ path('annonces', { 'minKilometer': annonce.mileage}) }}"><{% if annonce.mileage is not empty %}i class="fas fa-road "></i> {{ annonce.mileage | number_format(0,'',' ') }} km{% else %} Non spécifié*{% endif %}</a></div>
                                      <div><a href="{{ path('annonces', { 'transmission' : annonce.transmission|lower}) }}">{% if annonce.transmission is not empty %}<i class="fas fa-road "></i> {{ annonce.transmission }}{% else %} Non spécifié*{% endif %}</a></div>
                                      <div><a href="{{ path('annonces', { 'minYear' : annonce.year, 'maxYear': annonce.year}) }}">{% if annonce.year is not empty %}<i class="fas fa-calendar "></i> {{ annonce.year }}{% else %} Non spécifié*{% endif %}</a></div>
                                  </div>

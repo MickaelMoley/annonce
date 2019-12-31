@@ -55,14 +55,6 @@ class SearchForm extends AbstractType
                 },
                 'group_by' => null
             ])
-            ->add('fuelType', ChoiceType::class, [
-                'required' => false,
-                'choices' => [
-                    'Gasoline' => 'gasoline',
-                    'Diesel' => 'diesel',
-                    'Essence' => 'essence'
-                ]
-            ])
             ->add('bodyStyle', ChoiceType::class, [
                 'required' => false,
                 'choices' => $options['bodyStyle'],
@@ -93,11 +85,17 @@ class SearchForm extends AbstractType
             ])
             ->add('transmission', ChoiceType::class, [
                 'required' => false,
-                'choices' => [
-                    ' ' => '',
-                    'Manuel' => 'manuel',
-                    'Automatique' => 'automatic'
-                ]
+                'choices' => $options['transmission'],
+                'choice_label' => function ($choice, $key, $value) {
+                    return ucfirst($value);
+
+                },
+                'choice_value' => function ($value) {
+
+                    return strtolower($value);
+
+                },
+                'group_by' => null
             ])
             ->add('minPrice', NumberType::class, [
                 'label' => false,
@@ -157,6 +155,7 @@ class SearchForm extends AbstractType
             'models' => null,
             'bodyStyle' => null,
             'fuelType' => null,
+            'transmission' => null,
             'method' => 'GET',
             'csrf_protection' => false
         ]);
