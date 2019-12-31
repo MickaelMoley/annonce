@@ -24,14 +24,22 @@ class ApiController extends AbstractController
         {
             $data = [];
             $data['make']= $request->get('make');
-            $data['dealerId'] = $request->get('dealer_id') || "";
+            $data['dealerId'] = $request->get('dealer_id');
+            $data['state'] = $request->get('state');
             $annonce = null;
-            if(!empty($data)){
+            if(!empty($data['make']) && !empty($data['dealerId'])){
                 $annonce = $annonceRepository->findModelByMake($data['make'], $data['dealerId']);
             }
-            else{
-                $annonce = $annonceRepository->findModel();
+            else if(!empty($data['dealerId']))
+            {
+                $annonce = $annonceRepository->findModel($data['dealerId']);
+            }
 
+            if(!empty($data['make']) && $data['state'] == 'all'){
+                $annonce = $annonceRepository->findModelByMake($data['make']);
+            }
+            else if(empty($data['make']) && $data['state'] == 'all'){
+                $annonce = $annonceRepository->findModel();
             }
 
             return $this->json($annonce);

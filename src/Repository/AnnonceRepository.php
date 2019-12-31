@@ -154,28 +154,35 @@ class AnnonceRepository extends ServiceEntityRepository
 
     /**
      * Récupère le date minimun et maximum parmis la liste des annonces
+     * @param SearchData $searchData
      * @return integer[]
      */
     public function findMinMaxYear(SearchData $searchData): array
     {
-        $resultat = $this->getSearchQuery($searchData, true)
+        $result = $this->getSearchQuery($searchData, true)
             ->select('MIN(p.year) as min', 'MAX(p.year) as max')
             ->getQuery()
             ->getScalarResult();
-        return [$resultat[0]['min'], $resultat[0]['max']];
+        return [$result[0]['min'], $result[0]['max']];
     }
 
 
     /**
      * Récupère la liste unique des marques
+     * @param string $dealer
      * @return integer[]
      */
-    public function findMake($dealer = ""): array
+    public function findMake($dealer = null): array
     {
-        $resultat = $this->createQueryBuilder('ma')
-            ->select('ma.make')
-            ->setParameter(':dealerId', $dealer)
-            ->andwhere('ma.dealer_id = :dealerId')
+        $result = $this->createQueryBuilder('ma')
+            ->select('ma.make');
+
+            if($dealer){
+                $result = $result
+                ->setParameter(':dealerId', $dealer)
+                ->andwhere('ma.dealer_id = :dealerId');
+            }
+        $result = $result
             ->orderBy('ma.make', 'ASC')
             ->distinct(true)
             ->getQuery()
@@ -183,7 +190,7 @@ class AnnonceRepository extends ServiceEntityRepository
             ;
 
         $re = [];
-        foreach ($resultat as $item)
+        foreach ($result as $item)
         {
             foreach ($item as $make)
             {
@@ -195,21 +202,28 @@ class AnnonceRepository extends ServiceEntityRepository
 
     /**
      * Récupère la liste unique des modèles
+     * @param string $dealer
      * @return integer[]
      */
-    public function findModel($dealer = ""): array
+    public function findModel($dealer = null): array
     {
-        $resultat = $this->createQueryBuilder('mo')
-            ->select('mo.model')
-            ->setParameter(':dealerId', $dealer)
-            ->andwhere('mo.dealer_id = :dealerId')
+        $result = $this->createQueryBuilder('mo')
+            ->select('mo.model');
+
+        if($dealer){
+            $result = $result
+                ->setParameter(':dealerId', $dealer)
+                ->andwhere('mo.dealer_id = :dealerId');
+        }
+
+            $result = $result
             ->orderBy('mo.model', 'ASC')
             ->distinct(true)
             ->getQuery()
             ->getArrayResult()
         ;
         $re = [];
-        foreach ($resultat as $item)
+        foreach ($result as $item)
         {
             foreach ($item as $model)
             {
@@ -226,7 +240,7 @@ class AnnonceRepository extends ServiceEntityRepository
      */
     public function findBodyStyle(): array
     {
-        $resultat = $this->createQueryBuilder('bs')
+        $result = $this->createQueryBuilder('bs')
             ->select('bs.body_style')
             ->orderBy('bs.body_style', 'ASC')
             ->distinct(true)
@@ -234,7 +248,7 @@ class AnnonceRepository extends ServiceEntityRepository
             ->getArrayResult()
         ;
         $re = [];
-        foreach ($resultat as $item)
+        foreach ($result as $item)
         {
             foreach ($item as $bodyStyle)
             {
@@ -251,7 +265,7 @@ class AnnonceRepository extends ServiceEntityRepository
      */
     public function findCarburant(): array
     {
-        $resultat = $this->createQueryBuilder('ft')
+        $result = $this->createQueryBuilder('ft')
             ->select('ft.fuel_type')
             ->orderBy('ft.fuel_type', 'ASC')
             ->distinct(true)
@@ -259,7 +273,7 @@ class AnnonceRepository extends ServiceEntityRepository
             ->getArrayResult()
         ;
         $re = [];
-        foreach ($resultat as $item)
+        foreach ($result as $item)
         {
             foreach ($item as $fuelType)
             {
@@ -271,16 +285,23 @@ class AnnonceRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param $value
+     * @param $make
+     * @param null $dealer
      * @return array []
      */
     public function findModelByMake($make, $dealer = null)
     {
-        return $this->createQueryBuilder('a')
+        $result = $this->createQueryBuilder('a')
             ->select('a.model')
             ->setParameter(':make', $make)
-            ->setParameter(':dealerId', $dealer)
-            ->where('a.make = :make and a.dealer_id = :dealerId')
+            ->where('a.make = :make');
+
+        if($dealer){
+            $result = $result
+                ->setParameter(':dealerId', $dealer)
+                ->andWhere('a.dealer_id = :dealerId');
+        }
+        return $result
             ->distinct(true)
             ->getQuery()
             ->getArrayResult()

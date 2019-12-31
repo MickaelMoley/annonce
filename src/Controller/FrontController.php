@@ -120,7 +120,7 @@ class FrontController extends AbstractController
         $data = new SearchData();
         $data->limitPerPage = 4;
 
-        $annonces = $annonceRepository->getAnnoncebyDealer($annonce->getDealerId());
+        $annonces = $annonceRepository->findBy(['dealer_id' => $annonce->getDealerId()]);
 
         return $this->render('front/annonce.html.twig', [
             'annonce' => $annonce,
@@ -181,7 +181,7 @@ class FrontController extends AbstractController
         $data->dealer_id = $request->get('dealer_id');
 
         if (empty($data->dealer_id)) {
-            $this->addFlash("Une erreur s'est produite. Veuillez réessayer.");
+            $this->addFlash('danger',"Une erreur s'est produite. Veuillez réessayer.");
             return $this->redirectToRoute('annonces');
         }
 
@@ -197,7 +197,6 @@ class FrontController extends AbstractController
         $form = $this->createForm(SearchForm::class, $data, ['makes' => $makes, 'models' => $models, 'bodyStyle' => $bodyStyle]);
 
         $form->handleRequest($request);
-
 
         $annonces = $annonceRepository->findSearch($data);
 

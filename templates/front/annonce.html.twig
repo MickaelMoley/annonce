@@ -291,7 +291,7 @@
                                 <div class="media">
                                     <div class="media-body">
                                         <h5 class="mt-0">{{ annonce.dealerName }}</h5>
-                                        <h6 class="font-weight-medium"><a href="{{ path('dealer_store', { 'dealer_id': annonces[0].dealer_id}) }}" data-toggle="tooltip" data-placement="top" title="Voir la boutique">{{ annonces|length }} annonces en lignes</a></h6>
+                                        <h6 class="font-weight-medium"><a href="{{ path('dealer_store', { 'dealer_id': annonce.dealerId}) }}" data-toggle="tooltip" data-placement="top" title="Voir la boutique">{{ annonces|length }} annonces en lignes</a></h6>
                                     </div>
                                 </div>
                             </div>
