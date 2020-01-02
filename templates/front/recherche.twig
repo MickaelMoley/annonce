@@ -29,11 +29,13 @@
     <div class=" p-3">
         <div class="container">
             <div class="row">
-                <div class="col d-flex justify-content-between justify-content-lg-end">
+                <div class="col d-flex align-content-center align-items-center justify-content-between justify-content-lg-between">
+
                     <button class="btn btn-outline-dark d-lg-none" id="showFilter">
                         <i class="fa fa-search mr-2"></i>
                         Filtre
                     </button>
+                    <span class="d-none d-lg-block text-dark font-weight-medium"><span class="text-primary">{{ annonces.totalItemCount }}</span> résultats</span>
                     <div class="dropdown">
                         <button class="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenuButton"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -78,7 +80,7 @@
                             <div class="form-group">
                                 {{ form_label(form.model, "Recherche par modèle") }}
                                 {{ form_errors(form.model) }}
-                                {{ form_widget(form.model, {'attr': {'id':'model-select', 'class': 'selectpicker'}}) }}
+                                {{ form_widget(form.model, {'attr': {'id':'model-select', 'class': ''}}) }}
                             </div>
                             <div class="form-group">
                                 {{ form_label(form.bodyStyle, "Catégorie") }}
@@ -141,7 +143,7 @@
                                                  style="object-fit: cover;"
                                                  alt="Image de {{ annonce.make }} {{ annonce.model }}">
                                         </div>
-                                        <div class="d-flex flex-column align-content-around bg-white py-2 px-2 w-100 text-truncate">
+                                        <div class="d-flex flex-column align-content-around bg-white py-2 px-2 w-100">
                                             <a class="list-annonce-title"
                                                href="{{ path('annonce', {'slug': annonce.slug }) }}"
                                                title="Voir cette annonce : {{ annonce.make }} - {{ annonce.model }}">{{ annonce.title }}</a><span

@@ -159,19 +159,19 @@
                         <li class="nav-item">
                             <a class="nav-link active" id="description-tab" data-toggle="tab" href="#description"
                                role="tab"
-                               aria-controls="description" aria-selected="true">Caractéristiques</a>
+                               aria-controls="description" aria-selected="true" title="Voir les caractéristiques">Caractéristiques</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" id="options-tab" data-toggle="tab" href="#options" role="tab"
-                               aria-controls="options" aria-selected="false">Options</a>
+                               aria-controls="options" aria-selected="false" title="Voir les options">Options</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" id="note-tab" data-toggle="tab" href="#note" role="tab"
-                               aria-controls="note" aria-selected="false">Note de vendeur</a>
+                               aria-controls="note" aria-selected="false" title="Voir la note du vendeur">Note de vendeur</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" id="localisation-tab" data-toggle="tab" href="#localisation" role="tab"
-                               aria-controls="localisation" aria-selected="false">Localisation</a>
+                               aria-controls="localisation" aria-selected="false" title="Voir la localisation">Localisation</a>
                         </li>
                     </ul>
                     <div class="tab-content" id="myTabContent">
@@ -272,20 +272,12 @@
                                     src="https://maps.google.com/maps?q={{ annonce.latitude }},{{ annonce.longitude }}&hl=fr&z=14&amp;output=embed"
                             >
                             </iframe>
-                            <br/>
-                            <small>
-                                <a href="https://maps.google.com/maps?q={{ annonce.latitude }},{{ annonce.longitude }}&hl=fr;z=14&amp;output=embed"
-                                        style="color:#0000FF;text-align:left"
-                                        target="_blank">
-                                    Agrandir la carte
-                                </a>
-                            </small>
                         </div>
                     </div>
                     <hr>{% set currentPath = path(app.request.attributes.get('_route'),
                         app.request.attributes.get('_route_params')) %}
                     <div class="d-flex justify-content-between">
-                        <a href="javascript:window.print()" class="mr-3  text-dark"><i class="fa fa-print mr-2"></i>Imprimer l'annonce</a>
+                        <a href="javascript:window.print()" class="mr-3  text-body"><i class="fa fa-print mr-2 " title="Imprimer l'annonce"></i>Imprimer l'annonce</a>
                         <a class="text-body" href="mailto:?subject=Annonce%20de%20Pubauto%20-%20{{ annonce.make }}%20{{ annonce.model }}&body=Bonjour,je%20t'envoie%20l'annonce%20de%20PubAuto.Jete%20un%20coup%20d'oeil.&#10;Voici%20le%20lien%20:{{ app.request.getSchemeAndHttpHost ~ annonce.slug }}"><i class="fa fa-envelope mr-2"></i>Partager par mail</a>
                     </div>
                     <hr>
@@ -295,9 +287,13 @@
                         <div class="card  shadow-sm" style="border: none;border-top: 4px blue solid;">
                             <div class="card-header">
                                 <div class="media">
+                                    <img src="https://via.placeholder.com/50" class="align-self-start mr-3 img-thumbnail" alt="Image avatar {{ annonce.dealer.dealerName }}">
                                     <div class="media-body">
-                                        <a href="{{ path('dealer_store', { 'slug': annonce.dealer.slug}) }}" data-toggle="tooltip" data-placement="top" title="Voir la boutique"> <h5 class="mt-0">{{ annonce.dealer.dealerName }}</h5>
-                                            <h6 class="font-weight-medium">{{ annonce.dealer.annonces|length}} annonces en lignes</h6></a>
+                                        <a href="{{ path('dealer_store', { 'slug': annonce.dealer.slug}) }}" data-toggle="tooltip" data-placement="top" title="Voir la boutique">
+                                            <h5 class="mt-0">{{ annonce.dealer.dealerName }}</h5>
+                                            <h6 class="font-weight-medium">{{ annonce.dealer.annonces|length}} annonces en lignes</h6>
+
+                                        </a>
                                     </div>
                                 </div>
                             </div>
