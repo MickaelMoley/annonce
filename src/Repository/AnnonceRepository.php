@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Repository;
-
 use App\Data\SearchData;
 use App\Entity\Annonce;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -9,7 +7,6 @@ use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
-
 /**
  * @method Annonce|null find($id, $lockMode = null, $lockVersion = null)
  * @method Annonce|null findOneBy(array $criteria, array $orderBy = null)
@@ -35,10 +32,9 @@ class AnnonceRepository extends ServiceEntityRepository
         $query = $this
             ->createQueryBuilder('p')
             ->select('p');
-
-        if(!empty($searchData->q))
-        {
+        if (!empty($searchData->q)) {
             $query = $query
+                ->innerJoin('p.dealer', 'dealer')
                 ->andWhere('p.title LIKE :q
                  OR p.description LIKE :q 
                  OR p.features LIKE :q 
@@ -48,91 +44,71 @@ class AnnonceRepository extends ServiceEntityRepository
                  OR p.year LIKE :q 
                  OR p.adress LIKE :q 
                  OR p.fuel_type LIKE :q
-                 OR p.dealerName LIKE :q')
+                 OR p.mileage LIKE :q
+                 OR p.price LIKE :q
+                 OR dealer.dealer_name LIKE :q')
                 ->setParameter('q', "%$searchData->q%");
         }
-
-        if(!empty($searchData->make))
-        {
+        if (!empty($searchData->make)) {
             $query = $query
                 ->andWhere('p.make LIKE :make')
                 ->setParameter('make', "%$searchData->make%");
         }
-        if(!empty($searchData->model))
-        {
+        if (!empty($searchData->model)) {
             $query = $query
                 ->andWhere('p.model LIKE :model')
                 ->setParameter('model', "%$searchData->model%");
         }
-
-        if(!empty($searchData->bodyStyle))
-        {
+        if (!empty($searchData->bodyStyle)) {
             $query = $query
                 ->andWhere('p.body_style LIKE :bodyStyle')
                 ->setParameter('bodyStyle', "%$searchData->bodyStyle%");
         }
-
-        if(!empty($searchData->fuelType))
-        {
+        if (!empty($searchData->fuelType)) {
             $query = $query
                 ->andWhere('p.fuel_type LIKE :fuelType')
                 ->setParameter('fuelType', "%$searchData->fuelType%");
         }
-
-        if(!empty($searchData->minKilometer) && $ignoreFilter === false)
-        {
+        if (!empty($searchData->minKilometer) && $ignoreFilter === false) {
             $query = $query
                 ->andWhere('p.mileage >= :minKilometer')
                 ->setParameter('minKilometer', $searchData->minKilometer);
-
         }
-        if(!empty($searchData->maxKilometer) && $ignoreFilter === false)
-        {
+        if (!empty($searchData->maxKilometer) && $ignoreFilter === false) {
             $query = $query
                 ->andWhere('p.mileage <= :maxKilometer')
                 ->setParameter('maxKilometer', $searchData->maxKilometer);
         }
-
-        if(!empty($searchData->transmission))
-        {
+        if (!empty($searchData->transmission)) {
             $query = $query
                 ->andWhere('p.transmission LIKE :transmission')
                 ->setParameter('transmission', "%$searchData->transmission%");
-
         }
-
-
-        if(!empty($searchData->minPrice) && $ignoreFilter === false)
-        {
+        if (!empty($searchData->minPrice) && $ignoreFilter === false) {
             $query = $query
                 ->andWhere('p.price >= :minPrice')
                 ->setParameter('minPrice', $searchData->minPrice);
         }
-        if(!empty($searchData->maxPrice) && $ignoreFilter === false)
-        {
+        if (!empty($searchData->maxPrice) && $ignoreFilter === false) {
             $query = $query
                 ->andWhere('p.price <= :maxPrice')
                 ->setParameter('maxPrice', $searchData->maxPrice);
         }
-        if(!empty($searchData->minYear) && $ignoreFilter === false)
-        {
+        if (!empty($searchData->minYear) && $ignoreFilter === false) {
             $query = $query
                 ->andWhere('p.year >= :minYear')
                 ->setParameter('minYear', $searchData->minYear);
         }
-        if(!empty($searchData->maxYear) && $ignoreFilter === false)
-        {
+        if (!empty($searchData->maxYear) && $ignoreFilter === false) {
             $query = $query
                 ->andWhere('p.year <= :maxYear')
                 ->setParameter('maxYear', $searchData->maxYear);
         }
-        if(!empty($searchData->dealer_id))
-        {
+        if (!empty($searchData->dealer_id)) {
             $query = $query
-                ->andWhere('p.dealer_id = :dealerId')
+                ->andWhere('p.dealer_ref = :dealerId')
                 ->setParameter('dealerId', $searchData->dealer_id);
         }
-
         return $query;
     }
 
@@ -141,13 +117,9 @@ class AnnonceRepository extends ServiceEntityRepository
      * @param SearchData $searchData
      * @return PaginationInterface
      */
-
     public function findSearch(SearchData $searchData): PaginationInterface
     {
-
         $query = $this->getSearchQuery($searchData)->getQuery();
-
-
         return $this->paginator->paginate(
             $query,
             $searchData->current_page,
@@ -166,9 +138,6 @@ class AnnonceRepository extends ServiceEntityRepository
             ->select('MIN(p.price) as min', 'MAX(p.price) as max')
             ->getQuery()
             ->getScalarResult();
-
-
-
         return [$result[0]['min'], $result[0]['max']];
     }
 
@@ -183,12 +152,8 @@ class AnnonceRepository extends ServiceEntityRepository
             ->select('MIN(p.mileage) as min', 'MAX(p.mileage) as max')
             ->getQuery()
             ->getScalarResult();
-
-        dump($result);
-
         return [$result[0]['min'], $result[0]['max']];
     }
-
 
     /**
      * Récupère le date minimun et maximum parmis la liste des annonces
@@ -204,7 +169,6 @@ class AnnonceRepository extends ServiceEntityRepository
         return [$result[0]['min'], $result[0]['max']];
     }
 
-
     /**
      * Récupère la liste unique des marques
      * @param string $dealer
@@ -214,24 +178,19 @@ class AnnonceRepository extends ServiceEntityRepository
     {
         $result = $this->createQueryBuilder('ma')
             ->select('ma.make');
-
-            if($dealer){
-                $result = $result
+        if ($dealer) {
+            $result = $result
                 ->setParameter(':dealerId', $dealer)
-                ->andwhere('ma.dealer_id = :dealerId');
-            }
+                ->andwhere('ma.dealer_ref = :dealerId');
+        }
         $result = $result
             ->orderBy('ma.make', 'ASC')
             ->distinct(true)
             ->getQuery()
-            ->getArrayResult()
-            ;
-
+            ->getArrayResult();
         $re = [];
-        foreach ($result as $item)
-        {
-            foreach ($item as $make)
-            {
+        foreach ($result as $item) {
+            foreach ($item as $make) {
                 array_push($re, $make);
             }
         }
@@ -247,28 +206,22 @@ class AnnonceRepository extends ServiceEntityRepository
     {
         $result = $this->createQueryBuilder('mo')
             ->select('mo.model');
-
-        if($dealer){
+        if ($dealer) {
             $result = $result
                 ->setParameter(':dealerId', $dealer)
-                ->andwhere('mo.dealer_id = :dealerId');
+                ->andwhere('mo.dealer_ref = :dealerId');
         }
-
-            $result = $result
+        $result = $result
             ->orderBy('mo.model', 'ASC')
             ->distinct(true)
             ->getQuery()
-            ->getArrayResult()
-        ;
+            ->getArrayResult();
         $re = [];
-        foreach ($result as $item)
-        {
-            foreach ($item as $model)
-            {
+        foreach ($result as $item) {
+            foreach ($item as $model) {
                 array_push($re, $model);
             }
         }
-
         return $re;
     }
 
@@ -283,17 +236,13 @@ class AnnonceRepository extends ServiceEntityRepository
             ->orderBy('bs.body_style', 'ASC')
             ->distinct(true)
             ->getQuery()
-            ->getArrayResult()
-        ;
+            ->getArrayResult();
         $re = [];
-        foreach ($result as $item)
-        {
-            foreach ($item as $bodyStyle)
-            {
+        foreach ($result as $item) {
+            foreach ($item as $bodyStyle) {
                 array_push($re, $bodyStyle);
             }
         }
-
         return $re;
     }
 
@@ -308,17 +257,13 @@ class AnnonceRepository extends ServiceEntityRepository
             ->orderBy('ft.fuel_type', 'ASC')
             ->distinct(true)
             ->getQuery()
-            ->getArrayResult()
-        ;
+            ->getArrayResult();
         $re = [];
-        foreach ($result as $item)
-        {
-            foreach ($item as $fuelType)
-            {
+        foreach ($result as $item) {
+            foreach ($item as $fuelType) {
                 array_push($re, $fuelType);
             }
         }
-
         return $re;
     }
 
@@ -329,17 +274,13 @@ class AnnonceRepository extends ServiceEntityRepository
             ->orderBy('t.transmission', 'ASC')
             ->distinct(true)
             ->getQuery()
-            ->getArrayResult()
-        ;
+            ->getArrayResult();
         $re = [];
-        foreach ($result as $item)
-        {
-            foreach ($item as $transmission)
-            {
+        foreach ($result as $item) {
+            foreach ($item as $transmission) {
                 array_push($re, $transmission);
             }
         }
-
         return $re;
     }
 
@@ -354,17 +295,15 @@ class AnnonceRepository extends ServiceEntityRepository
             ->select('a.model')
             ->setParameter(':make', $make)
             ->where('a.make = :make');
-
-        if($dealer){
+        if ($dealer) {
             $result = $result
                 ->setParameter(':dealerId', $dealer)
-                ->andWhere('a.dealer_id = :dealerId');
+                ->andWhere('a.dealer_ref = :dealerId');
         }
         return $result
             ->distinct(true)
             ->getQuery()
-            ->getArrayResult()
-            ;
+            ->getArrayResult();
     }
 
     /**
@@ -378,41 +317,6 @@ class AnnonceRepository extends ServiceEntityRepository
             ->where('a.dealer_id = :dealer')
             ->distinct(true)
             ->getQuery()
-            ->getArrayResult()
-            ;
+            ->getArrayResult();
     }
-
-
-
-
-
-
-    // /**
-    //  * @return Annonce[] Returns an array of Annonce objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('a.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Annonce
-    {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }

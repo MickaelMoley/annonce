@@ -131,10 +131,6 @@ class Annonce
      */
     private $dealer_privacy_policy_url;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $dealer_id;
 
     /**
      * @ORM\Column(type="array")
@@ -147,23 +143,25 @@ class Annonce
     private $slug;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Dealer", inversedBy="annonces")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private $dealerName;
+    private $dealer;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $dealerPhone;
+    private $dealer_ref;
+
 
     public function getVehicleId(): ?string
     {
         return $this->vehicle_id;
     }
 
-    public function setVehicleId(string $vehicule_id): self
+    public function setVehicleId(string $vehicle_id): self
     {
-        $this->vehicle_id = $vehicule_id;
+        $this->vehicle_id = $vehicle_id;
 
         return $this;
     }
@@ -432,17 +430,6 @@ class Annonce
         return $this;
     }
 
-    public function getDealerId(): ?int
-    {
-        return $this->dealer_id;
-    }
-
-    public function setDealerId(int $dealer_id): self
-    {
-        $this->dealer_id = $dealer_id;
-
-        return $this;
-    }
 
     public function getAdress(): ?array
     {
@@ -468,34 +455,33 @@ class Annonce
         return $this;
     }
 
-    public function getDealerName(): ?string
-    {
-        return $this->dealerName;
-    }
-
-    public function setDealerName(string $dealerName): self
-    {
-        $this->dealerName = $dealerName;
-
-        return $this;
-    }
-
-    public function getDealerPhone(): ?string
-    {
-        return $this->dealerPhone;
-    }
-
-    public function setDealerPhone(string $dealerPhone): self
-    {
-        $this->dealerPhone = $dealerPhone;
-
-        return $this;
-    }
-
     public function __toString()
     {
         return $this->make.' '.$this->model;
     }
 
+    public function getDealer(): ?Dealer
+    {
+        return $this->dealer;
+    }
+
+    public function setDealer(?Dealer $dealer): self
+    {
+        $this->dealer = $dealer;
+
+        return $this;
+    }
+
+    public function getDealerRef(): ?string
+    {
+        return $this->dealer_ref;
+    }
+
+    public function setDealerRef(string $dealer_ref): self
+    {
+        $this->dealer_ref = $dealer_ref;
+
+        return $this;
+    }
 
 }

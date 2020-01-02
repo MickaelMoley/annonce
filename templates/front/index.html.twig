@@ -104,7 +104,7 @@
                                                                     <div class="icon"><span
                                                                                 class="ion-ios-arrow-down"></span></div>
                                                                     <select name="make" id="make-filter"
-                                                                            class="form-control selectpicker"
+                                                                            class="selectpicker"
                                                                             data-live-search="true">
                                                                         <option value="">Marque</option>
                                                                         {% if makes is defined and makes is not empty %}
@@ -256,13 +256,13 @@
     </script>
     <script>
         $('#make-filter').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
-            $.post('{{ path('api_fetchModelByMake') }}', {make: this.value})
+            $.post('{{ path('api_fetchModelByMake') }}', {make: this.value, state: 'all'})
                 .done(function (data) {
                     $('#model-select').empty();
                     data.forEach((element) => {
                         $('#model-select')
                             .append(`<option value="${element.model.toLowerCase()}">${element.model}</option>`);
-                        console.log(element.model)
+
                     });
 
                 })

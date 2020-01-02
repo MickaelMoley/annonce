@@ -20,7 +20,7 @@
                 <div class="col-md-12 ftco-animate text-center mb-5">
                     <p class="breadcrumbs mb-0"><span class="mr-3"><a href="index.html">Accueil <i
                                         class="ion-ios-arrow-forward"></i></a></span> <span>Annonces</span></p>
-                    <h1 class="mb-3 bread">Trouver une annonce</h1>
+                    <h1 class="mb-3 bread">Trouver un véhicule</h1>
                 </div>
             </div>
         </div>
@@ -34,7 +34,6 @@
                         <i class="fa fa-search mr-2"></i>
                         Filtre
                     </button>
-
                     <div class="dropdown">
                         <button class="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenuButton"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -79,7 +78,7 @@
                             <div class="form-group">
                                 {{ form_label(form.model, "Recherche par modèle") }}
                                 {{ form_errors(form.model) }}
-                                {{ form_widget(form.model, {'attr': {'id':'model-select'}}) }}
+                                {{ form_widget(form.model, {'attr': {'id':'model-select', 'class': 'selectpicker'}}) }}
                             </div>
                             <div class="form-group">
                                 {{ form_label(form.bodyStyle, "Catégorie") }}
@@ -156,7 +155,7 @@
                                                     </div>
                                                     <div class="col-6 text-right text-truncate">
                                                         <a class="list-annonce-entity"
-                                                           href="{{ path('dealer_store', { 'dealer_id' : annonce.dealerId }) }}">{{ annonce.dealerName|capitalize }}</a>
+                                                           href="{{ path('dealer_store', { 'slug' : annonce.dealer.slug }) }}">{{ annonce.dealer.dealerName|capitalize }}</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -297,7 +296,6 @@
         $reset.click(() => {
             $('form :input').val('');
             $(".selectpicker").selectpicker("refresh");
-            fetchModelByMake()
         });
 
         {#
@@ -316,11 +314,11 @@
         function fetchModelByMake(value) {
             $.post('{{ path('api_fetchModelByMake') }}', {make: value, state: 'all'})
                 .done(function (data) {
+
                     $('#model').empty();
                     $('#model')
                         .append(`<option value="">Modèle</option>`);
                     if (data) {
-
                         data.forEach((element) => {
                             $item = element.model ? element.model : element;
 

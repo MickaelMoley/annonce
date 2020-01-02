@@ -32,10 +32,16 @@
                     <div class="media">
                         <img src="https://via.placeholder.com/50" class="align-self-start mr-3 img-thumbnail" alt="...">
                         <div class="media-body">
-                            <h5 class="mt-0">{{ annonces[0].dealerName }}</h5>
-                            <h6 class="text-primary font-weight-medium">{{ annonces|length }} annonces en ligne</h6>
+                            <h5 class="mt-0">{{ dealer.dealerName }}</h5>
+                            <h6 class="text-primary font-weight-medium">{{ dealer.annonces|length }} annonces en ligne</h6>
                         </div>
                     </div>
+
+                    {% for message in app.flashes('success') %}
+                        <div class="alert alert-success mt-2">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>
@@ -148,7 +154,7 @@
                                                     </div>
                                                     <div class="col-6 text-right text-truncate">
                                                         <a class="list-annonce-entity"
-                                                           href="{{ path('dealer_store', { 'dealer_id' : annonce.dealerId }) }}">{{ annonce.dealerName|capitalize }}</a>
+                                                           href="{{ path('dealer_store', { 'slug' : dealer.slug }) }}">{{ dealer.dealerName|capitalize }}</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -208,10 +214,8 @@
         function checkIfMobile(windowWidth) {
 
             if (windowWidth >= UP_LG_SIZE) {
-                console.log('oui')
                 $('#filtre').removeClass('modal');
             } else {
-                console.log('laa')
                 $('#filtre').addClass('modal');
             }
         }
@@ -276,12 +280,9 @@
         }
 
         $reset = $('#resetForm');
-
         $reset.click(() => {
-            $('form input, form select').each(function () {
-                $(this).val('');
-                document.reload();
-            })
+            $('form :input').val('');
+            $(".selectpicker").selectpicker("refresh");
         });
 
         /*
@@ -289,19 +290,16 @@
         * */
         $('#make').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
             fetchModelByMake(this.value);
-
         });
 
         function fetchModelByMake(value) {
-            $.post('{{ path('api_fetchModelByMake') }}', {make: value, dealer_id: {{ annonces[0].dealerId }}, state: 'xxx'})
+            $.post('{{ path('api_fetchModelByMake') }}', {make: value, dealer_id: {{ dealer.dealerRef }}, state: 'xxx'})
                 .done(function (data) {
-                    console.table(data);
                     $('#model').empty();
                     data.forEach((element) => {
                         $item = element.model ? element.model : element;
                         $('#model')
                             .append(`<option value="${$item.toLowerCase()}">${$item}</option>`);
-                        console.log(element)
                     });
 
                 })
@@ -309,16 +307,11 @@
         }
 
         var modal = $('#filtre');
-
         var openModal = $('#showFilter');
-
         var closeModal = $('#closeFilter');
-
         openModal.click(() => {
             modal.show();
         });
-
-
         closeModal.click(() => {
             modal.hide();
         });

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Data\SearchData;
 use App\Entity\Annonce;
 use App\Entity\Contact;
+use App\Entity\Dealer;
 use App\Form\ContactType;
 use App\Form\SearchForm;
 use App\Repository\AnnonceRepository;
@@ -124,6 +125,7 @@ class FrontController extends AbstractController
                     ]),
                     'text/html'
                 );
+
             $mailer->send($message);
 
             $this->addFlash('success', 'La demande de contact a bien été envoyée !');
@@ -178,22 +180,22 @@ class FrontController extends AbstractController
 
 
     /**
-     * @Route("/dealer", name="dealer_store")
+     * @Route("/dealer/{slug}", name="dealer_store")
+     * @param Dealer $dealer
      * @param Request $request
      * @param AnnonceRepository $annonceRepository
      * @return Response
      */
 
-    public function dealer(Request $request, AnnonceRepository $annonceRepository)
+    public function dealer(Dealer $dealer, Request $request, AnnonceRepository $annonceRepository)
     {
 
         $data = new SearchData();
         $data->current_page = $request->get('page', 1);
-        $data->dealer_id = $request->get('dealer_id');
+        $data->dealer_id = $dealer->getDealerRef();
 
-        if (empty($data->dealer_id)) {
-            $this->addFlash('danger',"Une erreur s'est produite. Veuillez réessayer.");
-            return $this->redirectToRoute('annonces');
+        if(empty($request->get('dealer_id'))){
+            $this->addFlash('danger', "Une erreur s'est produit. Veuillez réessayer votre démarche.");
         }
 
         /**
@@ -208,10 +210,6 @@ class FrontController extends AbstractController
         $fuelTypes = $annonceRepository->findCarburant();
         $transmission = $annonceRepository->findTransmission();
 
-
-
-
-
         $form = $this->createForm(SearchForm::class, $data, [
             'makes' => $makes,
             'models' => $models,
@@ -223,11 +221,14 @@ class FrontController extends AbstractController
 
         $form->handleRequest($request);
 
+
+
         $annonces = $annonceRepository->findSearch($data);
 
 
         return $this->render('front/dealer.twig', [
             'annonces' => $annonces,
+            'dealer' => $dealer,
             'form' => $form->createView(),
             'minPrice' => $minPrice,
             'maxPrice' => $maxPrice,

@@ -10,6 +10,10 @@ use App\Repository\AnnonceRepository;
 use App\Repository\DealerRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
+/**
+ * @property DealerRepository dealerRepo
+ * @property AnnonceRepository annonceRepo
+ */
 class EasyXml
 {
 
@@ -19,13 +23,25 @@ class EasyXml
     public $newedAnnonce = 0;
     public $debug;
 
-    public function __construct(AnnonceRepository $annonceRepository, EntityManagerInterface $entityManager)
+    /**
+     * EasyXml constructor.
+     * @param AnnonceRepository $annonceRepository
+     * @param DealerRepository $dealerRepository
+     * @param EntityManagerInterface $entityManager
+     */
+    public function __construct(AnnonceRepository $annonceRepository, DealerRepository $dealerRepository, EntityManagerInterface $entityManager)
     {
-        $this->repo = $annonceRepository;
+        $this->annonceRepo = $annonceRepository;
+        $this->dealerRepo = $dealerRepository;
         $this->em = $entityManager;
 
     }
 
+    /**
+     * @param $link
+     * @param $debug
+     * @return string|void
+     */
     public function execute($link, $debug)
     {
         $this->debug = $debug;
@@ -35,25 +51,25 @@ class EasyXml
         {
             return 'Debug est activé';
         }
-        return $this->manager($this->repo);
+        $this->manager();
     }
 
     private function readXMLFrom($link)
     {
 
-        $xmlfile    = file_get_contents($link);
-        $json_encoded = json_encode(simplexml_load_string($xmlfile));
+        $xmlbase    = file_get_contents($link);
+        $json_encoded = json_encode(simplexml_load_string($xmlbase));
         $this->JSON_file = json_decode($json_encoded);
     }
 
-    private function manager(AnnonceRepository $annonceRepository)
+    private function manager()
     {
         $lists = $this->JSON_file->listing;
 
 
-        for ($i = 0; $i < count($lists); $i++) {
+        for ($i = 0; $i < count($lists); $i++) { //count($lists)
 
-            $annonce = $this->repo->findOneBy(['vehicle_id' => $lists[$i]->vehicle_id]);
+            $annonce = $this->annonceRepo->findOneBy(['vehicle_id' => $lists[$i]->vehicle_id]);
 
             if ($annonce) {
                 $this->updateAnnonce($annonce, $lists[$i]);
@@ -66,6 +82,8 @@ class EasyXml
 
     private function updateAnnonce($annonce, $updateAnnonce)
     {
+
+        $dealer = $this->dealerRepo->findOneBy(['dealer_ref' => str_replace('vobiz_', "", $updateAnnonce->dealer_id)]);
 
 
         $annonce->setTitle($updateAnnonce->title);
@@ -93,9 +111,11 @@ class EasyXml
             $annonce->setFeatures($updateAnnonce->features->feature);
         }
 
-        $annonce->setDealerId(str_replace('vobiz_', "", $updateAnnonce->dealer_id));
-        $annonce->setDealerName($updateAnnonce->dealer_name);
-        $annonce->setDealerPhone($updateAnnonce->dealer_phone);
+        $dealer->setDealerName($updateAnnonce->dealer_name);
+        $dealer->setDealerPhone($updateAnnonce->dealer_phone);
+        $dealer->setSlug('');
+
+        $annonce->setDealer($dealer);
 
         $annonce->setAdress([
             'addr1' => $updateAnnonce->address->component[0],
@@ -109,9 +129,7 @@ class EasyXml
         $annonce->setLongitude($updateAnnonce->longitude);
         $annonce->setExteriorColor($updateAnnonce->exterior_color);
         $annonce->setStateOfVehicle($updateAnnonce->state_of_vehicle);
-        $annonce->setDealerId(str_replace('vobiz_', "", $updateAnnonce->dealer_id));
-        $annonce->setDealerName($updateAnnonce->dealer_name);
-        $annonce->setDealerPhone($updateAnnonce->dealer_phone);
+
         $annonce->setFbPageId($updateAnnonce->fb_page_id);
         $annonce->setDealerCommunicationChannel($updateAnnonce->dealer_communication_channel);
         $annonce->setDealerPrivacyPolicyUrl($updateAnnonce->dealer_privacy_policy_url);
@@ -123,6 +141,19 @@ class EasyXml
 
     private function newAnnonce($data)
     {
+
+        $dealer = $this->dealerRepo->findOneBy(['dealer_ref' => str_replace('vobiz_', "", $data->dealer_id)]);
+
+        if(!$dealer){
+            $dealer = new Dealer();
+            $dealer->setDealerName($data->dealer_name);
+            $dealer->setDealerPhone($data->dealer_phone);
+            $dealer->setDealerRef(str_replace('vobiz_', "", $data->dealer_id));
+            $dealer->setSlug('');
+
+            $this->em->persist($dealer);
+            $this->em->flush();
+        }
 
         $annonce = new Annonce();
         $annonce->setVehicleId($data->vehicle_id);
@@ -167,12 +198,10 @@ class EasyXml
         $annonce->setExteriorColor($data->exterior_color);
         $annonce->setStateOfVehicle($data->state_of_vehicle);
 
+        $annonce->setDealerRef(str_replace('vobiz_', "", $data->dealer_id));
 
 
-
-        $annonce->setDealerId(str_replace('vobiz_', "", $data->dealer_id));
-        $annonce->setDealerName($data->dealer_name);
-        $annonce->setDealerPhone($data->dealer_phone);
+        $annonce->setDealer($dealer);
         $annonce->setFbPageId($data->fb_page_id);
         $annonce->setDealerCommunicationChannel($data->dealer_communication_channel);
         $annonce->setDealerPrivacyPolicyUrl($data->dealer_privacy_policy_url);

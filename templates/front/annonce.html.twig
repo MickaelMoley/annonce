@@ -296,8 +296,8 @@
                             <div class="card-header">
                                 <div class="media">
                                     <div class="media-body">
-                                        <a href="{{ path('dealer_store', { 'dealer_id': annonce.dealerId}) }}" data-toggle="tooltip" data-placement="top" title="Voir la boutique"> <h5 class="mt-0">{{ annonce.dealerName }}</h5>
-                                            <h6 class="font-weight-medium">{{ annonces|length }} annonces en lignes</h6></a>
+                                        <a href="{{ path('dealer_store', { 'slug': annonce.dealer.slug}) }}" data-toggle="tooltip" data-placement="top" title="Voir la boutique"> <h5 class="mt-0">{{ annonce.dealer.dealerName }}</h5>
+                                            <h6 class="font-weight-medium">{{ annonce.dealer.annonces|length}} annonces en lignes</h6></a>
                                     </div>
                                 </div>
                             </div>
@@ -342,7 +342,7 @@
                          <div class="block-21 mb-4 d-flex">
                              <a class="blog-img mr-4" style="background-image: url({% if annonce.image[0].url is iterable %}{{ annonce.image[0].url[0] }}{% else %} {{ annonce.image[0].url }} {% endif %});"></a>
                              <div class="text">
-                                 <h3 class="heading"><a href="#">{{ annonce.title }}</a>
+                                 <h3 class="heading"><a href="{{ path('annonce', {'slug' : annonce.slug}) }}">{{ annonce.title }}</a>
                                  </h3>
                                  <div class="meta">
                                      <div><a href="{{ path('annonces', { 'minKilometer': annonce.mileage}) }}"><{% if annonce.mileage is not empty %}i class="fas fa-road "></i> {{ annonce.mileage | number_format(0,'',' ') }} km{% else %} Non spécifié*{% endif %}</a></div>

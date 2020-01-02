@@ -26,7 +26,11 @@ class ApiController extends AbstractController
             $data['make']= $request->get('make');
             $data['dealerId'] = $request->get('dealer_id');
             $data['state'] = $request->get('state');
+
+
+
             $annonce = null;
+
             if(!empty($data['make']) && !empty($data['dealerId'])){
                 $annonce = $annonceRepository->findModelByMake($data['make'], $data['dealerId']);
             }
