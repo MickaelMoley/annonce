@@ -9075,6 +9075,13 @@ button.bg-dark:focus {
     top: 0;
     z-index: 1020;
   }
+
+  .sticky-bottom{
+    position: -webkit-sticky;
+    position: sticky;
+    bottom: 0;
+    z-index: 1020;
+  }
 }
 
 .sr-only {
@@ -14563,4 +14570,16 @@ textarea.form-control {
 
 .bg-gray{
   background: #f8f9fa !important;
+}
+
+#filtre #btn-form{
+
+  background: rgb(255,255,255);
+  background: -moz-linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(235,242,245,0.4234068627450981) 100%);
+  background: -webkit-linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(235,242,245,0.4234068627450981) 100%);
+  background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(235,242,245,0.4234068627450981) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#ffffff",endColorstr="#ebf2f5",GradientType=1);
+
+  margin: 0 -1.5rem;
+  padding: 0.5rem 1.5rem;
 }

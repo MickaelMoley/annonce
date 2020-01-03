@@ -47,7 +47,7 @@
                         </div>
                     </div>
                     <hr>
-                    <a class="list-annonce-place" href="#"><i class="fas fa-map-marker-alt mr-2 text-main" aria-hidden="true"></i>Coignières
+                    <a class="list-annonce-place" href="#"><i class="fas fa-map-marker-alt mr-2 text-main" aria-hidden="true"></i>{{ dealer.annonces[0].adress.city ~ " " ~ dealer.annonces[0].adress.region ~ ", " ~ dealer.annonces[0].adress.postal_code }}
                     </a>
 
                     {% for message in app.flashes('success') %}
@@ -68,7 +68,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-4 sidebar">
-                    <div id="filtre" class="sidebar-box bg-white p-4 ftco-animate modal sticky-top"
+                    <div id="filtre" class="sidebar-box bg-white p-4 ftco-animate modal"
                          style="border-top: 4px #206dfb solid;border-top-right-radius: 4px;border-top-left-radius: 4px;">
 
                         <div class="border-0 rounded-0 bg-white  js-filter pt-5 pt-lg-0">
@@ -129,14 +129,15 @@
                                     {{ form_widget(form.maxPrice, { 'attr': { 'class': ' ml-1 w-50', 'title': "Prix maximun" }}) }}
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary btn-block" style="padding: 1rem 0.75rem"><i
-                                        class="fas fa-search mr-2"></i>
-                                Chercher
-                            </button>
+                            <div class="sticky-bottom" id="btn-form">
+                                <button type="submit" class="btn btn-primary btn-block" style="padding: 1rem 0.75rem"><i
+                                            class="fas fa-search mr-2"></i>
+                                    Chercher
+                                </button>
+                                <button type="reset" id="resetForm" class="btn btn-pri btn-block">Tout effacer</button>
+                            </div>
 
                             {{ form_end(form) }}
-
-                            <button type="reset" id="resetForm" class="btn btn-pri btn-block">Tout effacer</button>
                         </div>
                     </div>
                 </div>
@@ -309,12 +310,18 @@
             $.post('{{ path('api_fetchModelByMake') }}', {make: value, dealer_id: {{ dealer.dealerRef }}, state: 'xxx'})
                 .done(function (data) {
                     $('#model').empty();
-                    data.forEach((element) => {
-                        $item = element.model ? element.model : element;
-                        $('#model')
-                            .append(`<option value="${$item.toLowerCase()}">${$item}</option>`);
-                    });
+                    $('#model')
+                        .append(`<option value="">Modèle</option>`);
+                    if (data) {
+                        data.forEach((element) => {
+                            $item = element.model ? element.model : element;
 
+                            $('#model')
+                                .append(`<option value="${$item.toLowerCase()}">${$item}</option>`);
+                        });
+                        $('#model')
+                            .selectpicker('refresh');
+                    }
                 })
             ;
         }

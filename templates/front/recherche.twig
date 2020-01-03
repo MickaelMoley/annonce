@@ -35,7 +35,13 @@
                         <i class="fa fa-search mr-2"></i>
                         Filtre
                     </button>
-                    <span class="d-none d-lg-block text-dark font-weight-medium"><span class="text-primary">{{ annonces.totalItemCount }}</span> résultats</span>
+                    <span class="d-none d-lg-block text-dark font-weight-medium">
+                        <span class="text-primary">{{ annonces.totalItemCount }}</span>
+                        résultats
+                        {% if app.request.get('q') is not empty %}  {{ app.request.get('q') }}{% endif %}
+                        {% if app.request.get('make') is not empty %} - {{ app.request.get('make')|capitalize }}{% endif %}
+                        {% if app.request.get('model') is not empty %} {{ app.request.get('model')|capitalize }}{% endif %}
+                    </span>
                     <div class="dropdown">
                         <button class="btn btn-outline-dark dropdown-toggle" type="button" id="dropdownMenuButton"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -59,9 +65,11 @@
                          style="border-top: 4px #206dfb solid;border-top-right-radius: 4px;border-top-left-radius: 4px;">
 
                         <div class="border-0 rounded-0 bg-white sticky-top js-filter">
-                            <div class="d-lg-none mb-3 sticky-top bg-white">
+                            <div class="d-lg-none d-flex justify-content-between mb-3 sticky-top bg-white">
                                 <button class="btn btn-outline-dark btn-sm btn-round" id="closeFilter" type="button"><i
                                             class="fas fa-chevron-left mr-3"></i>retour
+                                </button>
+                                <button class="btn btn-text btn-sm btn-round" id="resetForm" type="button">Tout effacer
                                 </button>
                             </div>
                             <h3 class="heading-sidebar mt-5 mt-lg-0">Chercher par critères</h3>
@@ -119,23 +127,33 @@
                                     {{ form_widget(form.maxPrice, { 'attr': { 'class': ' ml-1 w-50', 'title': "Prix maximun" }}) }}
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary btn-block" style="padding: 1rem 0.75rem"><i
-                                        class="fas fa-search mr-2"></i>
-                                Chercher
-                            </button>
+                            <div class="sticky-bottom" id="btn-form">
+                                <button type="submit" class="btn btn-primary btn-block" style="padding: 1rem 0.75rem"><i
+                                            class="fas fa-search mr-2"></i>
+                                    Chercher
+                                </button>
+                                <button type="reset" id="resetForm" class="btn btn-pri btn-block">Tout effacer</button>
+                            </div>
 
                             {{ form_end(form) }}
 
-                            <button type="reset" id="resetForm" class="btn btn-pri btn-block">Tout effacer</button>
+
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-8 pr-lg-4">
                     <div class="row">
                         <div class="col-md-12 ftco-animate">
-
+                            <span class="mb-3 d-lg-none text-dark font-weight-medium">
+                                <span class="text-primary">{{ annonces.totalItemCount }}</span>
+                                    résultat(s)
+                                    {% if app.request.get('q') is not empty %} -  {{ app.request.get('q') }}{% endif %}
+                                    {% if app.request.get('make') is not empty %} - {{ app.request.get('make')|capitalize }}{% endif %}
+                                    {% if app.request.get('model') is not empty %} {{ app.request.get('model')|capitalize }}{% endif %}
+                            </span>
                             {% if annonces|length > 0 %}
                                 {% for annonce in annonces %}
+
                                     <article class="annonce-post-item rounded d-flex mb-3 shadow-sm--hover">
                                         <div class=" d-flex justify-content-center py-1 px-1">
                                             <img class="list-annonce-image"
@@ -151,7 +169,7 @@
                                             <div class="mb-auto ">
                                                 <div class="row">
                                                     <div class="col-6 text-truncate">
-                                                        <a class="list-annonce-place" href="#"><i
+                                                        <a class="list-annonce-place" href="{{ path('annonces', {'q': annonce.adress.city|lower}) }}"><i
                                                                     class="fas fa-map-marker-alt mr-2 text-main"></i>{{ annonce.adress.city|capitalize }}
                                                         </a>
                                                     </div>
@@ -294,12 +312,12 @@
                 }
             })
         }
+
         $reset = $('#resetForm');
         $reset.click(() => {
             $('form :input').val('');
             $(".selectpicker").selectpicker("refresh");
         });
-
         {#
             Récupèrer la liste des modèles d'une marque lorsqu'on fait une recherche et récupère une recherche
         #}
@@ -327,6 +345,8 @@
                             $('#model')
                                 .append(`<option value="${$item.toLowerCase()}">${$item}</option>`);
                         });
+                        $('#model')
+                            .selectpicker('refresh');
                     }
                     {#
                     Fixe le menu SELECT qui ne focus pas sur la bonne valeur; par rapport à l'URL
