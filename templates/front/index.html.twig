@@ -85,7 +85,7 @@
 
                                         <div class="tab-pane fade show active" id="v-pills-1" role="tabpanel"
                                              aria-labelledby="v-pills-nextgen-tab">
-                                            <form action="{{ path('annonces') }}" class="search-job">
+                                            <form action="{{ path('annonces') }}" class="search-annonce">
                                                 <div class="row no-gutters">
                                                     <div class="col-md mr-md-2">
                                                         <div class="form-group">
@@ -101,10 +101,8 @@
                                                         <div class="form-group">
                                                             <div class="form-field">
                                                                 <div class="select-wrap">
-                                                                    <div class="icon"><span
-                                                                                class="ion-ios-arrow-down"></span></div>
                                                                     <select name="make" id="make-filter"
-                                                                            class="selectpicker"
+                                                                            class="form-control selectpicker"
                                                                             data-live-search="true">
                                                                         <option value="">Marque</option>
                                                                         {% if makes is defined and makes is not empty %}
@@ -121,10 +119,8 @@
                                                         <div class="form-group">
                                                             <div class="form-field">
                                                                 <div class="select-wrap">
-                                                                    <div class="icon">
-                                                                        <span class="ion-ios-arrow-down"></span></div>
                                                                     <select name="model" id="model-select"
-                                                                            class="form-control">
+                                                                            class="form-control selectpicker">
                                                                         <option value="">Modèle</option>
                                                                         {% if models is defined and models is not empty %}
                                                                             {% for model in models %}
@@ -157,6 +153,36 @@
             </div>
         </div>
     </div>
+    <section class="py-3 ftco-counter">
+        <div class="container">
+            <div class="row">
+                <div class="col-6 col-lg-3 mb-3">
+                    <div class="text-center">
+                        <span class="d-block font-weight-bold text-dark number" style="font-size: xx-large" data-number="{{ annonces.getTotalItemCount }}">+ </span>
+                        <span class="d-block" style="font-size: medium">Annonces</span>
+                    </div>
+                </div>
+                <div class="col-6 col-lg-3 mb-3">
+                    <div class="text-center">
+                        <span class="d-block font-weight-bold text-dark number" style="font-size: xx-large" data-number="{{ makes|length}}"></span>
+                        <span class="d-block" style="font-size: medium">Marques</span>
+                    </div>
+                </div>
+                <div class="col-6 col-lg-3 mb-3">
+                    <div class="text-center">
+                        <span class="d-block font-weight-bold text-dark number" style="font-size: xx-large" data-number="{{ models |length}}"></span>
+                        <span class="d-block" style="font-size: medium">Modèles</span>
+                    </div>
+                </div>
+                <div class="col-6 col-lg-3 mb-3" >
+                    <div class="text-center">
+                        <span class="d-block font-weight-bold text-dark number" style="font-size: xx-large" data-number="25">+ </span>
+                        <span class="d-block" style="font-size: medium">Partenaires</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <section class="ftco-section">
         <div class="container">
@@ -191,39 +217,61 @@
     </section>
 
 
-    <section class="ftco-section bg-light">
+    <section class="ftco-section bg-light ftco-animate">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 ">
                     <div class="row justify-content-center pb-3">
                         <div class="col-md-12 heading-section ftco-animate">
                             <h2 class="mb-4">Les annonces les plus récents</h2>
+                            <p class="lead text-black-50">Nous vous proposons tous une série d'annonces afin de trouver
+                                la voiture qui vous
+                                correspond.</p>
                         </div>
                     </div>
                     <div class="row">
                         {% if annonces|length > 0 %}
                             {% for annonce in annonces %}
-                                <div class="col-12 col-md-12 col-lg-3 ftco-animate">
-                                    <div class="card annonce-post-item border-0 d-flex flex-column">
-                                        <img src="{% if annonce.image[0].url is iterable %}{{ annonce.image[0].url[0] }}{% else %} {{ annonce.image[0].url }} {% endif %}"
-                                             class="card-img-top" alt="Image de {{ annonce.make }} {{ annonce.model }}">
-                                        <div class="card-body">
-                                            <h5 class="card-title">{{ annonce.title }}</h5>
-                                            <h6 class="text-primary font-weight-bold card-subtitle">{{ annonce.price | number_format(0,'.','.') }}
-                                                €</h6>
-                                            <p class="card-text"><i
-                                                        class="fas fa-map-marker-alt mr-2 text-main"></i> {{ annonce.adress.city|capitalize }}
-                                            </p>
-                                            <a href="{{ path('annonce', {'slug': annonce.slug }) }}"
-                                               class="btn btn-outline-primary">Voir l'annonce</a>
+                                <div class="col-md-6 ftco-animate">
+
+
+                                    <div class="card mb-3" style="max-width: 540px;">
+                                        <div class="row no-gutters">
+                                            <div class="col-md-4">
+                                                <img src="{% if annonce.image[0].url is iterable %}{{ annonce.image[0].url[0] }}{% else %} {{ annonce.image[0].url }} {% endif %}"
+                                                     class="card-img" style="object-fit: contain"
+                                                     alt="Image de {{ annonce.make }} {{ annonce.model }}"">
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="card-body">
+                                                    <h5 class="card-title"><a class="text-dark"
+                                                                              href="{{ path('annonce', {'slug': annonce.slug }) }}"
+                                                                              title="Voir cette annonce : {{ annonce.make }} - {{ annonce.model }}">{{ annonce.title }}</a>
+                                                    </h5>
+                                                    <p class="card-text">This is a wider card with supporting text below
+                                                        as a natural lead-in to additional content. This content is a
+                                                        little bit longer.</p>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
+
                             {% endfor %}
+
                         {% else %}
+                            <div class="p-5 bg-gray d-flex justify-content-center align-items-center">
+                                <p><i class="fas fa-search mr-2"></i>Aucunes annonces ne correspond à vos critères.
+                                </p>
+                            </div>
+
 
                         {% endif %}
+
+
                     </div>
+                    <a href="{{ path('annonces') }}" class="text-dark font-weight-bold" title="Voir tous les annonces">Afficher
+                        tous les annonces ({{ annonces.getTotalItemCount }}) <i class="fa fa-arrow-right"></i></a>
                 </div>
                 <div class="col-lg-3 sidebar">
                     <!-- PUB -->
@@ -258,16 +306,25 @@
         $('#make-filter').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
             $.post('{{ path('api_fetchModelByMake') }}', {make: this.value, state: 'all'})
                 .done(function (data) {
-                    $('#model-select').empty();
-                    data.forEach((element) => {
-                        $('#model-select')
-                            .append(`<option value="${element.model.toLowerCase()}">${element.model}</option>`);
 
-                    });
+                    $('#model-select')
+                        .empty()
+                        .append(`<option value="">Modèle</option>`);
+                    if (data) {
+                        data.forEach((element) => {
+                            $item = element.model ? element.model : element;
+
+                            $('#model-select')
+                                .append(`<option value="${$item.toLowerCase()}">${$item}</option>`);
+                        });
+                        $('#model-select')
+                            .selectpicker('refresh');
+                    }
 
                 })
             ;
         });
+
 
     </script>
 

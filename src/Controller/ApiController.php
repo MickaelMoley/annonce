@@ -63,7 +63,7 @@ class ApiController extends AbstractController
      */
     public function fetchXML(EasyXml $myXml)
     {
-        $myXml->execute('uploads/facebook.xml', false);
+        $myXml->execute('https://www.vroomiz.fr/export/facebook/facebook.xml', false);
 
         return $this->render('front/fetch.html.twig', [
             'fetcher' => $myXml

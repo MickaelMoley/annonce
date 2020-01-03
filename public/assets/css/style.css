@@ -12921,29 +12921,29 @@ h5,
   margin-top: -9px;
 }
 
-.search-job .form-group {
+.search-annonce .form-group {
   position: relative;
   margin-bottom: 0;
 }
 
 @media (max-width: 767.98px) {
-  .search-job .form-group {
+  .search-annonce .form-group {
     margin-bottom: 10px;
   }
 }
 
-.search-job .form-group label {
+.search-annonce .form-group label {
   font-weight: 400;
   font-size: 16px;
   color: #000000;
 }
 
-.search-job .form-group .form-field {
+.search-annonce .form-group .form-field {
   position: relative;
   display: block;
 }
 
-.search-job .form-group .form-control {
+.search-annonce .form-group .form-control {
   padding-left: 30px;
   display: block;
   width: 100%;
@@ -12952,28 +12952,32 @@ h5,
   color: rgba(0, 0, 0, 0.7) !important;
   background: white !important;
 }
+.search-annonce .form-group .selectpicker.form-control{
+  margin-left: 0;
 
-.search-job .form-group .form-control::-webkit-input-placeholder {
+}
+
+.search-annonce .form-group .form-control::-webkit-input-placeholder {
   /* Chrome/Opera/Safari */
   color: rgba(0, 0, 0, 0.7) !important;
 }
 
-.search-job .form-group .form-control::-moz-placeholder {
+.search-annonce .form-group .form-control::-moz-placeholder {
   /* Firefox 19+ */
   color: rgba(0, 0, 0, 0.7) !important;
 }
 
-.search-job .form-group .form-control:-ms-input-placeholder {
+.search-annonce .form-group .form-control:-ms-input-placeholder {
   /* IE 10+ */
   color: rgba(0, 0, 0, 0.7) !important;
 }
 
-.search-job .form-group .form-control:-moz-placeholder {
+.search-annonce .form-group .form-control:-moz-placeholder {
   /* Firefox 18- */
   color: rgba(0, 0, 0, 0.7) !important;
 }
 
-.search-job .form-group .form-control.btn {
+.search-annonce .form-group .form-control.btn {
   padding: 0 !important;
   font-size: 16px;
   color: #fff !important;
@@ -12983,21 +12987,21 @@ h5,
   border-radius: 5px;
 }
 
-.search-job .form-group .form-control.btn.btn-primary {
+.search-annonce .form-group .form-control.btn.btn-primary {
   background: #206dfb !important;
 }
 
-.search-job .form-group .select-wrap {
+.search-annonce .form-group .select-wrap {
   position: relative;
 }
 
-.search-job .form-group .select-wrap select {
+.search-annonce .form-group .select-wrap select {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
 }
 
-.search-job .form-group .icon {
+.search-annonce .form-group .icon {
   position: absolute;
   top: 51%;
   left: 10px;

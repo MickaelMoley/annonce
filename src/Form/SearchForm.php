@@ -21,10 +21,7 @@ class SearchForm extends AbstractType
         $builder
             ->add('q', TextType::class, [
                 'label' => "Une idée ?",
-                'required' => false,
-                'attr' => [
-                    'placeholder' => 'ex : Peugeot'
-                ]
+                'required' => false
             ])
             ->add('make', ChoiceType::class, [
                 'required' => false,

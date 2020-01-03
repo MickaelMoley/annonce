@@ -149,11 +149,11 @@
 
 
                     <h2 class="mb-3 font-weight-medium a-title">{{ annonce.title }}</h2>
+
+                    <h4 class="text-primary">{% if annonce.price is not empty %} {{ annonce.price | number_format(2,'.',',') }} € {% else %} Le prix n'a pas été défini. Contacter le vendeur {% endif %} </h4>
                     <p style="color: #2D3748;"><i
                                 class="fa fa-map-marker mr-2"></i>{% if annonce.adress is not empty %}{{ annonce.adress['city'] }}, {{ annonce.adress['postal_code'] }}{% else %} Non spécifié*{% endif %}
                     </p>
-                    <h4 class="text-primary">{% if annonce.price is not empty %} {{ annonce.price | number_format(2,'.',',') }} € {% else %} Le prix n'a pas été défini. Contacter le vendeur {% endif %} </h4>
-
                     <hr>
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                         <li class="nav-item">
@@ -167,7 +167,8 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" id="note-tab" data-toggle="tab" href="#note" role="tab"
-                               aria-controls="note" aria-selected="false" title="Voir la note du vendeur">Note de vendeur</a>
+                               aria-controls="note" aria-selected="false" title="Voir la note du vendeur">Note de
+                                vendeur</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" id="localisation-tab" data-toggle="tab" href="#localisation" role="tab"
@@ -277,8 +278,12 @@
                     <hr>{% set currentPath = path(app.request.attributes.get('_route'),
                         app.request.attributes.get('_route_params')) %}
                     <div class="d-flex justify-content-between">
-                        <a href="javascript:window.print()" class="mr-3  text-body"><i class="fa fa-print mr-2 " title="Imprimer l'annonce"></i>Imprimer l'annonce</a>
-                        <a class="text-body" href="mailto:?subject=Annonce%20de%20Pubauto%20-%20{{ annonce.make }}%20{{ annonce.model }}&body=Bonjour,je%20t'envoie%20l'annonce%20de%20PubAuto.Jete%20un%20coup%20d'oeil.&#10;Voici%20le%20lien%20:{{ app.request.getSchemeAndHttpHost ~ annonce.slug }}"><i class="fa fa-envelope mr-2"></i>Partager par mail</a>
+                        <a href="javascript:window.print()" class="mr-3  text-body"><i class="fa fa-print mr-2 "
+                                                                                       title="Imprimer l'annonce"></i>Imprimer
+                            l'annonce</a>
+                        <a class="text-body"
+                           href="mailto:?subject=Annonce%20de%20Pubauto%20-%20{{ annonce.make }}%20{{ annonce.model }}&body=Bonjour,je%20t'envoie%20l'annonce%20de%20PubAuto.Jete%20un%20coup%20d'oeil.&#10;Voici%20le%20lien%20:{{ app.request.getSchemeAndHttpHost ~ annonce.slug }}"><i
+                                    class="fa fa-envelope mr-2"></i>Partager par mail</a>
                     </div>
                     <hr>
                 </div>
@@ -287,11 +292,15 @@
                         <div class="card  shadow-sm" style="border: none;border-top: 4px blue solid;">
                             <div class="card-header">
                                 <div class="media">
-                                    <img src="https://via.placeholder.com/50" class="align-self-start mr-3 img-thumbnail" alt="Image avatar {{ annonce.dealer.dealerName }}">
+                                    <img src="https://via.placeholder.com/50"
+                                         class="align-self-start mr-3 img-thumbnail"
+                                         alt="Image avatar {{ annonce.dealer.dealerName }}">
                                     <div class="media-body">
-                                        <a href="{{ path('dealer_store', { 'slug': annonce.dealer.slug}) }}" data-toggle="tooltip" data-placement="top" title="Voir la boutique">
+                                        <a href="{{ path('dealer_store', { 'slug': annonce.dealer.slug}) }}"
+                                           data-toggle="tooltip" data-placement="top" title="Voir la boutique">
                                             <h5 class="mt-0">{{ annonce.dealer.dealerName }}</h5>
-                                            <h6 class="font-weight-medium">{{ annonce.dealer.annonces|length}} annonces en lignes</h6>
+                                            <h6 class="font-weight-medium">{{ annonce.dealer.annonces|length }} annonces
+                                                en lignes</h6>
 
                                         </a>
                                     </div>
@@ -335,19 +344,30 @@
 
 
                         {% for annonce in annonces %}
-                         <div class="block-21 mb-4 d-flex">
-                             <a class="blog-img mr-4" style="background-image: url({% if annonce.image[0].url is iterable %}{{ annonce.image[0].url[0] }}{% else %} {{ annonce.image[0].url }} {% endif %});"></a>
-                             <div class="text">
-                                 <h3 class="heading"><a href="{{ path('annonce', {'slug' : annonce.slug}) }}">{{ annonce.title }}</a>
-                                 </h3>
-                                 <div class="meta">
-                                     <div><a href="{{ path('annonces', { 'minKilometer': annonce.mileage}) }}"><{% if annonce.mileage is not empty %}i class="fas fa-road "></i> {{ annonce.mileage | number_format(0,'',' ') }} km{% else %} Non spécifié*{% endif %}</a></div>
-                                     <div><a href="{{ path('annonces', { 'transmission' : annonce.transmission|lower}) }}">{% if annonce.transmission is not empty %}<i class="fas fa-road "></i> {{ annonce.transmission }}{% else %} Non spécifié*{% endif %}</a></div>
-                                     <div><a href="{{ path('annonces', { 'minYear' : annonce.year, 'maxYear': annonce.year}) }}">{% if annonce.year is not empty %}<i class="fas fa-calendar "></i> {{ annonce.year }}{% else %} Non spécifié*{% endif %}</a></div>
-                                 </div>
-                             </div>
-                         </div>
-                     {% endfor %}
+                            <div class="block-21 mb-4 d-flex">
+                                <a class="blog-img mr-4"
+                                   style="background-image: url({% if annonce.image[0].url is iterable %}{{ annonce.image[0].url[0] }}{% else %} {{ annonce.image[0].url }} {% endif %});"></a>
+                                <div class="text">
+                                    <h3 class="heading"><a
+                                                href="{{ path('annonce', {'slug' : annonce.slug}) }}">{{ annonce.title }}</a>
+                                    </h3>
+                                    <div class="meta">
+                                        <div>
+                                            <a href="{{ path('annonces', { 'minKilometer': annonce.mileage}) }}"><{% if annonce.mileage is not empty %}i
+                                                        class="fas fa-road "></i> {{ annonce.mileage | number_format(0,'',' ') }}
+                                                km{% else %} Non spécifié*{% endif %}</a></div>
+                                        <div>
+                                            <a href="{{ path('annonces', { 'transmission' : annonce.transmission|lower}) }}">{% if annonce.transmission is not empty %}
+                                                    <i class="fas fa-cogs "></i> {{ annonce.transmission }}{% else %} Non spécifié*{% endif %}
+                                            </a></div>
+                                        <div>
+                                            <a href="{{ path('annonces', { 'minYear' : annonce.year, 'maxYear': annonce.year}) }}">{% if annonce.year is not empty %}
+                                                    <i class="fas fa-calendar "></i> {{ annonce.year }}{% else %} Non spécifié*{% endif %}
+                                            </a></div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
 
 
                     </div>

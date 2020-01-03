@@ -67,11 +67,12 @@ class EasyXml
         $lists = $this->JSON_file->listing;
 
 
-        for ($i = 0; $i < count($lists); $i++) { //count($lists)
+        for ($i = 0; $i < 250; $i++) { //count($lists)
 
             $annonce = $this->annonceRepo->findOneBy(['vehicle_id' => $lists[$i]->vehicle_id]);
 
             if ($annonce) {
+                return;
                 $this->updateAnnonce($annonce, $lists[$i]);
             } else {
                 $this->newAnnonce($lists[$i]);
@@ -108,7 +109,14 @@ class EasyXml
         $annonce->setPrice(str_replace(' EUR', "", $updateAnnonce->price));
 
         if(isset($updateAnnonce->features->feature)){
-            $annonce->setFeatures($updateAnnonce->features->feature);
+            if(is_string($updateAnnonce->features->feature)){ /* Si c'est un string alors on crée une variable de type ARRAY et on push le string dans la variable $re|Array et on le 'set' à l'entity */
+                $re = [];
+                array_push($re, $updateAnnonce->features->feature);
+                $annonce->setFeatures($re);
+            }
+            else{/* Sinon si c'est un array, on 'set' l'array directement à l'entity */
+                $annonce->setFeatures($updateAnnonce->features->feature);
+            }
         }
 
         $dealer->setDealerName($updateAnnonce->dealer_name);
@@ -182,7 +190,14 @@ class EasyXml
 
 
         if(isset($data->features->feature)){
-            $annonce->setFeatures($data->features->feature);
+            if(is_string($data->features->feature)){ /* Si c'est un string alors on crée une variable de type ARRAY et on push le string dans la variable $re|Array et on le 'set' à l'entity */
+                $re = [];
+                array_push($re, $data->features->feature);
+                $annonce->setFeatures($re);
+            }
+            else{/* Sinon si c'est un array, on 'set' l'array directement à l'entity */
+                $annonce->setFeatures($data->features->feature);
+            }
         }
 
         $annonce->setAdress([
@@ -193,15 +208,25 @@ class EasyXml
             'postal_code' => $data->address->component[4]
         ]);
 
-        $annonce->setLatitude($data->latitude);
+        if(is_string($data->latitude)){
+            $annonce->setLatitude($data->latitude);
+        }
+        else
+        {
+            $annonce->setLatitude('');
+        }
+
         $annonce->setLongitude($data->longitude);
         $annonce->setExteriorColor($data->exterior_color);
         $annonce->setStateOfVehicle($data->state_of_vehicle);
 
+        /*Avec la mise en place de l'entité Dealer, on garde malgré tous le dealer_id de l'export dans l'entity Annonce pour le filtre de recherche */
+
         $annonce->setDealerRef(str_replace('vobiz_', "", $data->dealer_id));
 
-
+    /* 2.{dealer}  On spécifié ici le 'dealer' auquel on souhaite l'attribué - voir 1.{dealer}*/
         $annonce->setDealer($dealer);
+
         $annonce->setFbPageId($data->fb_page_id);
         $annonce->setDealerCommunicationChannel($data->dealer_communication_channel);
         $annonce->setDealerPrivacyPolicyUrl($data->dealer_privacy_policy_url);

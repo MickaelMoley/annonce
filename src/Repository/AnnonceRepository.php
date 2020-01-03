@@ -69,16 +69,7 @@ class AnnonceRepository extends ServiceEntityRepository
                 ->andWhere('p.fuel_type LIKE :fuelType')
                 ->setParameter('fuelType', "%$searchData->fuelType%");
         }
-        if (!empty($searchData->minKilometer) && $ignoreFilter === false) {
-            $query = $query
-                ->andWhere('p.mileage >= :minKilometer')
-                ->setParameter('minKilometer', $searchData->minKilometer);
-        }
-        if (!empty($searchData->maxKilometer) && $ignoreFilter === false) {
-            $query = $query
-                ->andWhere('p.mileage <= :maxKilometer')
-                ->setParameter('maxKilometer', $searchData->maxKilometer);
-        }
+
         if (!empty($searchData->transmission)) {
             $query = $query
                 ->andWhere('p.transmission LIKE :transmission')
@@ -103,6 +94,18 @@ class AnnonceRepository extends ServiceEntityRepository
             $query = $query
                 ->andWhere('p.year <= :maxYear')
                 ->setParameter('maxYear', $searchData->maxYear);
+        }
+
+        if(!empty($searchData->minKilometer) and $ignoreFilter === false){
+            $query = $query
+                ->andWhere('p.mileage >= :minKilometer')
+                ->setParameter('minKilometer', $searchData->minKilometer);
+        }
+
+        if(!empty($searchData->maxKilometer && $ignoreFilter === false)){
+            $query = $query
+                ->andWhere('p.mileage <= :maxKilometer')
+                ->setParameter('maxKilometer', $searchData->maxKilometer);
         }
         if (!empty($searchData->dealer_id)) {
             $query = $query
@@ -152,6 +155,8 @@ class AnnonceRepository extends ServiceEntityRepository
             ->select('MIN(p.mileage) as min', 'MAX(p.mileage) as max')
             ->getQuery()
             ->getScalarResult();
+
+        dump($result);
         return [$result[0]['min'], $result[0]['max']];
     }
 
