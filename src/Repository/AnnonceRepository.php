@@ -24,7 +24,7 @@ class AnnonceRepository extends ServiceEntityRepository
     /**
      * Récupère la liste des annonces
      * @param SearchData $searchData
-     * @param bool $ignorePrice
+     * @param bool $ignoreFilter
      * @return QueryBuilder
      */
     private function getSearchQuery(SearchData $searchData, $ignoreFilter = false): QueryBuilder
@@ -49,6 +49,7 @@ class AnnonceRepository extends ServiceEntityRepository
                  OR dealer.dealer_name LIKE :q')
                 ->setParameter('q', "%$searchData->q%");
         }
+
         if (!empty($searchData->make)) {
             $query = $query
                 ->andWhere('p.make LIKE :make')
@@ -96,23 +97,26 @@ class AnnonceRepository extends ServiceEntityRepository
                 ->setParameter('maxYear', $searchData->maxYear);
         }
 
-        if(!empty($searchData->minKilometer) and $ignoreFilter === false){
+     if(!empty($searchData->minMileage) && $ignoreFilter === false){
             $query = $query
-                ->andWhere('p.mileage >= :minKilometer')
-                ->setParameter('minKilometer', $searchData->minKilometer);
+                ->andWhere('p.mileage >= :minMileage')
+                ->setParameter('minMileage', $searchData->minMileage);
         }
 
-        if(!empty($searchData->maxKilometer && $ignoreFilter === false)){
+
+        if(!empty($searchData->maxMileage && $ignoreFilter === false)){
             $query = $query
-                ->andWhere('p.mileage <= :maxKilometer')
-                ->setParameter('maxKilometer', $searchData->maxKilometer);
+                ->andWhere('p.mileage <= :maxMileage')
+                ->setParameter('maxMileage', $searchData->maxMileage);
         }
+
         if (!empty($searchData->dealer_id)) {
             $query = $query
                 ->andWhere('p.dealer_ref = :dealerId')
                 ->setParameter('dealerId', $searchData->dealer_id);
         }
-        return $query;
+
+            return $query;
     }
 
     /**

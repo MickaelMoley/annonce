@@ -22,14 +22,10 @@
 
         <link rel="stylesheet" href="{{ asset('assets/css/ionicons.min.css') }}">
 
-        <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker.css') }}">
-        <link rel="stylesheet" href="{{ asset('assets/css/jquery.timepicker.css') }}">
-
-
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css">
         <link rel="stylesheet" href="{{ asset('assets/css/flaticon.css') }}">
         <link rel="stylesheet" href="{{ asset('assets/css/icomoon.css') }}">
-        <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css">
+        <link rel="stylesheet" href="{{ asset('assets/scss/style.css') }}">
 
 
     {% endblock %}
@@ -95,7 +91,8 @@
                 <p>
                     Copyright &copy;<script>
                         document.write(new Date().getFullYear());
-                    </script> Mention légales | Conditions générales
+                    </script>
+                    <a href="{{ path('mentions_legales') }}" title="Voir les mentions légales">Mention légales</a>
                 </p>
             </div>
         </div>

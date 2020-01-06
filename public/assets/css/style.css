@@ -12944,7 +12944,7 @@ h5,
 }
 
 .search-annonce .form-group .form-control {
-  padding-left: 30px;
+  padding-left: 0;
   display: block;
   width: 100%;
   font-size: 14px;
@@ -12955,6 +12955,10 @@ h5,
 .search-annonce .form-group .selectpicker.form-control{
   margin-left: 0;
 
+}
+
+.search-annonce .form-group input[name="q"]{
+  padding-left: 30px;
 }
 
 .search-annonce .form-group .form-control::-webkit-input-placeholder {
@@ -14505,30 +14509,29 @@ textarea.form-control {
   border: 1px solid #ced4da;
 }
 
-/* The Modal (background) */
 .modal {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 999; /* Sit on top */
+  display: none;
+  position: fixed;
+  z-index: 999;
   left: 0;
   top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0,0,0);
+  background-color: rgba(0,0,0,0.4);
 }
 
-/* Modal Content/Box */
+
 .modal-content {
   background-color: #fefefe;
-  margin: 15% auto; /* 15% from the top and centered */
+  margin: 15% auto;
   padding: 20px;
   border: 1px solid #888;
-  width: 80%; /* Could be more or less, depending on screen size */
+  width: 80%;
 }
 
-/* The Close Button */
+
 .close {
   color: #aaa;
   float: right;
@@ -14586,4 +14589,15 @@ textarea.form-control {
 
   margin: 0 -1.5rem;
   padding: 0.5rem 1.5rem;
+}
+
+
+#toTop{
+
+  position: fixed;
+  right: 10vw;
+  top: 75vh;
+  z-index: 999;
+
+  background: rgba(255,150,15,1);
 }

@@ -202,6 +202,7 @@ class FrontController extends AbstractController
          * Construire le filtre par rapport à la base de donnée
          */
         [$minPrice, $maxPrice] = $annonceRepository->findMinMaxPrice($data);
+        [$minKilometer, $maxKilometer] = $annonceRepository->findMinMaxKilometer($data);
         [$minYear, $maxYear] = $annonceRepository->findMinMaxYear($data);
         $makes = $annonceRepository->findMake($data->dealer_id);
         $models = $annonceRepository->findModel($data->dealer_id);
@@ -232,6 +233,8 @@ class FrontController extends AbstractController
             'form' => $form->createView(),
             'minPrice' => $minPrice,
             'maxPrice' => $maxPrice,
+            'minKilometer' => $minKilometer,
+            'maxKilometer' => $maxKilometer,
             'minYear' => $minYear,
             'maxYear' => $maxYear,
             'makes' => $makes,
@@ -239,5 +242,14 @@ class FrontController extends AbstractController
         ]);
     }
 
+    /**
+     * @Route("/rgpd", name="mentions_legales")
+     * @return Response
+     */
+    public function rgpd() : Response
+    {
+
+        return $this->render('front/rgpd.html.twig');
+    }
 
 }

@@ -72,16 +72,22 @@ class SearchData
     /**
      * @var null|integer
      */
-    public $minKilometer;
+    public $minMileage;
 
     /**
      * @var null|integer
      */
-    public $maxKilometer;
+    public $maxMileage;
 
     /**
      * @var string
      */
     public $dealer_id;
+
+
+    /**
+     * @var string
+     */
+    public $sorting;
 
 }
