@@ -294,18 +294,25 @@
             $(".selectpicker").selectpicker("refresh");
         });
 
+        $(document).ready(() => {
+            fetchModelByMake($('#make').val());
+            console.log("first : ")
+        });
+
         /*
         * Récupèrer la liste des modèles d'une marque lorsqu'on fait une recherche et récupère une recherche
         * */
         $('#make').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
             fetchModelByMake(this.value);
+            console.log("change : ")
         });
 
         function fetchModelByMake(value) {
             $.post('{{ path('api_fetchModelByMake') }}', {make: value, dealer_id: {{ dealer.dealerRef }}, state: 'xxx'})
                 .done(function (data) {
-                    $('#model').empty();
+                    console.log(data);
                     $('#model')
+                        .empty()
                         .append(`<option value="">Modèle</option>`);
                     if (data) {
                         data.forEach((element) => {
