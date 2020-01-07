@@ -3,11 +3,12 @@
 {% block head %}
     {{ parent() }}
 
-    <meta name="description" content="{{ dealer.dealerName }} - Liste de véhicules uniquement proposés par {{ dealer.dealerName }}. Le filtre a été construit pour vous simplifier la tâche.">
+    <meta name="description"
+          content="{{ dealer.dealerName }} - Liste de véhicules uniquement proposés par {{ dealer.dealerName }}. Le filtre a été construit pour vous simplifier la tâche.">
     <meta name="keywords" content="{{ dealer.dealerName }}, {{ dealer.dealerPhone }}, vehicule, rechercher
-    {% if app.request.get('q') is not empty %}, {{ app.request.get ('q')}} {% endif %}
-    {% if app.request.get('make') is not empty %}, {{ app.request.get ('make')}} {% endif %}
-    {% if app.request.get('model') is not empty %}, {{ app.request.get ('model')}} {% endif %}">
+    {% if app.request.get('q') is not empty %}, {{ app.request.get ('q') }} {% endif %}
+    {% if app.request.get('make') is not empty %}, {{ app.request.get ('make') }} {% endif %}
+    {% if app.request.get('model') is not empty %}, {{ app.request.get ('model') }} {% endif %}">
 {% endblock %}
 {% block stylesheets %}
     {{ parent() }}
@@ -25,7 +26,8 @@
             <div class="row no-gutters slider-text align-items-start align-items-lg-center justify-content-start">
                 <div class="col-md-12 ftco-animate text-center mt-5 mt-lg-0 mb-lg-5">
                     <p class="breadcrumbs mb-0"><span class="mr-3">
-                            <a href="{{ path('home') }}" title="Accéder à la page d'accueil">Accueil <i class="ion-ios-arrow-forward"></i></a></span> <span>Annonces</span></p>
+                            <a href="{{ path('home') }}" title="Accéder à la page d'accueil">Accueil <i
+                                        class="ion-ios-arrow-forward"></i></a></span> <span>Annonces</span></p>
                     <h1 class="mb-3 bread">Store</h1>
                 </div>
             </div>
@@ -37,7 +39,8 @@
                 <div class="col">
                     <div class="media">
                         <img src="{{ asset('assets/images/partenaire-vroomiz.png') }}" width="75px"
-                             class="align-self-start mr-3 img-thumbnail" alt="Logo de partenaire Vroomiz" title="Logo de partenaire Vroomiz">
+                             class="align-self-start mr-3 img-thumbnail" alt="Logo de partenaire Vroomiz"
+                             title="Logo de partenaire Vroomiz">
                         <div class="media-body">
                             <h5 class="mt-0">{{ dealer.dealerName }}</h5>
                             <h6 class="text-primary font-weight-medium">{{ dealer.annonces|length }} annonces en
@@ -46,17 +49,60 @@
                         </div>
                     </div>
                     <hr>
-                    <p style="margin-bottom: 0">
-                       <a href="https://maps.google.com/maps?q={{ dealer.annonces[0].latitude }},{{ dealer.annonces[0].longitude }}&hl=fr"
-                       title="Voir l'emplacement de l'annonce" class="text-dark">
-                           <i class="fas fa-map-marker-alt mr-2 text-primary" aria-hidden="true"></i>
-                            {{ dealer.annonces[0].adress.city ~ " " ~ dealer.annonces[0].adress.region ~ ", " ~ dealer.annonces[0].adress.postal_code }}</a>
-                        <a href="tel:{{ dealer.dealerPhone }}" title="Appeler le vendeur" class="text-dark"><i class="fa fa-phone ml-3 mr-2  text-primary"></i>{{ dealer.dealerPhone }}</a>
+                    <div class="d-flex justify-content-between">
+                        <p style="margin-bottom: 0">
+                            <a href="https://maps.google.com/maps?q={{ dealer.annonces[0].latitude }},{{ dealer.annonces[0].longitude }}&hl=fr"
+                               title="Voir l'emplacement de l'annonce" class="text-dark">
+                                <i class="fas fa-map-marker-alt mr-2 text-primary" aria-hidden="true"></i>
+                                {{ dealer.annonces[0].adress.city ~ " " ~ dealer.annonces[0].adress.region ~ ", " ~ dealer.annonces[0].adress.postal_code }}
+                            </a>
+                            <a href="tel:{{ dealer.dealerPhone }}" title="Appeler le vendeur" class="text-dark"><i
+                                        class="fa fa-phone ml-3 mr-2  text-primary"></i>{{ dealer.dealerPhone }}</a>
 
-                    </p>
+                        </p>
+                       <div class="d-none d-lg-block d-lg-flex justify-content-between align-items-center">
+                            <span class=" text-dark font-weight-medium mr-3">
+                                <span class="text-primary">{{ annonces.totalItemCount }}</span>
+                                    résultat(s)
+                                    {% if app.request.get('q') is not empty %}  {{ app.request.get('q') }}{% endif %}
+                                {% if app.request.get('make') is not empty %} - {{ app.request.get('make')|capitalize }}{% endif %}
+                                {% if app.request.get('model') is not empty %} {{ app.request.get('model')|capitalize }}{% endif %}
+                                {% if app.request.get('sort') is not empty and app.request.get('direction') is not empty %} -
+                                    {% set category = app.request.get('sort')|split('.')[1] %}
+                                    {% set direction = app.request.get('direction') %}
+                                    {% if category == 'price' %}
+                                        {% if direction == 'asc' %}
+                                            Prix croissant
+                                        {% else %}
+                                            Prix décroissant
+                                        {% endif %}
+                                    {% endif %}
 
-                    {% for message in app.flashes('success') %}
-                        <div class="alert alert-success mt-2">
+                                    {% if category == 'mileage' %}
+                                        {% if direction == 'asc' %}
+                                            Kilométrage croissant
+                                        {% else %}
+                                            Kilométrage décroissant
+                                        {% endif %}
+                                    {% endif %}
+                                {% endif %}
+                            </span>
+                           <div class="dropdown">
+                               <button class="btn btn-outline-dark btn-round dropdown-toggle" type="button" id="filter"
+                                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                   Trier par
+                               </button>
+                               <div class="dropdown-menu" aria-labelledby="filter">
+                                   {{ knp_pagination_sortable(annonces, 'Prix +/-', 'p.title') }}
+                                   {{ knp_pagination_sortable(annonces, 'Prix +/-', 'p.price') }}
+                                   {{ knp_pagination_sortable(annonces, 'Kilométrage +/-', 'p.mileage') }}
+                               </div>
+                           </div>
+                       </div>
+                    </div>
+
+                    {% for message in app.flashes('error') %}
+                        <div class="alert alert-error mt-2">
                             {{ message }}
                         </div>
                     {% endfor %}
@@ -64,11 +110,22 @@
             </div>
         </div>
     </div>
-    <div class="d-flex d-lg-none mt-3 p-3 justify-content-end">
+    <div class="d-flex d-lg-none mt-3 p-3 justify-content-between justify-content-lg-end">
         <button class="btn btn-outline-dark btn-round " id="showFilter">
             <i class="fas fa-search mr-2"></i>
             Plus de filtre
         </button>
+        <div class="dropdown">
+            <button class="btn btn-outline-dark dropdown-toggle" type="button" id="filter"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Trier par
+            </button>
+            <div class="dropdown-menu" aria-labelledby="filter">
+
+                {{ knp_pagination_sortable(annonces, 'Prix +/-', 'p.price') }}
+                {{ knp_pagination_sortable(annonces, 'Kilométrage +/-', 'p.mileage') }}
+            </div>
+        </div>
     </div>
     <section class="ftco-section bg-light">
         <div class="container">
@@ -153,16 +210,43 @@
                 <div class="col-lg-8 pr-lg-4">
                     <div class="row">
                         <div class="col-md-12 ftco-animate">
+                            <span class="mb-3 d-lg-none text-dark font-weight-medium">
+                                <span class="text-primary">{{ annonces.totalItemCount }}</span>
+                                    résultat(s)
+                                    {% if app.request.get('q') is not empty %}  {{ app.request.get('q') }}{% endif %}
+                                {% if app.request.get('make') is not empty %} - {{ app.request.get('make')|capitalize }}{% endif %}
+                                {% if app.request.get('model') is not empty %} {{ app.request.get('model')|capitalize }}{% endif %}
+                                {% if app.request.get('sort') is not empty and app.request.get('direction') is not empty %} -
+                                    {% set category = app.request.get('sort')|split('.')[1] %}
+                                    {% set direction = app.request.get('direction') %}
+                                    {% if category == 'price' %}
+                                        {% if direction == 'asc' %}
+                                            Prix croissant
+                                        {% else %}
+                                            Prix décroissant
+                                        {% endif %}
+                                    {% endif %}
 
+                                    {% if category == 'mileage' %}
+                                        {% if direction == 'asc' %}
+                                            Kilométrage croissant
+                                        {% else %}
+                                            Kilométrage décroissant
+                                        {% endif %}
+                                    {% endif %}
+                                {% endif %}
+                            </span>
                             {% if annonces|length > 0 %}
                                 {% for annonce in annonces %}
                                     <article class="annonce-post-item rounded d-flex mb-3 shadow-sm--hover">
-                                        <a href="{{ path('annonce', {'slug': annonce.slug }) }}" title="Voir l'annonce {{ annonce.title }}">
+                                        <a href="{{ path('annonce', {'slug': annonce.slug }) }}"
+                                           title="Voir l'annonce {{ annonce.title }}">
                                             <div class=" d-flex justify-content-center py-1 px-1">
                                                 <img class="list-annonce-image"
                                                      src="{% if annonce.image[0].url is iterable %}{{ annonce.image[0].url[0] }}{% else %} {{ annonce.image[0].url }} {% endif %}"
                                                      style="object-fit: cover;"
-                                                     alt="Image de {{ annonce.make }} {{ annonce.model }}" title="Image de {{ annonce.make }} {{ annonce.model }}">
+                                                     alt="Image de {{ annonce.make }} {{ annonce.model }}"
+                                                     title="Image de {{ annonce.make }} {{ annonce.model }}">
                                             </div>
                                             <div class="d-flex flex-column align-content-around bg-white py-2 px-2 w-100">
                                                 <a class="list-annonce-title font-weight-medium"
@@ -172,13 +256,16 @@
                                                 <div class="mb-auto ">
                                                     <div class="row">
                                                         <div class="col-6 text-truncate">
-                                                            <a class="list-annonce-place" href="https://maps.google.com/maps?q={{ annonce.latitude }},{{ annonce.longitude }}&hl=fr" title="Voir l'emplacement de l'annonce"><i
+                                                            <a class="list-annonce-place"
+                                                               href="https://maps.google.com/maps?q={{ annonce.latitude }},{{ annonce.longitude }}&hl=fr"
+                                                               title="Voir l'emplacement de l'annonce"><i
                                                                         class="fas fa-map-marker-alt mr-2 text-main"></i>{{ annonce.adress.city|capitalize }}
                                                             </a>
                                                         </div>
                                                         <div class="col-6 text-right text-truncate">
                                                             <a class="list-annonce-entity"
-                                                               href="{{ path('dealer_store', { 'slug' : dealer.slug }) }}" title="Voir la boutique du vendeur">{{ dealer.dealerName|capitalize }}</a>
+                                                               href="{{ path('dealer_store', { 'slug' : dealer.slug }) }}"
+                                                               title="Voir la boutique du vendeur">{{ dealer.dealerName|capitalize }}</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -339,9 +426,6 @@
             fetchModelByMake($('#make').val());
         });
 
-        /*
-        * Récupèrer la liste des modèles d'une marque lorsqu'on fait une recherche et récupère une recherche
-        * */
         $('#make').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
             fetchModelByMake(this.value);
         });
@@ -349,7 +433,6 @@
         function fetchModelByMake(value) {
             $.post('{{ path('api_fetchModelByMake') }}', {make: value, dealer_id: {{ dealer.dealerRef }}, state: 'xxx'})
                 .done(function (data) {
-                    console.log(data);
                     $('#model')
                         .empty()
                         .append(`<option value="">Modèle</option>`);

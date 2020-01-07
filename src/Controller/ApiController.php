@@ -2,10 +2,8 @@
 
 namespace App\Controller;
 
-use App\Data\SearchData;
 use App\Repository\AnnonceRepository;
 use App\Services\EasyXml;
-use PhpParser\Node\Expr\Array_;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,8 +24,6 @@ class ApiController extends AbstractController
             $data['make']= $request->get('make');
             $data['dealerId'] = $request->get('dealer_id');
             $data['state'] = $request->get('state');
-
-
 
             $annonce = null;
 
@@ -50,9 +46,7 @@ class ApiController extends AbstractController
         }
 
 
-        return $this->render('api/index.html.twig', [
-            'annonce' => $annonce
-        ]);
+        return $this->render('api/index.html.twig');
     }
 
     /**
@@ -63,7 +57,7 @@ class ApiController extends AbstractController
      */
     public function fetchXML(EasyXml $myXml)
     {
-        $myXml->execute('https://www.vroomiz.fr/export/facebook/facebook.xml', false);
+        $myXml->execute('https://www.vroomiz.fr/export/facebook/facebook.xml', true, 'update');
 
         return $this->render('front/fetch.html.twig', [
             'fetcher' => $myXml

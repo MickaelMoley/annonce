@@ -8,8 +8,8 @@
 
         <div class="collapse navbar-collapse" id="ftco-nav">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item active"><a href="{{ path('home') }}" class="nav-link">Accueil</a></li>
-                <li class="nav-item"><a href="{{ path('annonces') }}" class="nav-link">Parcourir les annonces</a></li>
+                <li class="nav-item {% if app.request.get('_route') == 'home'%} active {% endif %}"><a href="{{ path('home') }}" class="nav-link">Accueil</a></li>
+                <li class="nav-item {% if app.request.get('_route') == 'annonces'%} active {% endif %}"><a href="{{ path('annonces') }}" class="nav-link">Parcourir les annonces</a></li>
                 {#<li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>#}
                 <li class="nav-item cta cta-colored"><a href="{{ path('deposer') }}" class="nav-link">Déposer une
                         annonce</a></li>

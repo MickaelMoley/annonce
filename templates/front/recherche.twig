@@ -18,15 +18,16 @@
 
 
     <div class="hero-wrap hero-wrap-2"
-         style="background-image: url({{ asset('assets/images/bg.jpg') }});background-position: 50% 85%;"
+         style="background-image: url({{ asset('assets/images/bg.jpg') }});background-position: 50% 85%;height: 24vh !important;"
          data-stellar-background-ratio="0.5">
         <div class="overlay"></div>
         <div class="container">
-            <div class="row no-gutters slider-text align-items-end justify-content-start">
-                <div class="col-md-12 ftco-animate text-center mb-5">
-                    <p class="breadcrumbs mb-0"><span class="mr-3"><a href="index.html">Accueil <i
+            <div class="row no-gutters slider-text align-items-start align-items-lg-center justify-content-start">
+                <div class="col-md-12 ftco-animate text-center mt-5 mt-lg-0 mb-lg-5">
+                    <p class="breadcrumbs mb-0"><span class="mr-3">
+                            <a href="{{ path('home') }}" title="Accéder à la page d'accueil">Accueil <i
                                         class="ion-ios-arrow-forward"></i></a></span> <span>Annonces</span></p>
-                    <h1 class="mb-3 bread">Trouver un véhicule</h1>
+                    <h1 class="mb-3 bread">Trouve un véhicule</h1>
                 </div>
             </div>
         </div>
@@ -47,6 +48,26 @@
                         {% if app.request.get('q') is not empty %}  {{ app.request.get('q') }}{% endif %}
                         {% if app.request.get('make') is not empty %} - {{ app.request.get('make')|capitalize }}{% endif %}
                         {% if app.request.get('model') is not empty %} {{ app.request.get('model')|capitalize }}{% endif %}
+                        {% if app.request.get('sort') is not empty and app.request.get('direction') is not empty %} -
+                            {% set category = app.request.get('sort')|split('.')[1] %}
+                            {% set direction = app.request.get('direction') %}
+                            {% if category == 'price' %}
+                                {% if direction == 'asc' %}
+                                    Prix croissant
+                                {% else %}
+                                    Prix décroissant
+                                {% endif %}
+                            {% endif %}
+
+                            {% if category == 'mileage' %}
+                                {% if direction == 'asc' %}
+                                    Kilométrage croissant
+                                {% else %}
+                                    Kilométrage décroissant
+                                {% endif %}
+                            {% endif %}
+                        {% endif %}
+
                     </span>
                     <div class="dropdown">
                         <button class="btn btn-outline-dark dropdown-toggle" type="button" id="filter"
@@ -54,9 +75,9 @@
                             Trier par
                         </button>
                         <div class="dropdown-menu" aria-labelledby="filter">
-                            <a class="dropdown-item" href="#">+ récents</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <a class="dropdown-item" href="#">Something else here</a>
+
+                            {{ knp_pagination_sortable(annonces, 'Prix +/-', 'p.price') }}
+                            {{ knp_pagination_sortable(annonces, 'Kilométrage +/-', 'p.mileage') }}
                         </div>
                     </div>
                 </div>
@@ -126,7 +147,7 @@
                                     {{ form_widget(form.maxPrice, { 'attr': { 'class': ' ml-1 w-50', 'title': "Prix maximun" }}) }}
                                 </div>
                             </div>
-                            <div class="sticky-bottom" id="btn-form" style="bottom: -24px;">
+                            <div class="sticky-bottom" id="btn-form" >
                                 <button type="submit" class="btn btn-primary btn-block" style="padding: 1rem 0.75rem"><i
                                             class="fas fa-search mr-2"></i>
                                     Chercher
@@ -146,9 +167,28 @@
                             <span class="mb-3 d-lg-none text-dark font-weight-medium">
                                 <span class="text-primary">{{ annonces.totalItemCount }}</span>
                                     résultat(s)
-                                    {% if app.request.get('q') is not empty %} - {{ app.request.get('q') }}{% endif %}
-                                    {% if app.request.get('make') is not empty %} - {{ app.request.get('make')|capitalize }}{% endif %}
-                                    {% if app.request.get('model') is not empty %} {{ app.request.get('model')|capitalize }}{% endif %}
+                                    {% if app.request.get('q') is not empty %}  {{ app.request.get('q') }}{% endif %}
+                                {% if app.request.get('make') is not empty %} - {{ app.request.get('make')|capitalize }}{% endif %}
+                                {% if app.request.get('model') is not empty %} {{ app.request.get('model')|capitalize }}{% endif %}
+                                {% if app.request.get('sort') is not empty and app.request.get('direction') is not empty %} -
+                                    {% set category = app.request.get('sort')|split('.')[1] %}
+                                    {% set direction = app.request.get('direction') %}
+                                    {% if category == 'price' %}
+                                        {% if direction == 'asc' %}
+                                            Prix croissant
+                                        {% else %}
+                                            Prix décroissant
+                                        {% endif %}
+                                    {% endif %}
+
+                                    {% if category == 'mileage' %}
+                                        {% if direction == 'asc' %}
+                                            Kilométrage croissant
+                                        {% else %}
+                                            Kilométrage décroissant
+                                        {% endif %}
+                                    {% endif %}
+                                {% endif %}
                             </span>
                             {% if annonces|length > 0 %}
                                 {% for annonce in annonces %}

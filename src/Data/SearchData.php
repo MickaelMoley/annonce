@@ -88,6 +88,6 @@ class SearchData
     /**
      * @var string
      */
-    public $sorting;
+    public $sort;
 
 }

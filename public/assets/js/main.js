@@ -355,6 +355,11 @@ AOS.init({
             }
         })
 
+        $(document).ready(() => {
+
+
+        });
+
     });
 
 
@@ -362,9 +367,3 @@ AOS.init({
 
 
 })(jQuery);
-
-
-
-
-
-

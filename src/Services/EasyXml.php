@@ -21,7 +21,17 @@ class EasyXml
     private $em;
     public $updatedAnnonce = 0;
     public $newedAnnonce = 0;
+    /**
+     * Permet d'activer le mode debuggage; Affichera les infos de traitements qui ont été faites
+     * @var bool
+     */
     public $debug;
+    /**
+     * Permet de choisir le mode de traitement des annonces
+     * PAR DEFAULT = 'all'; UNIQUEMENT LES NOUVELLES ANNONCES : 'new'; UNIQUEMENT LES MISES A JOUR : 'update'
+     * @var string
+     */
+    public $only;
 
     /**
      * EasyXml constructor.
@@ -40,11 +50,13 @@ class EasyXml
     /**
      * @param $link
      * @param $debug
+     * @param string $only
      * @return string|void
      */
-    public function execute($link, $debug)
+    public function execute($link, $debug, $only = 'all')
     {
         $this->debug = $debug;
+        $this->only = $only;
         $this->readXMLFrom($link);
 
         if($this->debug)
@@ -71,11 +83,19 @@ class EasyXml
 
             $annonce = $this->annonceRepo->findOneBy(['vehicle_id' => $lists[$i]->vehicle_id]);
 
-            if ($annonce) {
-                return;
-                $this->updateAnnonce($annonce, $lists[$i]);
-            } else {
-                $this->newAnnonce($lists[$i]);
+            if($this->only == 'all'){
+                if ($annonce) {
+                    if($this->only = 'update' xor $this->only == 'all'){
+                        $this->updateAnnonce($annonce, $lists[$i]);
+
+                        $this->updatedAnnonce = $this->updatedAnnonce + 1;
+                    }
+                } else {
+                    if($this->only == 'new' xor $this->only == 'all'){
+                        $this->newAnnonce($lists[$i]);
+                        $this->newedAnnonce = $this->newedAnnonce + 1;
+                    }
+                }
             }
         }
 
@@ -144,7 +164,7 @@ class EasyXml
 
         $this->em->flush();
 
-        $this->updatedAnnonce += 1;
+
     }
 
     private function newAnnonce($data)
@@ -234,6 +254,6 @@ class EasyXml
         $this->em->persist($annonce);
         $this->em->flush();
 
-        $this->newedAnnonce = $this->newedAnnonce + 1;
+
     }
 }
