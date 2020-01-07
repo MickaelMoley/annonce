@@ -1,12 +1,13 @@
 {% extends 'base.html.twig' %}
+ {% block title %}PubAuto - Site d'annonces d'automobiles{% endblock %}
 {% block head %}
     {{ parent() }}
 
+    <meta name="description" content="Nous vous proposons un espace dédié à la recherche d'annonces automobiles de tous types et marques. Vous retrouverez également un moteur de recherche afin d'affinités vos critères de recherche et une boutique par vendeur.">
+    <meta name="keywords" content="moteur de recherche, filtre, annonce, automobile">
 {% endblock %}
-{% block title %} Site d'annonces auto {% endblock %}
-
 {% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset('assets/css/glide.core.css') }}">
+    {{ parent() }}
     <style>
         .swiper-container {
             width: 100%;
@@ -64,8 +65,8 @@
          style="background-image: url({{ asset('assets/images/bg.jpg') }});background-position:50% 90%">
         <div class="overlay"></div>
         <div class="container">
-            <div class="row d-md-flex no-gutters slider-text align-items-center justify-content-center">
-                <div class="col-md-10 d-flex align-items-center ftco-animate">
+            <div class="row no-gutters slider-text align-items-center justify-content-center">
+                <div class="col d-flex justify-content-center align-items-center ftco-animate">
                     <div class="text text-center pt-3 mt-md-3">
                         <h1 class="mb-5">Trouver la voiture qui te correspond.</h1>
 
@@ -90,6 +91,7 @@
                                                     <div class="col-md mr-md-2">
                                                         <div class="form-group">
                                                             <div class="form-field">
+                                                                <label for="q" class="d-none"></label>
                                                                 <div class="icon"><span class="icon-search"></span>
                                                                 </div>
                                                                 <input type="text" name="q" class="form-control"
@@ -101,6 +103,7 @@
                                                         <div class="form-group">
                                                             <div class="form-field">
                                                                 <div class="select-wrap">
+                                                                    <label for="make" class="d-none"></label>
                                                                     <select name="make" id="make-filter"
                                                                             class=" selectpicker"
                                                                             data-live-search="true">
@@ -119,6 +122,7 @@
                                                         <div class="form-group">
                                                             <div class="form-field">
                                                                 <div class="select-wrap">
+                                                                    <label for="model" class="d-none"></label>
                                                                     <select name="model" id="model-select"
                                                                             class=" selectpicker">
                                                                         <option value="">Modèle</option>
@@ -195,19 +199,19 @@
             </div>
             <div class="row align-items-end">
                 <div class="col-12 col-md-4 ftco-animate text-center">
-                    <img src="{{ asset('assets/images/undraw_people_search_wctu.png') }}" alt="" class="img-fluid">
+                    <img src="{{ asset('assets/images/undraw_people_search_wctu.png') }}" alt="Image affichant un personnage avec une liste d'annonces" title="Image affichant un personnage avec une liste d'annonces" class="img-fluid">
                     <h3 class="mt-3 font-weight-bold">Trouver</h3>
                     <p>Nous pouvons vous aider à trouver la voiture qui vous correspond. Nous vous proposons un
                         catalogue de tous types de véhicules</p>
                 </div>
                 <div class="col-12 col-md-4 ftco-animate text-center">
-                    <img src="{{ asset('assets/images/undraw_contact_us_15o2.svg') }}" alt="" class="img-fluid">
+                    <img src="{{ asset('assets/images/undraw_contact_us_15o2.svg') }}" alt="Image deux personnages avec des icones de contact" title="Image deux personnages avec des icones de contact" class="img-fluid">
                     <h3 class="mt-3 font-weight-bold">Nous contacter</h3>
                     <p>Une fois que vous avez trouvez votre véhicule vous pouvez nous contacter en utilisant notre
                         formulaire de contact ou par téléphone</p>
                 </div>
                 <div class="col-12 col-md-4 ftco-animate text-center">
-                    <img src="{{ asset('assets/images/undraw_city_driver_jh2h.svg') }}" alt="" class="img-fluid">
+                    <img src="{{ asset('assets/images/undraw_city_driver_jh2h.svg') }}" alt="Image d'un personnage qui se penche sur la voiture" title="Image d'un personnage qui se penche sur la voiture" class="img-fluid">
                     <h3 class="mt-3 font-weight-bold">Roulez</h3>
                     <p>Profitez de votre nouveau véhicule obtenu grâce à nos annonces. Si vous êtes une société, vous
                         pouvez le revendre</p>
@@ -232,36 +236,51 @@
                     <div class="row">
                         {% if annonces|length > 0 %}
                             {% for annonce in annonces %}
-                                <div class="col-md-6 ftco-animate">
-
-
-                                    <div class="card mb-3" style="max-width: 540px;">
-                                        <div class="row no-gutters">
-                                            <div class="col-md-4">
-                                                <img src="{% if annonce.image[0].url is iterable %}{{ annonce.image[0].url[0] }}{% else %} {{ annonce.image[0].url }} {% endif %}"
-                                                     class="card-img" style="object-fit: contain"
-                                                     alt="Image de {{ annonce.make }} {{ annonce.model }}"">
+                                <div class="col-12 col-lg-6 ftco-animate ">
+                                    <article class="annonce-post-item rounded d-flex mb-3 shadow-sm--hover">
+                                        <a href="{{ path('annonce', {'slug': annonce.slug}) }}" title="Voir l'annonce - {{ annonce.make ~ " " ~ annonce.model }}">
+                                            <div class=" d-flex justify-content-center py-1 px-1">
+                                                <img class="list-annonce-image"
+                                                     src="{% if annonce.image[0].url is iterable %}{{ annonce.image[0].url[0] }}{% else %} {{ annonce.image[0].url }} {% endif %}"
+                                                     style="object-fit: cover;"
+                                                     alt="Image de {{ annonce.make }} {{ annonce.model }}" title="Image de {{ annonce.make }} {{ annonce.model }}">
                                             </div>
-                                            <div class="col-md-8">
-                                                <div class="card-body">
-                                                    <h5 class="card-title"><a class="text-dark"
-                                                                              href="{{ path('annonce', {'slug': annonce.slug }) }}"
-                                                                              title="Voir cette annonce : {{ annonce.make }} - {{ annonce.model }}">{{ annonce.title }}</a>
-                                                    </h5>
-                                                    <p class="card-text">This is a wider card with supporting text below
-                                                        as a natural lead-in to additional content. This content is a
-                                                        little bit longer.</p>
+                                            <div class="d-flex flex-column align-content-around bg-white py-2 px-2 w-100">
+                                                <a class="list-annonce-title"
+                                                   href="{{ path('annonce', {'slug': annonce.slug }) }}"
+                                                   title="Voir cette annonce : {{ annonce.make }} - {{ annonce.model }}">{{ annonce.title }}</a><span
+                                                        class=" list-annonce-price mb-auto font-weight-bold">{{ annonce.price | number_format(0,'.','.') }} €</span>
+                                                <div class="mb-auto ">
+                                                    <div class="row">
+                                                        <div class="col-6 text-truncate">
+                                                            <a class="list-annonce-place" href="{{ path('annonces', {'q': annonce.adress.city|lower}) }}" title="Rechercher en fonction de la localisation"><i
+                                                                        class="fas fa-map-marker-alt mr-2 text-main"></i>{{ annonce.adress.city|capitalize }}
+                                                            </a>
+                                                        </div>
+                                                        <div class="col-6 text-right text-truncate">
+                                                            <a class="list-annonce-entity"
+                                                               href="{{ path('dealer_store', { 'slug' : annonce.dealer.slug }) }}">{{ annonce.dealer.dealerName|capitalize }}</a>
+                                                        </div>
+                                                    </div>
                                                 </div>
+                                                <p class="list-annonce-meta mb-auto d-flex justify-content-between"><span>
+											<i class="fas fa-road mr-2"></i>{{ annonce.mileage | number_format(0,'.',' ') }} km</span><span><i
+                                                                class="fas fa-cogs mr-2"></i>{{ annonce.transmission|capitalize }}</span><span
+                                                            class="d-none d-sm-block"><i
+                                                                class="fas fa-gas-pump mr-2"></i>{{ annonce.fuelType|capitalize }}</span><span
+                                                            class="d-none d-sm-block"><i
+                                                                class="fas fa-calendar-day mr-2"></i>{{ annonce.year }}</span>
+                                                </p>
                                             </div>
-                                        </div>
-                                    </div>
+                                        </a>
+                                    </article>
                                 </div>
 
                             {% endfor %}
 
                         {% else %}
                             <div class="p-5 bg-gray d-flex justify-content-center align-items-center">
-                                <p><i class="fas fa-search mr-2"></i>Aucunes annonces ne correspond à vos critères.
+                                <p class="text-dark"><i class="fas fa-search mr-2"></i>Aucunes annonces ne correspond à vos critères.
                                 </p>
                             </div>
 
@@ -286,22 +305,6 @@
 
     {{ parent() }}
 
-    <script>
-        var swiper = new Swiper('.swiper-container', {
-            speed: 600,
-            parallax: true,
-            pagination: {
-                el: '.swiper-pagination',
-                clickable: true,
-            },
-            navigation: {
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev',
-            },
-        });
-
-
-    </script>
     <script>
         $('#make-filter').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
             $.post('{{ path('api_fetchModelByMake') }}', {make: this.value, state: 'all'})

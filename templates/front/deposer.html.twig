@@ -1,26 +1,29 @@
 {% extends 'base.html.twig' %}
+ {% block title %}Vous souhaitez mettre en place une annonce ?{% endblock %}
 {% block head %}
     {{ parent() }}
 
+    <meta name="description" content="Vous avez un véhicule que vous souhaitez vendre et vous êtes une société ? Vous pouvez nous demander de mettre en avant votre véhicule afin que les particuliers puissent en profiter !">
+    <meta name="keywords" content="deposer une annonce, véhicule, société, particulier, vendre">
 {% endblock %}
-{% block title %} Site d'annonces auto {% endblock %}
 
 {% block stylesheets %}
+    {{ parent() }}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bs-stepper/dist/css/bs-stepper.min.css">
 
 {% endblock %}
 
 {% block body %}
     <div class="hero-wrap hero-wrap-2"
-         style="background-image: url({{ asset('assets/images/bg.jpg') }});background-position: 50% 85%;"
+         style="background-image: url({{ asset('assets/images/bg.jpg') }});background-position: 50% 85%;height: 35vh !important;"
          data-stellar-background-ratio="0.5">
         <div class="overlay"></div>
         <div class="container">
-            <div class="row no-gutters slider-text align-items-end justify-content-start">
-                <div class="col-md-12 ftco-animate text-center mb-5">
-                    <p class="breadcrumbs mb-0"><span class="mr-3"><a href="index.html">Accueil <i
-                                        class="ion-ios-arrow-forward"></i></a></span> <span>Annonces</span></p>
-                    <h1 class="mb-3 bread">Deposer une annonce</h1>
+            <div class="row no-gutters slider-text align-items-start align-items-lg-center justify-content-start">
+                <div class="col-md-12 ftco-animate text-center mt-5 mt-lg-0 mb-lg-5">
+                    <p class="breadcrumbs mb-0"><span class="mr-3">
+                            <a href="{{ path('home') }}" title="Accéder à la page d'accueil">Accueil <i class="ion-ios-arrow-forward"></i></a></span> <span>Annonces</span></p>
+                    <h1 class="mb-3 bread">Déposer une annonce</h1>
                 </div>
             </div>
         </div>
@@ -144,7 +147,7 @@
                                 <small>Nous allons traiter votre demande dans les plus bref délais.</small>
                             </h5>
                             <div class="d-flex justify-content-center ">
-                                <a href="{{ path('home') }}" class="btn btn-link text-primary btn-next-form">Retourner à la page
+                                <a href="{{ path('home') }}" class="btn btn-link text-primary btn-next-form" title="Retourner à la page d'accueil">Retourner à la page
                                     d'accueil</a>
                             </div>
                         </div>

@@ -221,11 +221,7 @@ class FrontController extends AbstractController
         ;
 
         $form->handleRequest($request);
-
-
-
         $annonces = $annonceRepository->findSearch($data);
-
 
         return $this->render('front/dealer.twig', [
             'annonces' => $annonces,
@@ -248,7 +244,6 @@ class FrontController extends AbstractController
      */
     public function rgpd() : Response
     {
-
         return $this->render('front/rgpd.html.twig');
     }
 

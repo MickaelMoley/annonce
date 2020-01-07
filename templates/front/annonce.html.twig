@@ -1,13 +1,22 @@
 {% extends 'base.html.twig' %}
+ {% block title %}Annonce {{ annonce.title }}{% endblock %}
 {% block head %}
     {{ parent() }}
 
+    <meta name="description" content="Véhicule {{ annonce.make }} {{ annonce.model }} vendu par {{ annonce.dealer.dealerName }}
+    - Localisation : {{ annonce.adress.city }}
+    - Kilométrage : {{ annonce.mileage }}
+    - Référence : {{ annonce.dealerRef }}
+    - Couleur extérieur : {{ annonce.exteriorColor }}
+    - Carburant : {{ annonce.fuelType }}
+    - Transmission : {{ annonce.transmission }}">
+    <meta name="keywords" content="{{ annonce.dealer.dealerName }}, {{ annonce.dealer.dealerPhone }}, vehicule, {{ annonce.make }}, {{ annonce.model }}, {{ annonce.dealerRef }}">
 {% endblock %}
-{% block title %} Site d'annonces auto {% endblock %}
 
 {% block stylesheets %}
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.3/photoswipe.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.3/default-skin/default-skin.css">
+    {{ parent() }}
+    <link async rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.3/photoswipe.css" />
+    <link async rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.3/default-skin/default-skin.css">
     <link rel="stylesheet" href="{{ asset('assets/css/swiper.css') }}">
     <style>
         .swiper-container {
@@ -107,18 +116,26 @@
 
             <div class="row">
                 <div class="col-lg-8 ftco-animate">
+                    {#
                     {% for message in app.flashes('success') %}
                         <div class="alert alert-success">
                             {{ message }}
                         </div>
                     {% endfor %}
+                    #}
                     <div class="swiper-container gallery-top" id="annonce-collection-image">
                         <div class="swiper-wrapper my-gallery" itemscope itemtype="http://schema.org/ImageGallery">{% if annonce.image[0].url is iterable %}
                                 {% for image in annonce.image %}
-                                    <div id="{{ loop.index }}" class="swiper-slide"
-                                         style="background-image:url({{ image.url[0] }})" itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
 
-                                    </div>
+                                    {% if image is not empty %}
+                                        <div id="{{ loop.index }}" class="swiper-slide image-popup" href="{{ image.url[0] }}"
+                                             style="background-image:url({{ image.url[0] }})" itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+
+                                        </div>
+                                    {% endif %}
+
+
+
 
                                 {% endfor %}
                             {% else %}
@@ -155,11 +172,7 @@
                             {% endif %}
                         </div>
                     </div>
-                    <div class="lightbox">
-
-                    </div>
-
-                    <h2 class="mb-3 font-weight-medium a-title">{{ annonce.title }}</h2>
+                    <h1 class="mb-3 font-weight-medium a-title">{{ annonce.title }}</h1>
 
                     <h4 class="text-primary">{% if annonce.price is not empty %} {{ annonce.price | number_format(2,'.',',') }} € {% else %} Le prix n'a pas été défini. Contacter le vendeur {% endif %} </h4>
                     <div class="d-flex justify-content-between align-content-center align-items-center align-self-center">
@@ -307,9 +320,16 @@
                         <div class="card  shadow-sm" style="border: none;border-top: 4px #ed2f31 solid;">
                             <div class="card-header">
                                 <div class="media">
-                                    <img src="https://via.placeholder.com/50"
-                                         class="align-self-start mr-3 img-thumbnail"
-                                         alt="Image avatar {{ annonce.dealer.dealerName }}">
+
+
+                                    {% set x = annonce.dealer.dealerName|split(' ')[0] %}
+                                    {% set isPartenaire = (x| lower == 'partenaire') ? 1 : 0 %}
+
+                                    {% if isPartenaire == true%}
+                                        <img src="{{ asset('assets/images/partenaire-vroomiz.png') }}"
+                                             class="align-self-start mr-3 img-thumbnail" width="50"
+                                             alt="Image avatar {{ annonce.dealer.dealerName }}">
+                                    {% endif %}
                                     <div class="media-body">
                                         <a href="{{ path('dealer_store', { 'slug': annonce.dealer.slug}) }}"
                                            data-toggle="tooltip" data-placement="top" title="Voir la boutique">
@@ -343,6 +363,13 @@
                                     {{ form_help(contact.message) }}
                                 </div>
                                 {{ form_rest(contact) }}
+
+                                {% for message in app.flashes('success') %}
+                                   <div class="text-info mb-3">
+                                       <h6><b>Info : </b></h6>
+                                       <p class=text-info"><i class="fa fa-info-circle mr-2"></i> Votre message a bien été envoyé. On va vous recontacter par l'un des informations que vous avez renseignés.</p>
+                                   </div>
+                                {% endfor %}
                                 <button type="submit" class="btn btn-block btn-primary" style="padding: 1rem 0.75rem"><i
                                             class="fa fa-envelope mr-2"></i>Envoyer mon message
                                 </button>

@@ -5,33 +5,27 @@
 
         <meta name="robots" content="noindex, nofollow">
 
-        <title>Page d'accueil</title>
+        <title>{% block title %} Page d'accueil {% endblock %}</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="author" content="Dyonis">
 
-        <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700&display=swap" rel="stylesheet">
-
-        <link rel="stylesheet" href="{{ asset('assets/css/open-iconic-bootstrap.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('assets/css/animate.css') }}">
-
-        <link rel="stylesheet" href="{{ asset('assets/css/owl.carousel.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('assets/css/owl.theme.default.min.cs') }}s">
-        <link rel="stylesheet" href="{{ asset('assets/css/magnific-popup.css') }}">
-
-        <link rel="stylesheet" href="{{ asset('assets/css/aos.css') }}">
-
-        <link rel="stylesheet" href="{{ asset('assets/css/ionicons.min.css') }}">
-
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css">
-        <link rel="stylesheet" href="{{ asset('assets/css/flaticon.css') }}">
-        <link rel="stylesheet" href="{{ asset('assets/css/icomoon.css') }}">
-        <link rel="stylesheet" href="{{ asset('assets/scss/style.css') }}">
 
 
     {% endblock %}
-    <title>{% block title %}Welcome!{% endblock %}</title>
 
-    {% block stylesheets %}{% endblock %}
+    {% block stylesheets %}
+        <link aynsc href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700&display=swap" rel="stylesheet">
+
+        <link rel="stylesheet" href="{{ asset('assets/css/animate.css') }}">
+
+        <link rel="stylesheet" href="{{ asset('assets/css/magnific-popup.css') }}">
+
+        <link rel="stylesheet" href="{{ asset('assets/css/aos.css') }}">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css">
+        <link rel="stylesheet" href="{{ asset('assets/scss/style.css') }}">
+
+    {% endblock %}
 </head>
 <body id="top">
 {% include '_navbar.html.twig' %}
@@ -50,15 +44,15 @@
             <div class="col-md">
                 <div class="ftco-footer-widget mb-4">
                     <h2 class="ftco-heading-2">PubAuto</h2>
-                    <p>Pubauto est un site d'annonces publiant les annonces de partenaires</p>
+                    <p class="text-dark">Pubauto est un site d'annonces publiant les annonces de partenaires</p>
                 </div>
             </div>
             <div class="col-md">
                 <div class="ftco-footer-widget mb-4">
                     <h2 class="ftco-heading-2">Particuliers</h2>
                     <ul class="list-unstyled">
-                        <li><a href="{{ path('annonces') }}" class="pb-1 d-block">Parcourir les annonces</a></li>
-                        <li><a href="#" class="pb-1 d-block">Nous contacter</a></li>
+                        <li><a href="{{ path('annonces') }}" class="pb-1 d-block text-dark" title="Voir la liste des annonces">Parcourir les annonces</a></li>
+                        <li><a href="#" class="pb-1 d-block text-dark" title="Nous contacter">Nous contacter</a></li>
                     </ul>
                 </div>
             </div>
@@ -66,8 +60,8 @@
                 <div class="ftco-footer-widget mb-4 ml-md-4">
                     <h2 class="ftco-heading-2">Professionnels</h2>
                     <ul class="list-unstyled">
-                        <li><a href="{{ path('annonces') }}" class="pb-1 d-block">Parcourir les annonces</a></li>
-                        <li><a href="{{ path('deposer') }}" class="pb-1 d-block">Déposer une annonce</a></li>
+                        <li><a href="{{ path('annonces') }}" class="pb-1 d-block text-dark" title="Voir la liste des annonces">Parcourir les annonces</a></li>
+                        <li><a href="{{ path('deposer') }}" class="pb-1 d-block text-dark" title="Faire une demande pour déposer une annonce">Déposer une annonce</a></li>
                     </ul>
                 </div>
             </div>
@@ -76,10 +70,9 @@
                     <h2 class="ftco-heading-2">Avez-vous une question ?</h2>
                     <div class="block-23 mb-3">
                         <ul>
-                            <li><a href="#"><span class="icon icon-phone"></span><span class="text">+2 392 3929
-											210</span></a></li>
-                            <li><a href="#"><span class="icon icon-envelope"></span><span
-                                            class="text">contact@mail.com</span></a></li>
+                            <li><a href="tel:" title="Nous contacter par téléphone" class="text-dark"><i class="fa fa-phone mr-2 "></i>+2 392 3929
+                                    210</a></li>
+                            <li><a href="mailto:contact@pubauto.fr" title="Nous contacter par mail" class="text-dark"><i class="fa fa-envelope mr-2" ></i>contact@pubauto.fr</a></li>
                         </ul>
                     </div>
                 </div>
@@ -87,12 +80,11 @@
         </div>
         <div class="row">
             <div class="col-md-12 text-center">
-
-                <p>
+                <p class="text-dark">
                     Copyright &copy;<script>
                         document.write(new Date().getFullYear());
                     </script>
-                    <a href="{{ path('mentions_legales') }}" title="Voir les mentions légales">Mention légales</a>
+                    <a href="{{ path('mentions_legales') }}" title="Voir les mentions légales" class="text-dark">Mention légales</a>
                 </p>
             </div>
         </div>
