@@ -356,8 +356,11 @@
 
         $reset = $('#resetForm');
         $reset.click(() => {
-            $('form :input').val('');
-            $(".selectpicker").selectpicker("refresh");
+            $('form input').val('');
+            $('form select').val('');
+
+            $(".selectpicker", ).selectpicker("refresh");
+            location.search = new URL('{{ app.request.get('_route') }}');
         });
         {#
             Récupèrer la liste des modèles d'une marque lorsqu'on fait une recherche et récupère une recherche

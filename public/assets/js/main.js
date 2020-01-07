@@ -337,8 +337,8 @@ AOS.init({
 
             messages: {
                 societe : "Veuillez renseigner le nom de votre societe.",
-                tel     : "Votre numéro de téléphone est nécessaire pour valider votre demande",
-                email   : "Veuillez renseigner votre adresse mail afin qu'on puisse vous contacter."
+                tel     : "Votre numéro de téléphone  valide est nécessaire pour confirmer votre demande",
+                email   : "Veuillez renseigner votre adresse mail valide afin qu'on puisse vous contacter."
             }
         })
         ;
