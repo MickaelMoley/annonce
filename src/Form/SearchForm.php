@@ -127,12 +127,6 @@ class SearchForm extends AbstractType
             ->add('dealer_id', HiddenType::class, [
                 'label' => false,
                 'required' => false,
-            ])
-            ->add('reset', ResetType::class, [
-                'attr' => [
-                    'class' => 'btn btn-pri btn-block',
-                 
-                ]
             ]);
 
     }

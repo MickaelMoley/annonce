@@ -21,6 +21,8 @@ class AnnonceRepository extends ServiceEntityRepository
         $this->paginator = $paginator;
     }
 
+
+
     /**
      * Récupère la liste des annonces
      * @param SearchData $searchData
@@ -29,6 +31,7 @@ class AnnonceRepository extends ServiceEntityRepository
      */
     private function getSearchQuery(SearchData $searchData, $ignoreFilter = false): QueryBuilder
     {
+        dump($searchData);
         $query = $this
             ->createQueryBuilder('p')
             ->select('p');
@@ -159,7 +162,6 @@ class AnnonceRepository extends ServiceEntityRepository
             ->select('MIN(p.mileage) as min', 'MAX(p.mileage) as max')
             ->getQuery()
             ->getScalarResult();
-
         dump($result);
         return [$result[0]['min'], $result[0]['max']];
     }

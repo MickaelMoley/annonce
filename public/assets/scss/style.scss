@@ -2411,8 +2411,16 @@ textarea.form-control {
 	color:#1A202C;
 }
 
+.hero-wrap.hero-wrap-2{
+
+	height:30vh !important;
+}
 
 @media (min-width: 360px) {
+	.hero-wrap.hero-wrap-2{
+
+		height:30vh !important;
+	}
 	.list-annonce-image {
 		width: 24rem;
 		height: auto;
@@ -2468,6 +2476,7 @@ textarea.form-control {
 
 @media (min-width: 576px) and (max-width: 767px) {
 
+
 	.list-annonce-entity,
 	.list-annonce-meta,
 	.list-annonce-place {
@@ -2493,6 +2502,9 @@ textarea.form-control {
 }
 
 @media (min-width: 992px) {
+	.hero-wrap.hero-wrap-2{
+		height:35vh !important;
+	}
 	.list-annonce-image {
 		width: 200px;
 		height: 8rem;
@@ -2517,6 +2529,7 @@ textarea.form-control {
 }
 
 @media (max-width: 575px){
+
 	.list-annonce-title {
 		font-size: .85rem;
 		letter-spacing: 0;
@@ -2736,3 +2749,9 @@ textarea.form-control {
 	text-decoration: none;
 	background-color: #f8f9fa;
 }
+
+.bootstrap-select .dropdown-toggle .filter-option-inner-inner{
+
+	margin-top: 6px;
+}
+
