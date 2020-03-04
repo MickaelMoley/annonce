@@ -32,7 +32,8 @@
         "symfony/validator": "4.4.*",
         "symfony/web-link": "4.4.*",
         "symfony/yaml": "4.4.*",
-      "ext-json": "*"
+      "ext-json": "*",
+      "ext-simplexml": "*"
     },
     "require-dev": {
       "hautelook/alice-bundle": "^2.5",

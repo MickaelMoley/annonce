@@ -93,7 +93,8 @@ class FrontController extends AbstractController
             'maxYear' => $maxYear,
             'makes' => $makes,
             'models' => $models,
-            'fuelType' => $fuelTypes
+            'fuelType' => $fuelTypes,
+            'currentURL' => $this->generateUrl('annonces')
         ]);
     }
 

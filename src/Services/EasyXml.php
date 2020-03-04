@@ -78,8 +78,12 @@ class EasyXml
     {
         $lists = $this->JSON_file->listing;
 
+        /**
+         * Dûe à la limite de la mémoire on récupère volontairement uniquement : $limitItemPerRequest
+         */
+        $limitItemPerRequest = 250;
 
-        for ($i = 0; $i < 250; $i++) { //count($lists)
+        for ($i = 0; $i < $limitItemPerRequest; $i++) { //count($lists)
 
             $annonce = $this->annonceRepo->findOneBy(['vehicle_id' => $lists[$i]->vehicle_id]);
 

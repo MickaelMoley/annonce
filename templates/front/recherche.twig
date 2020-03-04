@@ -360,15 +360,13 @@
             $('form select').val('');
 
             $(".selectpicker", ).selectpicker("refresh");
-            location.search = new URL('{{ app.request.get('_route') }}');
+            window.location.href = "{{ app.request.uri }}";
         });
         {#
             Récupèrer la liste des modèles d'une marque lorsqu'on fait une recherche et récupère une recherche
         #}
         $(document).ready(() => {
             fetchModelByMake($('#make').val());
-
-
         });
 
         $('#make').on('changed.bs.select', function (e, clickedIndex, isSelected, previousValue) {
