@@ -15,6 +15,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class FrontController extends AbstractController
 {
@@ -102,9 +103,13 @@ class FrontController extends AbstractController
      * Affiche une annonce et envoie un message en cas de submission du formulaire
      * @Route("/annonces/{slug}", name="annonce")
      * @param Annonce $annonce
+     * @param Swift_Mailer $mailer
+     * @param Request $request
+     * @param AnnonceRepository $annonceRepository
+     * @param TranslatorInterface $translator
      * @return Response
      */
-    public function showAnnonce(Annonce $annonce, \Swift_Mailer $mailer, Request $request, AnnonceRepository $annonceRepository): Response
+    public function showAnnonce(Annonce $annonce, \Swift_Mailer $mailer, Request $request, AnnonceRepository $annonceRepository, TranslatorInterface $translator): Response
     {
         $contact = new Contact();
         $contact->setVehicleId($annonce->getVehicleId());
@@ -139,7 +144,7 @@ class FrontController extends AbstractController
         return $this->render('front/annonce.html.twig', [
             'annonce' => $annonce,
             'annonces' => $annonces,
-            'contact' => $form->createView(),
+            'contact' => $form->createView()
         ]);
     }
 

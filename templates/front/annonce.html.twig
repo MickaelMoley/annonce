@@ -229,7 +229,7 @@
                                     <ul class="list-group list-group-flush">
                                         <li class="list-group-item d-flex justify-content-between"><span
                                                     class="text-dark"><i
-                                                        class="fas fa-gas-pump mr-2"></i>Carburant&nbsp;</span><span>{% if annonce.fuelType is not empty %}{{ annonce.fuelType|capitalize }}{% else %} Non spécifié*{% endif %}</span>
+                                                        class="fas fa-gas-pump mr-2"></i>Carburant&nbsp;</span><span class="text-capitalize">{% if annonce.fuelType is not empty %}{{ 'carburant'|trans({'carburant_type' : annonce.fuelType})}}{% else %} Non spécifié*{% endif %}</span>
                                         </li>
                                         <li class="list-group-item d-flex justify-content-between"><span
                                                     class="text-dark"><i
@@ -237,7 +237,7 @@
                                         </li>
                                         <li class="list-group-item d-flex justify-content-between"><span
                                                     class="text-dark"><i
-                                                        class="fas fa-cog mr-2"></i>Boîte</span><span>{% if annonce.transmission is not empty %}{{ annonce.transmission|capitalize }}{% else %} Non spécifié*{% endif %}</span>
+                                                        class="fas fa-cog mr-2 text-capitalize"></i>Boîte</span><span class="text-capitalize">{% if annonce.transmission is not empty %}{{ 'transmission'|trans({'transmission_type' : annonce.transmission})}}{% else %} Non spécifié*{% endif %}</span>
                                         </li>
                                         <li class="list-group-item d-flex justify-content-between"><span
                                                     class="text-dark"><i
@@ -250,32 +250,39 @@
                         <div class="tab-pane fade" id="options" role="tabpanel" aria-labelledby="options-tab">
                             <div class="row">
 
-                                {% set currentFeature = 0 %}
-                                {% set limitPerColumn = annonce.features|length / 4 %}
-                                {% if limitPerColumn  < 10 %}
-                                    {% set limitPerColumn = annonce.features|length %}
+                                {% if annonce.features is empty %}
+                                    <div class="p-5 mx-auto">
+                                        <p><i class="fas fa-search mr-2"></i>Aucune option n'a été définie.
+                                        </p>
+                                    </div>
+                                {% else %}
+                                    {% set currentFeature = 0 %}
+                                    {% set limitPerColumn = annonce.features|length / 4 %}
+                                    {% if limitPerColumn  < 10 %}
+                                        {% set limitPerColumn = annonce.features|length %}
+                                    {% endif %}
+                                    {% for feature in annonce.features %}
+                                        {% if currentFeature == 0 %}
+
+                                            <div class="col-12 col-md-6 col-lg-6">
+                                            <ul class="list-unstyled text-dark p-3">
+
+                                        {% endif %}
+
+                                        <li><i class="fas fa-check mr-2"></i>{{ feature.value|capitalize }}</li>
+
+                                        {% set currentFeature = currentFeature + 1 %}
+
+                                        {% if currentFeature >= limitPerColumn or  loop.index == annonce.features|length %}
+
+                                            {% set currentFeature = 0 %}
+
+                                            </ul>
+                                            </div>
+                                        {% endif %}
+
+                                    {% endfor %}
                                 {% endif %}
-                                {% for feature in annonce.features %}
-                                    {% if currentFeature == 0 %}
-
-                                        <div class="col-12 col-md-6 col-lg-6">
-                                        <ul class="list-unstyled text-dark p-3">
-
-                                    {% endif %}
-
-                                    <li><i class="fas fa-check mr-2"></i>{{ feature|capitalize }}</li>
-
-                                    {% set currentFeature = currentFeature + 1 %}
-
-                                    {% if currentFeature >= limitPerColumn or  loop.index == annonce.features|length %}
-
-                                        {% set currentFeature = 0 %}
-
-                                        </ul>
-                                        </div>
-                                    {% endif %}
-
-                                {% endfor %}
 
                             </div>
                         </div>
@@ -394,8 +401,8 @@
                                             <a title="Voir les véhicules avec ce critère" href="{{ path('annonces', { 'minKilometer': annonce.mileage}) }}" class="text-black-50">{% if annonce.mileage is not empty %}<i
                                                         class="fas fa-road "></i> {{ annonce.mileage | number_format(0,'',' ') }}
                                                 km{% else %} Non spécifié*{% endif %}</a>
-                                            <a title="Voir les véhicules avec ce critère {{ annonce.transmission }}" href="{{ path('annonces', { 'transmission' : annonce.transmission|lower}) }}" class="text-black-50">{% if annonce.transmission is not empty %}
-                                                    <i class="fas fa-cogs "></i> {{ annonce.transmission }}{% else %} Non spécifié*{% endif %}
+                                            <a title="Voir les véhicules avec ce critère : {{ 'transmission'|trans({'transmission_type' : annonce.transmission})}}" href="{{ path('annonces', { 'transmission' : annonce.transmission|lower}) }}" class="text-black-50 text-uppercase">{% if annonce.transmission is not empty %}
+                                                    <i class="fas fa-cogs "></i>{{ 'transmission'|trans({'transmission_type' : annonce.transmission})}}  {% else %} Non spécifié*{% endif %}
                                             </a>
 
                                             <a title="Voir les véhicules avec ce critère {{ annonce.year }}" href="{{ path('annonces', { 'minYear' : annonce.year, 'maxYear': annonce.year}) }}" class="text-black-50">{% if annonce.year is not empty %}

@@ -13,10 +13,21 @@ use Symfony\Component\Form\Extension\Core\Type\ResetType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use function Sodium\add;
 
 class SearchForm extends AbstractType
 {
+
+    /**
+     * @var TranslatorInterface
+     */
+    private $translator;
+
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -33,7 +44,6 @@ class SearchForm extends AbstractType
 
                 },
                 'choice_value' => function ($value) {
-
 
                     return strtolower($value);
 

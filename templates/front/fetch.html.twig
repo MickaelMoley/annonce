@@ -1,17 +1,18 @@
+{% extends 'base.html.twig' %}
 {% block body %}
-
+    <h1>deude</h1>
     {% if fetcher.debug == true %}
         <h1>Mode Debug</h1>
         <hr>
 
         Nombre d'annonces mise à jour : {{ fetcher.updatedAnnonce }}<br>
         Nombre d'annonces ajouté : {{ fetcher.updatedAnnonce }}
+        Lien utilisé : <a href="{{ fetcher.link }}">{{ fetcher.link }}</a>
 
         <a href="{{ path('annonces') }}">Voir les annonces</a>
 
-            {% for annonce in fetcher.JSON_file.listing %}
-                {{ dump(annonce.vehicle_registration_plate) }}
-            {% endfor %}
+        {{ dump(fetcher.wish) }}
+          
 
         {% else %}
 

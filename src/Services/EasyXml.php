@@ -9,6 +9,7 @@ use App\Entity\Dealer;
 use App\Repository\AnnonceRepository;
 use App\Repository\DealerRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * @property DealerRepository dealerRepo
@@ -32,19 +33,26 @@ class EasyXml
      * @var string
      */
     public $only;
+    /** Permet de traduire automatiquement les valeurs des annonces
+     * @var TranslatorInterface
+     */
+    private $translator;
+    public $wish;
+    public $link;
 
     /**
      * EasyXml constructor.
      * @param AnnonceRepository $annonceRepository
      * @param DealerRepository $dealerRepository
      * @param EntityManagerInterface $entityManager
+     * @param TranslatorInterface $translator
      */
-    public function __construct(AnnonceRepository $annonceRepository, DealerRepository $dealerRepository, EntityManagerInterface $entityManager)
+    public function __construct(AnnonceRepository $annonceRepository, DealerRepository $dealerRepository, EntityManagerInterface $entityManager, TranslatorInterface $translator)
     {
         $this->annonceRepo = $annonceRepository;
         $this->dealerRepo = $dealerRepository;
         $this->em = $entityManager;
-
+        $this->translator = $translator;
     }
 
     /**
@@ -57,51 +65,52 @@ class EasyXml
     {
         $this->debug = $debug;
         $this->only = $only;
+        $this->link = $link;
         $this->readXMLFrom($link);
 
-        if($this->debug)
-        {
-            return 'Debug est activé';
-        }
         $this->manager();
     }
 
     private function readXMLFrom($link)
     {
 
-        $xmlbase    = file_get_contents($link);
-        $json_encoded = json_encode(simplexml_load_string($xmlbase));
-        $this->JSON_file = json_decode($json_encoded);
+        $xmlbase            = file_get_contents($link);
+        $json_encoded       = json_encode(simplexml_load_string($xmlbase));
+        $this->JSON_file    = json_decode($json_encoded);
     }
 
     private function manager()
     {
         $lists = $this->JSON_file->listing;
 
+
+        $countLists = count($lists);
+
         /**
          * Dûe à la limite de la mémoire on récupère volontairement uniquement : $limitItemPerRequest
          */
-        $limitItemPerRequest = 250;
+        $limitItemPerRequest = $countLists;
 
-        for ($i = 0; $i < $limitItemPerRequest; $i++) { //count($lists)
 
-            $annonce = $this->annonceRepo->findOneBy(['vehicle_id' => $lists[$i]->vehicle_id]);
+       for($i = 0; $i < $limitItemPerRequest; $i++){
+           $annonce = $this->annonceRepo->findOneBy(['vehicle_id' => $lists[$i]->vehicle_id]);
 
-            if($this->only == 'all'){
-                if ($annonce) {
-                    if($this->only = 'update' xor $this->only == 'all'){
-                        $this->updateAnnonce($annonce, $lists[$i]);
 
-                        $this->updatedAnnonce = $this->updatedAnnonce + 1;
-                    }
-                } else {
-                    if($this->only == 'new' xor $this->only == 'all'){
-                        $this->newAnnonce($lists[$i]);
-                        $this->newedAnnonce = $this->newedAnnonce + 1;
-                    }
-                }
-            }
-        }
+           if ($annonce) {
+               if($this->only == 'update'){
+                   $this->updateAnnonce($annonce, $lists[$i]);
+
+
+               }
+           } else {
+               if($this->only == 'new'){
+                   $this->newAnnonce($lists[$i]);
+                   $this->newedAnnonce = $this->newedAnnonce + 1;
+
+
+               }
+           }
+       }
 
     }
 
@@ -129,17 +138,22 @@ class EasyXml
 
         $annonce->setBodyStyle($updateAnnonce->body_style);
         $annonce->setFuelType($updateAnnonce->fuel_type);
-        $annonce->setTransmission($updateAnnonce->transmission);
+        $annonce->setTransmission($this->translator->trans($updateAnnonce->transmission));
         $annonce->setPrice(str_replace(' EUR', "", $updateAnnonce->price));
 
-        if(isset($updateAnnonce->features->feature)){
-            if(is_string($updateAnnonce->features->feature)){ /* Si c'est un string alors on crée une variable de type ARRAY et on push le string dans la variable $re|Array et on le 'set' à l'entity */
+
+        if(isset($updateAnnonce->features)){
+            if(is_object($updateAnnonce->features)){
+                $annonce->setFeatures((array) $updateAnnonce->features);
+            }
+            else if(is_string($updateAnnonce->features)){ /* Si c'est un string alors on crée une variable de type ARRAY et on push le string dans la variable $re|Array et on le 'set' à l'entity */
                 $re = [];
-                array_push($re, $updateAnnonce->features->feature);
+                array_push($re, $updateAnnonce->features);
                 $annonce->setFeatures($re);
             }
             else{/* Sinon si c'est un array, on 'set' l'array directement à l'entity */
-                $annonce->setFeatures($updateAnnonce->features->feature);
+                $annonce->setFeatures($updateAnnonce->features);
+
             }
         }
 
@@ -168,14 +182,14 @@ class EasyXml
 
         $this->em->flush();
 
-
+        $this->updatedAnnonce += 1;
     }
 
     private function newAnnonce($data)
     {
 
         $dealer = $this->dealerRepo->findOneBy(['dealer_ref' => str_replace('vobiz_', "", $data->dealer_id)]);
-
+        $this->link = $dealer;
         if(!$dealer){
             $dealer = new Dealer();
             $dealer->setDealerName($data->dealer_name);
@@ -209,18 +223,22 @@ class EasyXml
 
         $annonce->setBodyStyle($data->body_style);
         $annonce->setFuelType($data->fuel_type);
-        $annonce->setTransmission($data->transmission);
+        $annonce->setTransmission($this->translator->trans($data->transmission));
         $annonce->setPrice(str_replace(' EUR', "", $data->price));
 
 
-        if(isset($data->features->feature)){
-            if(is_string($data->features->feature)){ /* Si c'est un string alors on crée une variable de type ARRAY et on push le string dans la variable $re|Array et on le 'set' à l'entity */
+        if(isset($data->features)){
+            if(is_object($data->features)){
+                $annonce->setFeatures((array) $data->features);
+            }
+            else if(is_string($data->features)){ /* Si c'est un string alors on crée une variable de type ARRAY et on push le string dans la variable $re|Array et on le 'set' à l'entity */
                 $re = [];
-                array_push($re, $data->features->feature);
+                array_push($re, $data->features);
                 $annonce->setFeatures($re);
             }
             else{/* Sinon si c'est un array, on 'set' l'array directement à l'entity */
-                $annonce->setFeatures($data->features->feature);
+                $annonce->setFeatures($data->features);
+                $this->wish = $data->features;
             }
         }
 
@@ -258,6 +276,7 @@ class EasyXml
         $this->em->persist($annonce);
         $this->em->flush();
 
+        $this->newedAnnonce += 1;
 
     }
 }

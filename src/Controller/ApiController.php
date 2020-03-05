@@ -51,13 +51,14 @@ class ApiController extends AbstractController
 
     /**
      * Récupère la liste des annonces depuis un lien : default -> URL "https://www.vroomiz.fr/export/facebook/facebook.xml"
+     * DEFAULT URL : https://www.vroomiz.fr/export/facebook/facebook.xml
      * @Route("/fetch", name="fetch")
      * @param EasyXml $myXml
      * @return Response
      */
     public function fetchXML(EasyXml $myXml)
     {
-        $myXml->execute('https://www.vroomiz.fr/export/facebook/facebook.xml', true, 'update');
+        $myXml->execute('http://localhost:8001/export.xml', true, 'update');
 
         return $this->render('front/fetch.html.twig', [
             'fetcher' => $myXml

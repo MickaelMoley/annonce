@@ -1,0 +1,18 @@
+#translations/messages.fr.yaml
+
+transmission: >-
+    {transmission_type, select,
+            MANUAL { manuel }
+            AUTOMATIC { automatique }
+            OTHER  { autres }
+            other { autres }
+    }
+
+carburant: >-
+    {carburant_type, select,
+            GASOLINE { gasoil }
+            DIESEL { diesel }
+            ELECTRIC  { electique }
+            HYDRID { hydride }
+            other { autres }
+    }

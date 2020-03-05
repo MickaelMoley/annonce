@@ -162,7 +162,7 @@ class AnnonceRepository extends ServiceEntityRepository
             ->select('MIN(p.mileage) as min', 'MAX(p.mileage) as max')
             ->getQuery()
             ->getScalarResult();
-        dump($result);
+
         return [$result[0]['min'], $result[0]['max']];
     }
 

@@ -250,8 +250,8 @@
                                                 <p class="list-annonce-meta mb-auto d-flex justify-content-between"><span>
 											<i class="fas fa-road mr-2"></i>{{ annonce.mileage | number_format(0,'.',' ') }} km</span><span><i
                                                                 class="fas fa-cogs mr-2"></i>{{ annonce.transmission|capitalize }}</span><span
-                                                            class="d-none d-sm-block"><i
-                                                                class="fas fa-gas-pump mr-2"></i>{{ annonce.fuelType|capitalize }}</span><span
+                                                            class="d-none d-sm-block text-capitalize"><i
+                                                                class="fas fa-gas-pump mr-2"></i>{{ 'carburant'|trans({'carburant_type' : annonce.fuelType})}}</span><span
                                                             class="d-none d-sm-block"><i
                                                                 class="fas fa-calendar-day mr-2"></i>{{ annonce.year }}</span>
                                                 </p>

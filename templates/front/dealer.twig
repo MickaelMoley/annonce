@@ -28,7 +28,7 @@
                     <p class="breadcrumbs mb-0"><span class="mr-3">
                             <a href="{{ path('home') }}" title="Accéder à la page d'accueil">Accueil <i
                                         class="ion-ios-arrow-forward"></i></a></span> <span>Annonces</span></p>
-                    <h1 class="mb-3 bread">Store</h1>
+                    <h1 class="mb-3 bread">Boutique</h1>
                 </div>
             </div>
         </div>
@@ -64,25 +64,52 @@
                             <span class=" text-dark font-weight-medium mr-3">
                                 <span class="text-primary">{{ annonces.totalItemCount }}</span>
                                     résultat(s)
-                                    {% if app.request.get('q') is not empty %}  {{ app.request.get('q') }}{% endif %}
+                                     {% if labelYear is not defined %} {% set labelYear = "Voir les moins récents"%} {% endif %}
+                                {% if labelPrice is not defined %}  {% set labelPrice = "Voir les plus chères" %} {% endif %}
+                                {% if labelMake is not defined %}  {% set labelMake = "Ordre alphabétique A-Z" %} {% endif %}
+                                {% if labelMileage is not defined %}  {% set labelMileage = "Voir les plus chères" %} {% endif %}
+
+                                {% if app.request.get('q') is not empty %}  {{ app.request.get('q') }}{% endif %}
                                 {% if app.request.get('make') is not empty %} - {{ app.request.get('make')|capitalize }}{% endif %}
                                 {% if app.request.get('model') is not empty %} {{ app.request.get('model')|capitalize }}{% endif %}
                                 {% if app.request.get('sort') is not empty and app.request.get('direction') is not empty %} -
                                     {% set category = app.request.get('sort')|split('.')[1] %}
                                     {% set direction = app.request.get('direction') %}
+                                    {% if category == 'make' %}
+                                        {% if direction == 'asc' %}
+                                            Ordre alphabétique A-Z
+                                            {% set labelMake = " Ordre alphabétique Z-A" %}
+                                        {% else %}
+                                            Ordre alphabétique Z-A
+                                            {% set labelMake = " Ordre alphabétique A-Z" %}
+                                        {% endif %}
+                                    {% endif %}
+                                    {% if category == 'year' %}
+                                        {% if direction == 'asc' %}
+                                            Les moins récents
+                                            {% set labelYear = "Voir les plus récents" %}
+                                        {% else %}
+                                            Les plus récents
+                                            {% set labelYear = "Voir les moins récents -" %}
+                                        {% endif %}
+                                    {% endif %}
                                     {% if category == 'price' %}
                                         {% if direction == 'asc' %}
-                                            Prix croissant
+                                            Les moins chères
+                                            {% set labelPrice = "Voir les plus chères +" %}
                                         {% else %}
-                                            Prix décroissant
+                                            Les plus chères
+                                            {% set labelPrice = "Voir les moins chères -" %}
                                         {% endif %}
                                     {% endif %}
 
                                     {% if category == 'mileage' %}
                                         {% if direction == 'asc' %}
-                                            Kilométrage croissant
+                                            Les moins de kilométrage
+                                            {% set labelMileage = "Voir les plus de kilométrage +" %}
                                         {% else %}
-                                            Kilométrage décroissant
+                                            Les plus de kilométrage
+                                            {% set labelMileage = "Voir les moins de kilométrage -" %}
                                         {% endif %}
                                     {% endif %}
                                 {% endif %}
@@ -93,9 +120,10 @@
                                    Trier par
                                </button>
                                <div class="dropdown-menu" aria-labelledby="filter">
-                                   {{ knp_pagination_sortable(annonces, 'Prix +/-', 'p.title') }}
-                                   {{ knp_pagination_sortable(annonces, 'Prix +/-', 'p.price') }}
-                                   {{ knp_pagination_sortable(annonces, 'Kilométrage +/-', 'p.mileage') }}
+                                   {{ knp_pagination_sortable(annonces, labelMake, 'p.make') }}
+                                   {{ knp_pagination_sortable(annonces, labelYear, 'p.year') }}
+                                   {{ knp_pagination_sortable(annonces, labelPrice, 'p.price') }}
+                                   {{ knp_pagination_sortable(annonces, labelMileage, 'p.mileage') }}
                                </div>
                            </div>
                        </div>
